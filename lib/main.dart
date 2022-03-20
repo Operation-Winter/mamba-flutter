@@ -5,6 +5,7 @@ import 'package:mamba/screens/participant/participant_landing_screen.dart';
 import 'package:mamba/screens/participant/participant_setup_screen.dart';
 import 'package:mamba/screens/spectator/spectator_landing_screen.dart';
 import 'package:mamba/screens/spectator/spectator_setup_screen.dart';
+import 'package:mamba/ui_constants.dart';
 
 import 'screens/landing_screen.dart';
 
@@ -19,9 +20,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Mamba',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
       initialRoute: LandingScreen.route,
       routes: {
         LandingScreen.route: (context) => const LandingScreen(),

@@ -15,7 +15,7 @@ class LandingImageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 5, 16, 5),
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: Stack(
