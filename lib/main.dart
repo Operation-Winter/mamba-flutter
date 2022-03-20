@@ -27,10 +27,13 @@ class MyApp extends StatelessWidget {
         LandingScreen.route: (context) => const LandingScreen(),
         HostSetupScreen.route: (context) => const HostSetupScreen(),
         HostLandingScreen.route: (context) => const HostLandingScreen(),
-        ParticipantSetupScreen.route: (context) => const ParticipantSetupScreen(),
-        ParticipantLandingScreen.route: (context) => const ParticipantLandingScreen(),
+        ParticipantSetupScreen.route: (context) =>
+            const ParticipantSetupScreen(),
+        ParticipantLandingScreen.route: (context) =>
+            const ParticipantLandingScreen(),
         SpectatorSetupScreen.route: (context) => const SpectatorSetupScreen(),
-        SpectatorLandingScreen.route: (context) => const SpectatorLandingScreen(),
+        SpectatorLandingScreen.route: (context) =>
+            const SpectatorLandingScreen(),
       },
     );
   }
