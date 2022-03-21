@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/screens/host/host_landing_screen.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
 import 'package:mamba/widgets/chips/add_chip.dart';
@@ -25,6 +26,7 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
   String? sessionName;
   String? password;
   Set<String> tags = {};
+  List<PlanningCard> availableCards = [];
 
   void automaticallyCompleteVotingChanged(bool newValue) {
     automaticallyCompleteVoting = newValue;
@@ -38,7 +40,14 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
   }
 
   void didTapStartSession() {
-    Navigator.pushNamed(context, HostLandingScreen.route);
+    Navigator.pushNamed(context, HostLandingScreen.route,
+        arguments: HostLandingScreenArguments(
+          sessionName: sessionName!,
+          automaticallyCompleteVoting: automaticallyCompleteVoting,
+          availableCards: availableCards,
+          password: password,
+          tags: tags,
+        ));
   }
 
   bool get formIsValid {
@@ -142,6 +151,7 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                   ChipWrap(
                     children: chipList(),
                   ),
+                  //TODO: Add ability to select available cards
                   RoundedButton(
                     title: 'Start session',
                     enabled: validationPassed,

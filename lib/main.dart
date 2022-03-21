@@ -27,13 +27,29 @@ class MyApp extends StatelessWidget {
     return {
       LandingScreen.route: (context) => const LandingScreen(),
       HostSetupScreen.route: (context) => const HostSetupScreen(),
-      HostLandingScreen.route: (context) => const HostLandingScreen(),
       ParticipantSetupScreen.route: (context) => const ParticipantSetupScreen(),
       ParticipantLandingScreen.route: (context) =>
           const ParticipantLandingScreen(),
       SpectatorSetupScreen.route: (context) => const SpectatorSetupScreen(),
       SpectatorLandingScreen.route: (context) => const SpectatorLandingScreen(),
     };
+  }
+
+  Route<dynamic>? onGenerateRoute(RouteSettings settings) {
+    if (settings.name == HostLandingScreen.route) {
+      final arguments = settings.arguments
+          as HostLandingScreenArguments; // Retrieve the value.
+      return MaterialPageRoute(
+          builder: (_) => HostLandingScreen(
+                sessionName: arguments.sessionName,
+                automaticallyCompleteVoting:
+                    arguments.automaticallyCompleteVoting,
+                availableCards: arguments.availableCards,
+                password: arguments.password,
+                tags: arguments.tags,
+              )); // Pass it to BarPage.
+    }
+    return null;
   }
 
   MaterialApp _defaultApp() {
@@ -44,6 +60,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       initialRoute: _initialRoute,
       routes: _routes,
+      onGenerateRoute: onGenerateRoute,
     );
   }
 
@@ -58,6 +75,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: _initialRoute,
       routes: _routes,
+      onGenerateRoute: onGenerateRoute,
       localizationsDelegates: const [
         DefaultMaterialLocalizations.delegate,
         DefaultCupertinoLocalizations.delegate,
