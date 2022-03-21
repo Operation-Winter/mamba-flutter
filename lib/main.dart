@@ -5,7 +5,6 @@ import 'package:mamba/screens/participant/participant_landing_screen.dart';
 import 'package:mamba/screens/participant/participant_setup_screen.dart';
 import 'package:mamba/screens/spectator/spectator_landing_screen.dart';
 import 'package:mamba/screens/spectator/spectator_setup_screen.dart';
-import 'package:mamba/ui_constants.dart';
 
 import 'screens/landing_screen.dart';
 

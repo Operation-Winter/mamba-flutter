@@ -4,13 +4,17 @@ import 'package:mamba/ui_constants.dart';
 class StyledTextField extends StatefulWidget {
   final String? input;
   final String placeholder;
+  final TextEditingController? controller;
   final Function(String?)? onChanged;
+  final EdgeInsets? padding;
 
   const StyledTextField({
     Key? key,
     this.input,
     required this.placeholder,
+    this.controller,
     this.onChanged,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -34,11 +38,13 @@ class _StyledTextFieldState extends State<StyledTextField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 8,
-      ),
+      padding: widget.padding ??
+          const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
       child: TextFormField(
+        controller: widget.controller,
         decoration: InputDecoration(
           labelText: widget.placeholder,
           contentPadding: const EdgeInsets.all(10),

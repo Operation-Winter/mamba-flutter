@@ -1,11 +1,15 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mamba/screens/host/host_landing_screen.dart';
 import 'package:mamba/screens/widgets/buttons/rounded_button.dart';
 import 'package:mamba/screens/widgets/chips/add_chip.dart';
 import 'package:mamba/screens/widgets/chips/chip_wrap.dart';
+import 'package:mamba/screens/widgets/chips/styled_chip.dart';
+import 'package:mamba/screens/widgets/dialog/text_field_dialog.dart';
 import 'package:mamba/screens/widgets/inputs/styled_switch.dart';
 import 'package:mamba/screens/widgets/inputs/styled_text_field.dart';
-import 'package:mamba/screens/widgets/chips/styled_chip.dart';
 import 'package:mamba/screens/widgets/text/description_text.dart';
 import 'package:mamba/screens/widgets/text/title_text.dart';
 
@@ -43,17 +47,11 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
     return sessionName?.isEmpty == false;
   }
 
-  void addChip() {
-    // TODO: Display pop up with text input
+  final _textController = TextEditingController();
+
+  void _addChip(String tag) {
     setState(() {
-      tags.add('MSRV');
-      tags.add('MSRV1');
-      tags.add('MSRV2');
-      tags.add('MSRV3');
-      tags.add('MSRV4');
-      tags.add('MSRV5');
-      tags.add('MSRV6');
-      tags.add('MSRV7');
+      tags.add(tag);
     });
   }
 
@@ -68,9 +66,18 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
         .cast<Widget>()
         .toList();
 
-    styledChipList.add(AddChip(
-      onTap: addChip,
-    ));
+    styledChipList.add(
+      AddChip(
+        onTap: () => TextFieldAlertDialog.show(
+          title: 'Add voting tag',
+          placeholder: 'Enter tag name',
+          primaryActionTitle: 'Add',
+          context: context,
+          controller: _textController,
+          textFieldInput: _addChip,
+        ),
+      ),
+    );
     return styledChipList;
   }
 
@@ -115,12 +122,6 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                   const Text('Tags'),
                   ChipWrap(
                     children: chipList(),
-                  ),
-                  Row(
-                    children: [
-                      // TODO: Implement card selection
-                      Text('Available cards placeholder'),
-                    ],
                   ),
                   RoundedButton(
                     title: 'Start session',
