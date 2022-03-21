@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mamba/screens/spectator/spectator_landing_screen.dart';
-import 'package:mamba/screens/widgets/buttons/rounded_button.dart';
-import 'package:mamba/screens/widgets/inputs/styled_text_field.dart';
-import 'package:mamba/screens/widgets/text/description_text.dart';
-import 'package:mamba/screens/widgets/text/title_text.dart';
+import 'package:mamba/widgets/buttons/rounded_button.dart';
+import 'package:mamba/widgets/inputs/styled_text_field.dart';
+import 'package:mamba/widgets/text/description_text.dart';
+import 'package:mamba/widgets/text/title_text.dart';
 
 class SpectatorSetupScreen extends StatefulWidget {
   const SpectatorSetupScreen({Key? key}) : super(key: key);

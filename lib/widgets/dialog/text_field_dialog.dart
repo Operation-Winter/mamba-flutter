@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mamba/screens/widgets/inputs/styled_text_field.dart';
+import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/ui_constants.dart';
 
 class TextFieldAlertDialog {

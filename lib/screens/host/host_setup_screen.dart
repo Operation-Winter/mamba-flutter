@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mamba/screens/host/host_landing_screen.dart';
-import 'package:mamba/screens/widgets/buttons/rounded_button.dart';
-import 'package:mamba/screens/widgets/chips/add_chip.dart';
-import 'package:mamba/screens/widgets/chips/chip_wrap.dart';
-import 'package:mamba/screens/widgets/chips/styled_chip.dart';
-import 'package:mamba/screens/widgets/dialog/text_field_dialog.dart';
-import 'package:mamba/screens/widgets/inputs/styled_switch.dart';
-import 'package:mamba/screens/widgets/inputs/styled_text_field.dart';
-import 'package:mamba/screens/widgets/text/description_text.dart';
-import 'package:mamba/screens/widgets/text/title_text.dart';
+import 'package:mamba/widgets/buttons/rounded_button.dart';
+import 'package:mamba/widgets/chips/add_chip.dart';
+import 'package:mamba/widgets/chips/chip_wrap.dart';
+import 'package:mamba/widgets/chips/styled_chip.dart';
+import 'package:mamba/widgets/dialog/text_field_dialog.dart';
+import 'package:mamba/widgets/inputs/styled_switch.dart';
+import 'package:mamba/widgets/inputs/styled_text_field.dart';
+import 'package:mamba/widgets/text/description_text.dart';
+import 'package:mamba/widgets/text/title_text.dart';
 import 'package:mamba/ui_constants.dart';
 
 class HostSetupScreen extends StatefulWidget {
