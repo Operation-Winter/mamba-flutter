@@ -64,28 +64,32 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  CupertinoApp _iosApp() {
-    return CupertinoApp(
-      title: 'Mamba',
-      theme: const CupertinoThemeData(
+  Widget _iosApp(BuildContext context) {
+    final Brightness platformBrightness =
+        WidgetsBinding.instance!.window.platformBrightness;
+    return Theme(
+      data: ThemeData(
+        brightness: platformBrightness,
         primaryColor: primaryColor,
-        textTheme: CupertinoTextThemeData(
-          primaryColor: primaryColor,
-        ),
       ),
-      initialRoute: _initialRoute,
-      routes: _routes,
-      onGenerateRoute: onGenerateRoute,
-      localizationsDelegates: const [
-        DefaultMaterialLocalizations.delegate,
-        DefaultCupertinoLocalizations.delegate,
-        DefaultWidgetsLocalizations.delegate,
-      ],
+      child: CupertinoApp(
+        title: 'Mamba',
+        theme: CupertinoThemeData(
+            brightness: platformBrightness, primaryColor: primaryColor),
+        initialRoute: _initialRoute,
+        routes: _routes,
+        onGenerateRoute: onGenerateRoute,
+        localizationsDelegates: const [
+          DefaultMaterialLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+          DefaultWidgetsLocalizations.delegate,
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Platform.isIOS ? _iosApp() : _defaultApp();
+    return Platform.isIOS ? _iosApp(context) : _defaultApp();
   }
 }
