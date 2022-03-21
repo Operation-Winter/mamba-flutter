@@ -47,8 +47,26 @@ class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const TitleText(
-                    text: 'Spectate a sizing session',
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        iconSize: 30,
+                        padding: const EdgeInsets.only(top: 16),
+                        icon: const Icon(Icons.chevron_left),
+                      ),
+                      const Expanded(
+                        child: TitleText(
+                          text: 'Spectate a sizing session',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 48,
+                      ),
+                    ],
                   ),
                   const DescriptionText(
                       text:

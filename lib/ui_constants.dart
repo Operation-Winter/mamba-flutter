@@ -9,6 +9,11 @@ const titleTextStyle = TextStyle(
   fontSize: 20,
 );
 
+const descriptionColoredTextStyle = TextStyle(
+  color: primaryColor,
+  fontSize: 14,
+);
+
 const descriptionTextStyle = TextStyle(
   fontSize: 14,
 );

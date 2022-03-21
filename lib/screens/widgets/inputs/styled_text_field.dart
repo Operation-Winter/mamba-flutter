@@ -7,6 +7,7 @@ class StyledTextField extends StatefulWidget {
   final TextEditingController? controller;
   final Function(String?)? onChanged;
   final EdgeInsets? padding;
+  final bool? autofocus;
 
   const StyledTextField({
     Key? key,
@@ -15,6 +16,7 @@ class StyledTextField extends StatefulWidget {
     this.controller,
     this.onChanged,
     this.padding,
+    this.autofocus,
   }) : super(key: key);
 
   @override
@@ -50,16 +52,18 @@ class _StyledTextFieldState extends State<StyledTextField> {
           contentPadding: const EdgeInsets.all(10),
           fillColor: inputBackgroundColor,
           filled: true,
-          labelStyle: const TextStyle(
-            color: primaryColor,
-          ),
-          focusedBorder: const UnderlineInputBorder(
+          labelStyle: descriptionColoredTextStyle,
+          focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: primaryColor),
+          ),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: inputBackgroundColor),
           ),
         ),
         onChanged: onChanged,
         initialValue: text,
         cursorColor: primaryColor,
+        autofocus: widget.autofocus ?? false,
       ),
     );
   }

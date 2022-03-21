@@ -16,11 +16,16 @@ class TextFieldAlertDialog {
   }) {
     return CupertinoAlertDialog(
       title: Text(title),
-      content: CupertinoTextField(
-        placeholder: placeholder,
-        controller: controller,
-        style: TextStyle(
-          color: isDarkMode(context) ? Colors.white : Colors.black,
+      content: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: CupertinoTextField(
+          placeholder: placeholder,
+          controller: controller,
+          cursorColor: primaryColor,
+          style: TextStyle(
+            color: isDarkMode(context) ? Colors.white : Colors.black,
+          ),
+          autofocus: true,
         ),
       ),
       actions: [
@@ -63,6 +68,7 @@ class TextFieldAlertDialog {
         placeholder: placeholder,
         controller: controller,
         padding: EdgeInsets.zero,
+        autofocus: true,
       ),
       actions: [
         ElevatedButton(

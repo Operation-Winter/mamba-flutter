@@ -9,6 +9,7 @@ import 'package:mamba/screens/widgets/inputs/styled_switch.dart';
 import 'package:mamba/screens/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/screens/widgets/text/description_text.dart';
 import 'package:mamba/screens/widgets/text/title_text.dart';
+import 'package:mamba/ui_constants.dart';
 
 class HostSetupScreen extends StatefulWidget {
   const HostSetupScreen({Key? key}) : super(key: key);
@@ -90,10 +91,28 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
               ),
               margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const TitleText(
-                    text: 'Host a sizing session',
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        iconSize: 30,
+                        padding: const EdgeInsets.only(top: 16),
+                        icon: const Icon(Icons.chevron_left),
+                      ),
+                      const Expanded(
+                        child: TitleText(
+                          text: 'Host a sizing session',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 48,
+                      ),
+                    ],
                   ),
                   const DescriptionText(
                       text:
@@ -116,7 +135,10 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                     value: automaticallyCompleteVoting,
                     onChanged: automaticallyCompleteVotingChanged,
                   ),
-                  const Text('Tags'),
+                  const Text(
+                    'Tags',
+                    style: descriptionColoredTextStyle,
+                  ),
                   ChipWrap(
                     children: chipList(),
                   ),
