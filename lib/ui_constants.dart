@@ -18,3 +18,8 @@ const roundedButtonTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
   color: Colors.white,
 );
+
+bool isDarkMode(BuildContext context) {
+  var brightness = MediaQuery.of(context).platformBrightness;
+  return brightness == Brightness.dark;
+}

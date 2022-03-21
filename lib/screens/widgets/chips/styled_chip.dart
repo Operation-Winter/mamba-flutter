@@ -32,6 +32,7 @@ class StyledChip extends StatelessWidget {
       shadowColor: Colors.grey.shade600,
       padding: const EdgeInsets.all(8),
       onDeleted: onDeleted,
+      deleteIconColor: Colors.grey.shade200,
     );
   }
 }

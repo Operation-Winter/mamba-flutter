@@ -14,16 +14,13 @@ class TextFieldAlertDialog {
     required TextEditingController controller,
     required Function(String) textFieldInput,
   }) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    bool isDarkMode = brightness == Brightness.dark;
-
     return CupertinoAlertDialog(
       title: Text(title),
       content: CupertinoTextField(
         placeholder: placeholder,
         controller: controller,
         style: TextStyle(
-          color: isDarkMode ? Colors.white : Colors.black,
+          color: isDarkMode(context) ? Colors.white : Colors.black,
         ),
       ),
       actions: [
