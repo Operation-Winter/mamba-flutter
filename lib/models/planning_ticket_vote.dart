@@ -1,6 +1,5 @@
 import 'package:mamba/models/planning_card.dart';
 import 'package:uuid/uuid.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'planning_ticket_vote.g.dart';
 
