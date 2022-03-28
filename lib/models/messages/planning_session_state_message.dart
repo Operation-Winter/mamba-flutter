@@ -1,7 +1,10 @@
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/models/planning_participant.dart';
 import 'package:mamba/models/planning_ticket.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'planning_session_state_message.g.dart';
 
+@JsonSerializable()
 class PlanningSessionStateMessage {
   String sessionCode;
   String sessionName;
@@ -19,14 +22,8 @@ class PlanningSessionStateMessage {
     this.timeLeft,
   });
 
-  factory PlanningSessionStateMessage.fromJson(dynamic json) {
-    return PlanningSessionStateMessage(
-      sessionCode: json['sessionCode'] as String,
-      sessionName: json['sessionCode'] as String,
-      availableCards: json['availableCards'] as List<PlanningCard>,
-      participants: json['participants'] as List<PlanningParticipant>,
-      ticket: json['ticket'] as PlanningTicket?,
-      timeLeft: json['timeLeft'] as int?,
-    );
-  }
+  factory PlanningSessionStateMessage.fromJson(Map<String, dynamic> data) =>
+      _$PlanningSessionStateMessageFromJson(data);
+
+  Map<String, dynamic> toJson() => _$PlanningSessionStateMessageToJson(this);
 }

@@ -1,13 +1,15 @@
 import 'package:mamba/models/planning_ticket.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'planning_previous_ticket_message.g.dart';
 
-class PlanningChangeNameMessage {
+@JsonSerializable()
+class PlanningPreviousTicketMessage {
   List<PlanningTicket> previousTickets;
 
-  PlanningChangeNameMessage({required this.previousTickets});
+  PlanningPreviousTicketMessage({required this.previousTickets});
 
-  factory PlanningChangeNameMessage.fromJson(dynamic json) {
-    return PlanningChangeNameMessage(
-      previousTickets: json['previousTickets'] as List<PlanningTicket>,
-    );
-  }
+  factory PlanningPreviousTicketMessage.fromJson(Map<String, dynamic> data) =>
+      _$PlanningPreviousTicketMessageFromJson(data);
+
+  Map<String, dynamic> toJson() => _$PlanningPreviousTicketMessageToJson(this);
 }

@@ -1,19 +1,27 @@
 import 'package:mamba/models/planning_card.dart';
 import 'package:uuid/uuid.dart';
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'planning_ticket_vote.g.dart';
 
+@JsonSerializable()
 class PlanningTicketVote {
-  Uuid participantId;
+  @JsonKey(fromJson: _idFromString, toJson: _stringFromId)
+  UuidValue participantId;
   PlanningCard? planningCard;
 
   PlanningTicketVote({required this.participantId, this.planningCard});
 
-  factory PlanningTicketVote.fromJson(dynamic json) {
-    return PlanningTicketVote(
-      participantId: json['participantId'] as Uuid,
-      planningCard: json['planningCard'] != null
-          ? EnumToString.fromString(PlanningCard.values, json['planningCard'])
-          : null,
-    );
+  static String _stringFromId(UuidValue uuid) {
+    return uuid.uuid;
   }
+
+  static UuidValue _idFromString(String uuid) {
+    return UuidValue(uuid);
+  }
+
+  factory PlanningTicketVote.fromJson(Map<String, dynamic> data) =>
+      _$PlanningTicketVoteFromJson(data);
+
+  Map<String, dynamic> toJson() => _$PlanningTicketVoteToJson(this);
 }

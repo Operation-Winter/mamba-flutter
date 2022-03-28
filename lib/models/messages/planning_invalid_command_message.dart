@@ -1,3 +1,7 @@
+import 'package:json_annotation/json_annotation.dart';
+part 'planning_invalid_command_message.g.dart';
+
+@JsonSerializable()
 class PlanningInvalidCommandMessage {
   String code;
   String description;
@@ -7,10 +11,8 @@ class PlanningInvalidCommandMessage {
     required this.description,
   });
 
-  factory PlanningInvalidCommandMessage.fromJson(dynamic json) {
-    return PlanningInvalidCommandMessage(
-      code: json['code'] as String,
-      description: json['description'] as String,
-    );
-  }
+  factory PlanningInvalidCommandMessage.fromJson(Map<String, dynamic> data) =>
+      _$PlanningInvalidCommandMessageFromJson(data);
+
+  Map<String, dynamic> toJson() => _$PlanningInvalidCommandMessageToJson(this);
 }

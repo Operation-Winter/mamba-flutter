@@ -1,5 +1,9 @@
 import 'package:mamba/models/planning_card.dart';
 
+import 'package:json_annotation/json_annotation.dart';
+part 'planning_start_session_message.g.dart';
+
+@JsonSerializable()
 class PlanningStartSessionMessage {
   String sessionName;
   bool autoCompleteVoting;
@@ -11,11 +15,8 @@ class PlanningStartSessionMessage {
     required this.availableCards,
   });
 
-  factory PlanningStartSessionMessage.fromJson(dynamic json) {
-    return PlanningStartSessionMessage(
-      sessionName: json['sessionName'] as String,
-      autoCompleteVoting: json['autoCompleteVoting'] as bool,
-      availableCards: json['availableCards'] as List<PlanningCard>,
-    );
-  }
+  factory PlanningStartSessionMessage.fromJson(Map<String, dynamic> data) =>
+      _$PlanningStartSessionMessageFromJson(data);
+
+  Map<String, dynamic> toJson() => _$PlanningStartSessionMessageToJson(this);
 }
