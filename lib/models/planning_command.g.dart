@@ -8,7 +8,7 @@ part of 'planning_command.dart';
 
 PlanningCommand _$PlanningCommandFromJson(Map<String, dynamic> json) =>
     PlanningCommand(
-      uuid: PlanningCommand._idFromString(json['uuid'] as String),
+      uuid: PlanningCommand._idFromString(json['uuid'] as String?),
       type: json['type'] as String,
       message: json['message'],
     );
