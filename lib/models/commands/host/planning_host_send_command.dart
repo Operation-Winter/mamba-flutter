@@ -20,5 +20,6 @@ class PlanningHostSendCommand extends PlanningCommand {
   factory PlanningHostSendCommand.fromJson(Map<String, dynamic> data) =>
       _$PlanningHostSendCommandFromJson(data);
 
+  @override
   Map<String, dynamic> toJson() => _$PlanningHostSendCommandToJson(this);
 }

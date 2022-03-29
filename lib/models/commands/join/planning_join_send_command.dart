@@ -20,5 +20,6 @@ class PlanningJoinSendCommand extends PlanningCommand {
   factory PlanningJoinSendCommand.fromJson(Map<String, dynamic> data) =>
       _$PlanningJoinSendCommandFromJson(data);
 
+  @override
   Map<String, dynamic> toJson() => _$PlanningJoinSendCommandToJson(this);
 }

@@ -20,5 +20,6 @@ class PlanningHostReceiveCommand extends PlanningCommand {
   factory PlanningHostReceiveCommand.fromJson(Map<String, dynamic> data) =>
       _$PlanningHostReceiveCommandFromJson(data);
 
+  @override
   Map<String, dynamic> toJson() => _$PlanningHostReceiveCommandToJson(this);
 }

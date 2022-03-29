@@ -5,7 +5,11 @@ abstract class HostLandingSessionState {}
 
 class HostLandingSessionLoading extends HostLandingSessionState {}
 
-class HostLandingSessionNone extends HostLandingSessionState {}
+class HostLandingSessionNone extends HostLandingSessionState {
+  final String sessionName;
+
+  HostLandingSessionNone({required this.sessionName});
+}
 
 class HostLandingSessionVoting extends HostLandingSessionState {}
 

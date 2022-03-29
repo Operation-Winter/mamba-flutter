@@ -1,13 +1,7 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:mamba/models/commands/host/planning_host_receive_command.dart';
 import 'package:mamba/models/commands/host/planning_host_receive_command_type.dart';
-import 'package:mamba/models/commands/host/planning_host_send_command.dart';
-import 'package:mamba/models/commands/host/planning_host_send_command_type.dart';
-import 'package:mamba/models/messages/planning_start_session_message.dart';
 import 'package:mamba/models/planning_card.dart';
-import 'package:mamba/models/planning_command.dart';
 import 'package:mamba/models/planning_participant.dart';
 import 'package:mamba/models/planning_ticket.dart';
 import 'package:mamba/repositories/planning_host_session_repository.dart';
@@ -62,7 +56,7 @@ class HostLandingSessionBloc
 
       // Receive commands
       else if (event is HostReceiveNoneState) {
-        emit(HostLandingSessionNone());
+        emit(HostLandingSessionNone(sessionName: sessionName));
       } else if (event is HostReceiveVotingState) {
       } else if (event is HostReceiveVotingFinishedState) {
       } else if (event is HostReceiveInvalidCommand) {

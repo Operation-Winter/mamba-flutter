@@ -69,7 +69,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
             if (state is HostLandingSessionLoading) {
               return _loadingState(context);
             } else if (state is HostLandingSessionNone) {
-              return _noneState(context);
+              return _noneState(context, sessionName: state.sessionName);
             } else if (state is HostLandingSessionVoting) {
               return _votingState(context);
             } else if (state is HostLandingSessionVotingFinished) {
@@ -98,8 +98,10 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     return const PlanningErrorState();
   }
 
-  Widget _noneState(BuildContext context) {
-    return const PlanningHostNoneState();
+  Widget _noneState(BuildContext context, {required String sessionName}) {
+    return PlanningHostNoneState(
+      sessionName: sessionName,
+    );
   }
 
   Widget _votingState(BuildContext context) {
