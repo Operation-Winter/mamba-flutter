@@ -30,7 +30,6 @@ class HostSendCancelTimer extends HostLandingSessionEvent {}
 class HostSendPreviousTickets extends HostLandingSessionEvent {}
 
 // Receive commands
-
 class HostReceiveNoneState extends HostLandingSessionEvent {}
 
 class HostReceiveVotingState extends HostLandingSessionEvent {}

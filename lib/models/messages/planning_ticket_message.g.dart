@@ -10,7 +10,7 @@ PlanningTicketMessage _$PlanningTicketMessageFromJson(
         Map<String, dynamic> json) =>
     PlanningTicketMessage(
       title: json['title'] as String,
-      description: json['description'] as String,
+      description: json['description'] as String?,
     );
 
 Map<String, dynamic> _$PlanningTicketMessageToJson(

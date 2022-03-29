@@ -4,18 +4,17 @@ part 'planning_command.g.dart';
 
 @JsonSerializable()
 class PlanningCommand {
-  @JsonKey(fromJson: _idFromString, toJson: _stringFromId)
+  @JsonKey(fromJson: idFromString, toJson: stringFromId)
   final UuidValue? uuid;
-  final String type;
   final Object? message;
 
-  PlanningCommand({required this.uuid, required this.type, this.message});
+  PlanningCommand({required this.uuid, this.message});
 
-  static String? _stringFromId(UuidValue? uuid) {
+  static String? stringFromId(UuidValue? uuid) {
     return uuid?.uuid;
   }
 
-  static UuidValue? _idFromString(String? uuid) {
+  static UuidValue? idFromString(String? uuid) {
     if (uuid != null) {
       return UuidValue(uuid);
     }

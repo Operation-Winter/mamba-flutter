@@ -1,13 +1,16 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:mamba/models/commands/host/planning_host_receive_command.dart';
+import 'package:mamba/models/commands/host/planning_host_receive_command_type.dart';
+import 'package:mamba/models/commands/host/planning_host_send_command.dart';
+import 'package:mamba/models/commands/host/planning_host_send_command_type.dart';
 import 'package:mamba/models/messages/planning_start_session_message.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/models/planning_command.dart';
 import 'package:mamba/models/planning_participant.dart';
 import 'package:mamba/models/planning_ticket.dart';
-import 'package:mamba/networking/url_center.dart';
-import 'package:mamba/networking/web_socket_wrapper.dart';
+import 'package:mamba/repositories/planning_host_session_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
@@ -16,8 +19,8 @@ part 'host_landing_session_state.dart';
 
 class HostLandingSessionBloc
     extends Bloc<HostLandingSessionEvent, HostLandingSessionState> {
-  late final WebSocketNetworking _webSocket;
-
+  final PlanningHostSessionRepository _hostSessionRepository =
+      PlanningHostSessionRepository();
   UuidValue uuid = const Uuid().v4obj();
   String? sessionCode;
   String sessionName;
@@ -37,15 +40,13 @@ class HostLandingSessionBloc
     required this.automaticallyCompleteVoting,
     required this.tags,
   }) : super(HostLandingSessionLoading()) {
-    _webSocket = WebSocketNetworking(uri: URLCenter.planningHostPath);
-    _webSocket.channel.stream.listen((event) {
-      _handleReceiveCommand(event);
-    }, onError: (error) {}, onDone: () {});
+    _hostSessionRepository.listen(_handleReceiveCommand,
+        onError: (error) {}, onDone: () {});
 
     on<HostLandingSessionEvent>((event, emit) {
       // Send commands
       if (event is HostSendStartSession) {
-        _sendStartSessionCommand();
+        _sendStartCommand();
       } else if (event is HostSendAddTicket) {
       } else if (event is HostSendSkipVote) {
       } else if (event is HostSendRemoveParticipant) {
@@ -70,27 +71,30 @@ class HostLandingSessionBloc
     add(HostSendStartSession());
   }
 
-  _handleReceiveCommand(event) async {
-    print(utf8.decode(event));
-    var planningCommand =
-        PlanningCommand.fromJson(jsonDecode(utf8.decode(event)));
-    add(HostReceiveNoneState());
+  _handleReceiveCommand(PlanningHostReceiveCommand command) async {
+    switch (command.type) {
+      case PlanningHostReceiveCommandType.NONE_STATE:
+        add(HostReceiveNoneState());
+        break;
+      case PlanningHostReceiveCommandType.VOTING_STATE:
+        add(HostReceiveVotingState());
+        break;
+      case PlanningHostReceiveCommandType.FINISHED_STATE:
+        add(HostReceiveVotingFinishedState());
+        break;
+      case PlanningHostReceiveCommandType.INVALID_COMMAND:
+        add(HostReceiveInvalidCommand());
+        break;
+      case PlanningHostReceiveCommandType.PREVIOUS_TICKETS:
+        // TODO: Implement previous tickets handling
+        break;
+    }
   }
 
-  void sendCommand(PlanningCommand planningCommand) {
-    _webSocket.send(planningCommand: planningCommand);
-  }
-
-  void _sendStartSessionCommand() {
-    var message = PlanningStartSessionMessage(
+  _sendStartCommand() => _hostSessionRepository.sendStartSessionCommand(
+        uuid: uuid,
         sessionName: sessionName,
-        autoCompleteVoting: automaticallyCompleteVoting,
-        availableCards: availableCards);
-    var planningCommand = PlanningCommand(
-      uuid: uuid,
-      type: "START_SESSION",
-      message: message,
-    );
-    sendCommand(planningCommand);
-  }
+        automaticallyCompleteVoting: automaticallyCompleteVoting,
+        availableCards: availableCards,
+      );
 }

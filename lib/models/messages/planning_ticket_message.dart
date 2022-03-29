@@ -4,9 +4,9 @@ part 'planning_ticket_message.g.dart';
 @JsonSerializable()
 class PlanningTicketMessage {
   String title;
-  String description;
+  String? description;
 
-  PlanningTicketMessage({required this.title, required this.description});
+  PlanningTicketMessage({required this.title, this.description});
 
   factory PlanningTicketMessage.fromJson(Map<String, dynamic> data) =>
       _$PlanningTicketMessageFromJson(data);
