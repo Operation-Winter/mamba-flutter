@@ -1,3 +1,4 @@
+// ignore: library_prefixes
 import 'package:flutter/foundation.dart' as Foundation;
 import 'network_environment.dart';
 

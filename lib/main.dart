@@ -39,14 +39,14 @@ class MyApp extends StatelessWidget {
       final arguments = settings.arguments
           as HostLandingScreenArguments; // Retrieve the value.
       return MaterialPageRoute(
-          builder: (_) => HostLandingScreen(
-                sessionName: arguments.sessionName,
-                automaticallyCompleteVoting:
-                    arguments.automaticallyCompleteVoting,
-                availableCards: arguments.availableCards,
-                password: arguments.password,
-                tags: arguments.tags,
-              )); // Pass it to BarPage.
+        builder: (_) => HostLandingScreen(
+          sessionName: arguments.sessionName,
+          automaticallyCompleteVoting: arguments.automaticallyCompleteVoting,
+          availableCards: arguments.availableCards,
+          password: arguments.password,
+          tags: arguments.tags,
+        ),
+      ); // Pass it to BarPage.
     }
     return null;
   }

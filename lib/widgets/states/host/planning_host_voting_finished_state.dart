@@ -1,9 +1,7 @@
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
-import 'package:mamba/ui_constants.dart';
 
-class SessionLoadingState extends StatelessWidget {
-  const SessionLoadingState({Key? key}) : super(key: key);
+class PlanningHostVotingFinishedState extends StatelessWidget {
+  const PlanningHostVotingFinishedState({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +11,7 @@ class SessionLoadingState extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              SpinKitSpinningLines(
-                color: primaryColor,
-                size: 100,
-              ),
+              Text("Voting finished state"),
             ],
           ),
         ),

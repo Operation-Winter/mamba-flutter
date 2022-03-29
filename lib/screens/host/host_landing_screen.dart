@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mamba/models/host/planning_host_state.dart';
-import 'package:mamba/providers/host_planning_session.dart';
-import 'package:mamba/widgets/session/session_loading_state.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mamba/bloc/host/host_landing_session_bloc.dart';
+import 'package:mamba/widgets/states/host/planning_host_none_state.dart';
+import 'package:mamba/widgets/states/host/planning_host_voting_finished_state.dart';
+import 'package:mamba/widgets/states/host/planning_host_voting_state.dart';
+import 'package:mamba/widgets/states/shared/planning_coffee_voting_finished_state.dart';
+import 'package:mamba/widgets/states/shared/planning_coffee_voting_state.dart';
+import 'package:mamba/widgets/states/shared/planning_loading_state.dart';
 import 'package:mamba/models/planning_card.dart';
+import 'package:mamba/widgets/states/shared/planning_error_state.dart';
 
 class HostLandingScreenArguments {
   final String sessionName;
@@ -23,7 +28,7 @@ class HostLandingScreenArguments {
 
 class HostLandingScreen extends StatefulWidget {
   static String route = '/host/landing';
-  late final HostPlanningSession session;
+  late final HostLandingSessionBloc session;
 
   HostLandingScreen({
     Key? key,
@@ -33,7 +38,7 @@ class HostLandingScreen extends StatefulWidget {
     bool automaticallyCompleteVoting = false,
     Set<String> tags = const {},
   }) : super(key: key) {
-    session = HostPlanningSession(
+    session = HostLandingSessionBloc(
       sessionName: sessionName,
       password: password,
       availableCards: availableCards,
@@ -48,128 +53,68 @@ class HostLandingScreen extends StatefulWidget {
 
 class _HostLandingScreenState extends State<HostLandingScreen> {
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<HostPlanningSession>(
-      create: (context) => widget.session,
-      builder: (context, builder) => WillPopScope(
-        onWillPop: () async => false,
-        child: _buildState(context),
-      ),
-    );
+  void initState() {
+    super.initState();
   }
 
-  Widget _buildState(BuildContext context) {
-    switch (Provider.of<HostPlanningSession>(context).state) {
-      case PlanningHostState.error:
-        return _errorState(context);
-      case PlanningHostState.loading:
-        return _loadingState(context);
-      case PlanningHostState.noneState:
-        return _noneState(context);
-      case PlanningHostState.votingState:
-        return _votingState(context);
-      case PlanningHostState.finishedVotingState:
-        return _votingFinishedState(context);
-      case PlanningHostState.invalidCommand:
-        return _errorState(context);
-      case PlanningHostState.coffeeVoting:
-        return _coffeeVotingState(context);
-      case PlanningHostState.coffeeFinishedVoting:
-        return _coffeeVotingFinishedState(context);
-    }
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => widget.session,
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: BlocConsumer<HostLandingSessionBloc, HostLandingSessionState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            if (state is HostLandingSessionLoading) {
+              return _loadingState(context);
+            } else if (state is HostLandingSessionNone) {
+              return _noneState(context);
+            } else if (state is HostLandingSessionVoting) {
+              return _votingState(context);
+            } else if (state is HostLandingSessionVotingFinished) {
+              return _votingFinishedState(context);
+            } else if (state is HostLandingSessionCoffeeVoting) {
+              return _coffeeVotingState(context);
+            } else if (state is HostLandingSessionCoffeeVotingFinished) {
+              return _coffeeVotingFinishedState(context);
+            } else if (state is HostLandingSessionError) {
+              return _errorState(context);
+            } else if (state is HostLandingSessionInvalidCommand) {
+              return _errorState(context);
+            }
+            return _errorState(context);
+          },
+        ),
+      ),
+    );
   }
 
   Widget _loadingState(BuildContext context) {
-    return const SessionLoadingState();
+    return const PlanningLoadingState();
   }
 
   Widget _errorState(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text("Error"),
-            ],
-          ),
-        ),
-      ),
-    );
+    return const PlanningErrorState();
   }
 
   Widget _noneState(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text("None state"),
-            ],
-          ),
-        ),
-      ),
-    );
+    return const PlanningHostNoneState();
   }
 
   Widget _votingState(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text("Voting state"),
-            ],
-          ),
-        ),
-      ),
-    );
+    return const PlanningHostVotingState();
   }
 
   Widget _votingFinishedState(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text("Voting finished state"),
-            ],
-          ),
-        ),
-      ),
-    );
+    return const PlanningHostVotingFinishedState();
   }
 
   Widget _coffeeVotingState(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text("Voting state"),
-            ],
-          ),
-        ),
-      ),
-    );
+    return const PlanningCoffeeVotingState();
   }
 
   Widget _coffeeVotingFinishedState(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text("Voting finished state"),
-            ],
-          ),
-        ),
-      ),
-    );
+    return const PlanningCoffeeVotingFinishedState();
   }
 }
