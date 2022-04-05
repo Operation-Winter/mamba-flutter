@@ -32,7 +32,7 @@ class PlanningHostReceiveCommand extends PlanningCommand {
     );
   }
 
-  static PlanningMessage _parseMessage(
+  static PlanningMessage? _parseMessage(
       PlanningHostReceiveCommandType type, Map<String, dynamic> data) {
     switch (type) {
       case PlanningHostReceiveCommandType.NONE_STATE:
