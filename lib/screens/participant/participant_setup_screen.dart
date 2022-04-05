@@ -51,7 +51,8 @@ class _ParticipantSetupScreenState extends State<ParticipantSetupScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              margin: const EdgeInsets.only(
+                  top: 16, bottom: 8, left: 16, right: 16),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
