@@ -55,6 +55,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
   @override
   void initState() {
     super.initState();
+    widget.session.add(HostSendStartSession());
   }
 
   @override

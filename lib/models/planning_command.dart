@@ -6,9 +6,8 @@ part 'planning_command.g.dart';
 class PlanningCommand {
   @JsonKey(fromJson: idFromString, toJson: stringFromId)
   final UuidValue? uuid;
-  final Object? message;
 
-  PlanningCommand({required this.uuid, this.message});
+  PlanningCommand({required this.uuid});
 
   static String? stringFromId(UuidValue? uuid) {
     return uuid?.uuid;

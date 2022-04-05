@@ -7,11 +7,24 @@ abstract class HostLandingSessionEvent {}
 
 class HostSendStartSession extends HostLandingSessionEvent {}
 
-class HostSendAddTicket extends HostLandingSessionEvent {}
+class HostSendAddTicket extends HostLandingSessionEvent {
+  final String title;
+  final String? description;
 
-class HostSendSkipVote extends HostLandingSessionEvent {}
+  HostSendAddTicket({required this.title, this.description});
+}
 
-class HostSendRemoveParticipant extends HostLandingSessionEvent {}
+class HostSendSkipVote extends HostLandingSessionEvent {
+  final UuidValue participantId;
+
+  HostSendSkipVote({required this.participantId});
+}
+
+class HostSendRemoveParticipant extends HostLandingSessionEvent {
+  final UuidValue participantId;
+
+  HostSendRemoveParticipant({required this.participantId});
+}
 
 class HostSendEndSession extends HostLandingSessionEvent {}
 
@@ -21,20 +34,41 @@ class HostSendRevote extends HostLandingSessionEvent {}
 
 class HostSendReconnect extends HostLandingSessionEvent {}
 
-class HostSendEditTicket extends HostLandingSessionEvent {}
+class HostSendEditTicket extends HostLandingSessionEvent {
+  final String title;
+  final String? description;
 
-class HostSendAddTimer extends HostLandingSessionEvent {}
+  HostSendEditTicket({required this.title, this.description});
+}
+
+class HostSendAddTimer extends HostLandingSessionEvent {
+  final int timeInterval;
+
+  HostSendAddTimer({required this.timeInterval});
+}
 
 class HostSendCancelTimer extends HostLandingSessionEvent {}
 
 class HostSendPreviousTickets extends HostLandingSessionEvent {}
 
 // Receive commands
-class HostReceiveNoneState extends HostLandingSessionEvent {}
+class HostReceiveNoneState extends HostLandingSessionEvent {
+  final PlanningSessionStateMessage message;
 
-class HostReceiveVotingState extends HostLandingSessionEvent {}
+  HostReceiveNoneState({required this.message});
+}
 
-class HostReceiveVotingFinishedState extends HostLandingSessionEvent {}
+class HostReceiveVotingState extends HostLandingSessionEvent {
+  final PlanningSessionStateMessage message;
+
+  HostReceiveVotingState({required this.message});
+}
+
+class HostReceiveVotingFinishedState extends HostLandingSessionEvent {
+  final PlanningSessionStateMessage message;
+
+  HostReceiveVotingFinishedState({required this.message});
+}
 
 class HostReceiveInvalidCommand extends HostLandingSessionEvent {}
 

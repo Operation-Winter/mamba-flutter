@@ -1,11 +1,12 @@
+import 'package:mamba/models/messages/planning_message.dart';
 import 'package:uuid/uuid.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'planning_remove_participant_message.g.dart';
 
 @JsonSerializable()
-class PlanningRemoveParticipantMessage {
+class PlanningRemoveParticipantMessage implements PlanningMessage {
   @JsonKey(fromJson: _idFromString, toJson: _stringFromId)
-  UuidValue participantId;
+  final UuidValue participantId;
 
   PlanningRemoveParticipantMessage({required this.participantId});
 

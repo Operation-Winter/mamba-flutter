@@ -1,10 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:mamba/models/messages/planning_message.dart';
 part 'planning_invalid_command_message.g.dart';
 
 @JsonSerializable()
-class PlanningInvalidCommandMessage {
-  String code;
-  String description;
+class PlanningInvalidCommandMessage implements PlanningMessage {
+  final String code;
+  final String description;
 
   PlanningInvalidCommandMessage({
     required this.code,

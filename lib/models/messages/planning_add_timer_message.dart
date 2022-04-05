@@ -1,9 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:mamba/models/messages/planning_message.dart';
 part 'planning_add_timer_message.g.dart';
 
 @JsonSerializable()
-class PlanningAddTimerMessage {
-  int timeInterval;
+class PlanningAddTimerMessage implements PlanningMessage {
+  final int timeInterval;
 
   PlanningAddTimerMessage({required this.timeInterval});
 

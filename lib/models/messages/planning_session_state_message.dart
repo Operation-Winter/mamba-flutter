@@ -1,3 +1,4 @@
+import 'package:mamba/models/messages/planning_message.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/models/planning_participant.dart';
 import 'package:mamba/models/planning_ticket.dart';
@@ -5,13 +6,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'planning_session_state_message.g.dart';
 
 @JsonSerializable()
-class PlanningSessionStateMessage {
-  String sessionCode;
-  String sessionName;
-  List<PlanningCard> availableCards;
-  List<PlanningParticipant> participants;
-  PlanningTicket? ticket;
-  int? timeLeft;
+class PlanningSessionStateMessage implements PlanningMessage {
+  final String sessionCode;
+  final String sessionName;
+  final List<PlanningCard> availableCards;
+  final List<PlanningParticipant> participants;
+  final PlanningTicket? ticket;
+  final int? timeLeft;
 
   PlanningSessionStateMessage({
     required this.sessionCode,

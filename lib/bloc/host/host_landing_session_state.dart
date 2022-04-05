@@ -22,3 +22,5 @@ class HostLandingSessionCoffeeVotingFinished extends HostLandingSessionState {}
 class HostLandingSessionError extends HostLandingSessionState {}
 
 class HostLandingSessionInvalidCommand extends HostLandingSessionState {}
+
+class HostLandingSessionPreviousTickets extends HostLandingSessionState {}

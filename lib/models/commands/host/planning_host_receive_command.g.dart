@@ -10,7 +10,9 @@ PlanningHostReceiveCommand _$PlanningHostReceiveCommandFromJson(
         Map<String, dynamic> json) =>
     PlanningHostReceiveCommand(
       uuid: PlanningCommand.idFromString(json['uuid'] as String?),
-      message: json['message'],
+      message: json['message'] == null
+          ? null
+          : PlanningMessage.fromJson(json['message'] as Map<String, dynamic>),
       type: $enumDecode(_$PlanningHostReceiveCommandTypeEnumMap, json['type']),
     );
 
@@ -18,8 +20,8 @@ Map<String, dynamic> _$PlanningHostReceiveCommandToJson(
         PlanningHostReceiveCommand instance) =>
     <String, dynamic>{
       'uuid': PlanningCommand.stringFromId(instance.uuid),
-      'message': instance.message,
       'type': _$PlanningHostReceiveCommandTypeEnumMap[instance.type],
+      'message': instance.message?.toJson(),
     };
 
 const _$PlanningHostReceiveCommandTypeEnumMap = {

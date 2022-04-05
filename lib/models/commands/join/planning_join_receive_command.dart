@@ -1,4 +1,5 @@
 import 'package:mamba/models/commands/join/planning_join_receive_command_type.dart';
+import 'package:mamba/models/messages/planning_message.dart';
 import 'package:mamba/models/planning_command.dart';
 import 'package:uuid/uuid.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -8,13 +9,14 @@ part 'planning_join_receive_command.g.dart';
 class PlanningJoinReceiveCommand extends PlanningCommand {
   PlanningJoinReceiveCommandType type;
 
+  PlanningMessage? message;
+
   PlanningJoinReceiveCommand({
     required UuidValue? uuid,
-    Object? message,
+    this.message,
     required this.type,
   }) : super(
           uuid: uuid,
-          message: message,
         );
 
   factory PlanningJoinReceiveCommand.fromJson(Map<String, dynamic> data) =>

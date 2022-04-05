@@ -170,11 +170,7 @@ class PlanningHostSessionRepository {
     _webSocket.send(planningCommand: planningCommand);
   }
 
-  void sendPreviousTicketsCommand({
-    required UuidValue uuid,
-    required String title,
-    String? description,
-  }) {
+  void sendPreviousTicketsCommand({required UuidValue uuid}) {
     var planningCommand = PlanningHostSendCommand(
       uuid: uuid,
       type: PlanningHostSendCommandType.PREVIOUS_TICKETS,
