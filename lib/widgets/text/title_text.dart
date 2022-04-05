@@ -11,13 +11,10 @@ class TitleText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-      child: Text(
-        text,
-        style: titleTextStyle,
-        textAlign: textAlign,
-      ),
+    return Text(
+      text,
+      style: titleTextStyle,
+      textAlign: textAlign,
     );
   }
 }

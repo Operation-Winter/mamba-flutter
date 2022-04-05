@@ -11,13 +11,10 @@ class DescriptionText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 3, 16, 8),
-      child: Text(
-        text,
-        style: descriptionTextStyle,
-        textAlign: TextAlign.center,
-      ),
+    return Text(
+      text,
+      style: descriptionTextStyle,
+      textAlign: TextAlign.center,
     );
   }
 }

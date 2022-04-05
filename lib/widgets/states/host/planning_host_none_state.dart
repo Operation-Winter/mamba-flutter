@@ -4,10 +4,16 @@ import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
 
 class PlanningHostNoneState extends StatelessWidget {
   final String sessionName;
+  final int coffeeVoteCount;
+  final int spectatorCount;
+  final List<PlanningCommandButton> commands;
 
   const PlanningHostNoneState({
     Key? key,
     required this.sessionName,
+    required this.commands,
+    required this.coffeeVoteCount,
+    required this.spectatorCount,
   }) : super(key: key);
 
   @override
@@ -18,6 +24,9 @@ class PlanningHostNoneState extends StatelessWidget {
           children: [
             PlanningSessionNameCard(
               sessionName: sessionName,
+              commands: commands,
+              coffeeVoteCount: coffeeVoteCount,
+              spectatorCount: spectatorCount,
             ),
             const PlanningSessionParticipantsCard(),
           ],

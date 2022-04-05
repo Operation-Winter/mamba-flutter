@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/bloc/host/host_landing_session_bloc.dart';
+import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/states/host/planning_host_none_state.dart';
 import 'package:mamba/widgets/states/host/planning_host_voting_finished_state.dart';
 import 'package:mamba/widgets/states/host/planning_host_voting_state.dart';
@@ -101,8 +102,31 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
 
   Widget _noneState(BuildContext context, {required String sessionName}) {
     return PlanningHostNoneState(
-      sessionName: sessionName,
-    );
+        sessionName: sessionName,
+        coffeeVoteCount: 0,
+        spectatorCount: 0,
+        commands: [
+          PlanningCommandButton(
+            icon: Icons.coffee,
+            tooltip: 'Request coffee vote',
+            onPressed: _didTapRequestCoffee,
+          ),
+          PlanningCommandButton(
+            icon: Icons.add,
+            tooltip: 'Add ticket',
+            onPressed: _didTapAddTicket,
+          ),
+          PlanningCommandButton(
+            icon: Icons.share,
+            tooltip: 'Share session',
+            onPressed: _didTapShare,
+          ),
+          PlanningCommandButton(
+            icon: Icons.close,
+            tooltip: 'End session',
+            onPressed: _didTapEndSession,
+          ),
+        ]);
   }
 
   Widget _votingState(BuildContext context) {
@@ -119,5 +143,21 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
 
   Widget _coffeeVotingFinishedState(BuildContext context) {
     return const PlanningCoffeeVotingFinishedState();
+  }
+
+  _didTapAddTicket() {
+    print('Did tap add ticket');
+  }
+
+  _didTapRequestCoffee() {
+    print('Did tap request coffee');
+  }
+
+  _didTapShare() {
+    print('Did tap share');
+  }
+
+  _didTapEndSession() {
+    widget.session.add(HostSendEndSession());
   }
 }

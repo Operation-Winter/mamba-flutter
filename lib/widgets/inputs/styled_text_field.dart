@@ -42,7 +42,6 @@ class _StyledTextFieldState extends State<StyledTextField> {
     return Padding(
       padding: widget.padding ??
           const EdgeInsets.symmetric(
-            horizontal: 16,
             vertical: 8,
           ),
       child: TextFormField(

@@ -24,3 +24,5 @@ class HostLandingSessionError extends HostLandingSessionState {}
 class HostLandingSessionInvalidCommand extends HostLandingSessionState {}
 
 class HostLandingSessionPreviousTickets extends HostLandingSessionState {}
+
+// TODO: Add session ended state

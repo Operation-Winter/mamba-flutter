@@ -38,8 +38,11 @@ class HostLandingSessionBloc
     required this.automaticallyCompleteVoting,
     required this.tags,
   }) : super(HostLandingSessionLoading()) {
-    _hostSessionRepository.listen(_handleReceiveCommand,
-        onError: (error) {}, onDone: () {});
+    _hostSessionRepository.listen(_handleReceiveCommand, onError: (error) {
+      print('Socket error $error');
+    }, onDone: () {
+      print('Socket closed');
+    });
 
     on<HostLandingSessionEvent>((event, emit) {
       // Send commands
@@ -79,9 +82,9 @@ class HostLandingSessionBloc
       else if (event is HostReceiveNoneState) {
         _handleNoneStateEvent(emit, message: event.message);
       } else if (event is HostReceiveVotingState) {
-        emit(HostLandingSessionVoting());
+        _handleVotingStateEvent(emit, message: event.message);
       } else if (event is HostReceiveVotingFinishedState) {
-        emit(HostLandingSessionVotingFinished());
+        _handleVotingFinishedStateEvent(emit, message: event.message);
       } else if (event is HostReceiveInvalidCommand) {
         emit(HostLandingSessionError());
       } else if (event is HostReceivePreviousTickets) {
@@ -113,16 +116,34 @@ class HostLandingSessionBloc
     }
   }
 
-  _handleNoneStateEvent(Emitter<HostLandingSessionState> emit,
-      {required PlanningSessionStateMessage message}) async {
+  _handleStateEvent({required PlanningSessionStateMessage message}) {
     sessionName = message.sessionName;
     availableCards = message.availableCards;
     _sessionCode = message.sessionCode;
     _planningParticipants = message.participants;
     _ticket = message.ticket;
     _timeLeft = message.timeLeft;
+  }
 
+  _handleNoneStateEvent(Emitter<HostLandingSessionState> emit,
+      {required PlanningSessionStateMessage message}) async {
+    _handleStateEvent(message: message);
+    // TODO: Map required data for none state widgets
     emit(HostLandingSessionNone(sessionName: sessionName));
+  }
+
+  _handleVotingStateEvent(Emitter<HostLandingSessionState> emit,
+      {required PlanningSessionStateMessage message}) async {
+    _handleStateEvent(message: message);
+    // TODO: Map required data for voting state widgets
+    emit(HostLandingSessionVoting());
+  }
+
+  _handleVotingFinishedStateEvent(Emitter<HostLandingSessionState> emit,
+      {required PlanningSessionStateMessage message}) async {
+    _handleStateEvent(message: message);
+    // TODO: Map required data for voting finished state widgets
+    emit(HostLandingSessionVotingFinished());
   }
 
   _sendStartCommand() => _hostSessionRepository.sendStartSessionCommand(

@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mamba/ui_constants.dart';
+import 'package:universal_io/io.dart';
 
 class StyledSwitch extends StatefulWidget {
   final String text;
@@ -37,7 +39,6 @@ class _StyledSwitchState extends State<StyledSwitch> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: 16,
         vertical: 8,
       ),
       child: Row(
@@ -50,13 +51,25 @@ class _StyledSwitchState extends State<StyledSwitch> {
               textAlign: TextAlign.center,
             ),
           ),
-          Switch(
-            value: value,
-            onChanged: onChange,
-            activeColor: primaryColor,
-          ),
+          _platformSwitch(),
         ],
       ),
     );
+  }
+
+  Widget _platformSwitch() {
+    if (Platform.isIOS) {
+      return CupertinoSwitch(
+        value: value,
+        onChanged: onChange,
+        activeColor: primaryColor,
+      );
+    } else {
+      return Switch(
+        value: value,
+        onChanged: onChange,
+        activeColor: primaryColor,
+      );
+    }
   }
 }

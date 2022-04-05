@@ -99,65 +99,67 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        iconSize: 30,
-                        padding: const EdgeInsets.only(top: 16),
-                        icon: const Icon(Icons.chevron_left),
-                      ),
-                      const Expanded(
-                        child: TitleText(
-                          text: 'Host a sizing session',
-                          textAlign: TextAlign.center,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          iconSize: 30,
+                          icon: const Icon(Icons.chevron_left),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 48,
-                      ),
-                    ],
-                  ),
-                  const DescriptionText(
+                        const Expanded(
+                          child: TitleText(
+                            text: 'Host a sizing session',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 48,
+                        ),
+                      ],
+                    ),
+                    const DescriptionText(
+                        text:
+                            'Provide the details necessary start a new session below'),
+                    StyledTextField(
+                      placeholder: 'Session name',
+                      input: sessionName,
+                      onChanged: sessionNameChanged,
+                    ),
+                    StyledTextField(
+                      placeholder: 'Password (Optional)',
+                      input: password,
+                      onChanged: (password) {
+                        this.password = password;
+                      },
+                    ),
+                    StyledSwitch(
                       text:
-                          'Provide the details necessary start a new session below'),
-                  StyledTextField(
-                    placeholder: 'Session name',
-                    input: sessionName,
-                    onChanged: sessionNameChanged,
-                  ),
-                  StyledTextField(
-                    placeholder: 'Password (Optional)',
-                    input: password,
-                    onChanged: (password) {
-                      this.password = password;
-                    },
-                  ),
-                  StyledSwitch(
-                    text:
-                        'Automatically finish voting when all participants have voted',
-                    value: automaticallyCompleteVoting,
-                    onChanged: automaticallyCompleteVotingChanged,
-                  ),
-                  const Text(
-                    'Tags',
-                    style: descriptionColoredTextStyle,
-                  ),
-                  ChipWrap(
-                    children: chipList(),
-                  ),
-                  //TODO: Add ability to select available cards
-                  RoundedButton(
-                    title: 'Start session',
-                    enabled: validationPassed,
-                    onPressed: validationPassed ? didTapStartSession : null,
-                  )
-                ],
+                          'Automatically finish voting when all participants have voted',
+                      value: automaticallyCompleteVoting,
+                      onChanged: automaticallyCompleteVotingChanged,
+                    ),
+                    const Text(
+                      'Tags',
+                      style: descriptionColoredTextStyle,
+                    ),
+                    ChipWrap(
+                      children: chipList(),
+                    ),
+                    //TODO: Add ability to select available cards
+                    RoundedButton(
+                      title: 'Start session',
+                      enabled: validationPassed,
+                      onPressed: validationPassed ? didTapStartSession : null,
+                    )
+                  ],
+                ),
               ),
             ),
           ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mamba/widgets/text/title_text.dart';
 
 class PlanningSessionParticipantsCard extends StatelessWidget {
   const PlanningSessionParticipantsCard({
@@ -11,11 +12,14 @@ class PlanningSessionParticipantsCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-      child: Row(
-        children: const [
-          Text('Participants'),
-        ],
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: const [
+            TitleText(text: 'Participants'),
+          ],
+        ),
       ),
     );
   }
