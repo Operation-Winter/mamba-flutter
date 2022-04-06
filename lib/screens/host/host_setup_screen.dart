@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/screens/host/host_landing_screen.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
+import 'package:mamba/widgets/cards/planning_card_selectable.dart';
 import 'package:mamba/widgets/chips/add_chip.dart';
 import 'package:mamba/widgets/chips/chip_wrap.dart';
 import 'package:mamba/widgets/chips/styled_chip.dart';
@@ -26,7 +27,7 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
   String? sessionName;
   String? password;
   Set<String> tags = {};
-  List<PlanningCard> availableCards = [];
+  List<PlanningCard> availableCards = PlanningCard.values.toList();
 
   void automaticallyCompleteVotingChanged(bool newValue) {
     automaticallyCompleteVoting = newValue;
@@ -51,7 +52,7 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
   }
 
   bool get formIsValid {
-    return sessionName?.isEmpty == false;
+    return sessionName?.isEmpty == false && availableCards.isNotEmpty;
   }
 
   final _textController = TextEditingController();
@@ -59,6 +60,14 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
   void _addChip(String tag) {
     setState(() {
       tags.add(tag);
+    });
+  }
+
+  void _didTapCard(PlanningCard planningCard) {
+    setState(() {
+      availableCards.contains(planningCard)
+          ? availableCards.remove(planningCard)
+          : availableCards.add(planningCard);
     });
   }
 
@@ -126,8 +135,12 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                       ],
                     ),
                     const DescriptionText(
-                        text:
-                            'Provide the details necessary start a new session below'),
+                      text:
+                          'Provide the details necessary start a new session below',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     StyledTextField(
                       placeholder: 'Session name',
                       input: sessionName,
@@ -146,6 +159,9 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                       value: automaticallyCompleteVoting,
                       onChanged: automaticallyCompleteVotingChanged,
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     const Text(
                       'Tags',
                       style: descriptionColoredTextStyle,
@@ -153,7 +169,33 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                     ChipWrap(
                       children: chipList(),
                     ),
-                    //TODO: Add ability to select available cards
+                    const Text(
+                      'Available cards',
+                      style: descriptionColoredTextStyle,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      direction: Axis.horizontal,
+                      children: PlanningCard.values
+                          .map((planningCard) => ConstrainedBox(
+                                constraints: const BoxConstraints(maxWidth: 75),
+                                child: PlanningCardSelectable(
+                                    planningCard: planningCard,
+                                    selected:
+                                        availableCards.contains(planningCard),
+                                    onTap: () {
+                                      _didTapCard(planningCard);
+                                    }),
+                              ))
+                          .toList(),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     RoundedButton(
                       title: 'Start session',
                       enabled: validationPassed,
