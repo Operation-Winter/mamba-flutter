@@ -25,10 +25,12 @@ class StyledIconButton extends StatelessWidget {
         icon: Icon(
           icon,
           color: Colors.white,
+          size: 28,
         ),
         onPressed: onPressed,
         color: primaryColor,
         tooltip: tooltip,
+        padding: EdgeInsets.zero,
         visualDensity: VisualDensity.comfortable,
       ),
     );
