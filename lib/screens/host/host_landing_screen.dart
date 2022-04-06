@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/bloc/host/host_landing_session_bloc.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
+import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
 import 'package:mamba/widgets/states/host/planning_host_none_state.dart';
 import 'package:mamba/widgets/states/host/planning_host_voting_finished_state.dart';
 import 'package:mamba/widgets/states/host/planning_host_voting_state.dart';
@@ -10,6 +11,7 @@ import 'package:mamba/widgets/states/shared/planning_coffee_voting_state.dart';
 import 'package:mamba/widgets/states/shared/planning_loading_state.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/widgets/states/shared/planning_error_state.dart';
+import 'package:uuid/uuid.dart';
 
 class HostLandingScreenArguments {
   final String sessionName;
@@ -71,7 +73,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
             if (state is HostLandingSessionLoading) {
               return _loadingState(context);
             } else if (state is HostLandingSessionNone) {
-              return _noneState(context, sessionName: state.sessionName);
+              return _noneState(context, state: state);
             } else if (state is HostLandingSessionVoting) {
               return _votingState(context);
             } else if (state is HostLandingSessionVotingFinished) {
@@ -100,33 +102,42 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     return const PlanningErrorState();
   }
 
-  Widget _noneState(BuildContext context, {required String sessionName}) {
+  Widget _noneState(BuildContext context,
+      {required HostLandingSessionNone state}) {
     return PlanningHostNoneState(
-        sessionName: sessionName,
-        coffeeVoteCount: 0,
-        spectatorCount: 0,
-        commands: [
-          PlanningCommandButton(
-            icon: Icons.coffee,
-            tooltip: 'Request coffee vote',
-            onPressed: _didTapRequestCoffee,
-          ),
-          PlanningCommandButton(
-            icon: Icons.add,
-            tooltip: 'Add ticket',
-            onPressed: _didTapAddTicket,
-          ),
-          PlanningCommandButton(
-            icon: Icons.share,
-            tooltip: 'Share session',
-            onPressed: _didTapShare,
-          ),
-          PlanningCommandButton(
-            icon: Icons.close,
-            tooltip: 'End session',
-            onPressed: _didTapEndSession,
-          ),
-        ]);
+      sessionName: state.sessionName,
+      participants: state.participants,
+      coffeeVoteCount: state.coffeeVoteCount,
+      spectatorCount: state.spectatorCount,
+      commands: [
+        PlanningCommandButton(
+          icon: Icons.coffee,
+          tooltip: 'Request coffee vote',
+          onPressed: _didTapRequestCoffee,
+        ),
+        PlanningCommandButton(
+          icon: Icons.add,
+          tooltip: 'Add ticket',
+          onPressed: _didTapAddTicket,
+        ),
+        PlanningCommandButton(
+          icon: Icons.share,
+          tooltip: 'Share session',
+          onPressed: _didTapShare,
+        ),
+        PlanningCommandButton(
+          icon: Icons.close,
+          tooltip: 'End session',
+          onPressed: _didTapEndSession,
+        ),
+      ],
+      participantCommands: [
+        PlanningParticipantCommand(
+          title: 'Remove participant',
+          onTap: _didTapRemoveParticipant,
+        ),
+      ],
+    );
   }
 
   Widget _votingState(BuildContext context) {
@@ -157,7 +168,8 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     print('Did tap share');
   }
 
-  _didTapEndSession() {
-    widget.session.add(HostSendEndSession());
-  }
+  _didTapEndSession() => widget.session.add(HostSendEndSession());
+
+  _didTapRemoveParticipant(UuidValue participantId) => widget.session
+      .add(HostSendRemoveParticipant(participantId: participantId));
 }

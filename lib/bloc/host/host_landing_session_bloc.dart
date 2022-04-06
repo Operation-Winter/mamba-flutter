@@ -129,7 +129,12 @@ class HostLandingSessionBloc
       {required PlanningSessionStateMessage message}) async {
     _handleStateEvent(message: message);
     // TODO: Map required data for none state widgets
-    emit(HostLandingSessionNone(sessionName: sessionName));
+    emit(HostLandingSessionNone(
+      sessionName: sessionName,
+      participants: message.participants,
+      coffeeVoteCount: 0,
+      spectatorCount: 0,
+    ));
   }
 
   _handleVotingStateEvent(Emitter<HostLandingSessionState> emit,

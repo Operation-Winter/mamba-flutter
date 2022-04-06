@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mamba/models/planning_participant.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
 
@@ -7,11 +8,15 @@ class PlanningHostNoneState extends StatelessWidget {
   final int coffeeVoteCount;
   final int spectatorCount;
   final List<PlanningCommandButton> commands;
+  final List<PlanningParticipantCommand> participantCommands;
+  final List<PlanningParticipant> participants;
 
   const PlanningHostNoneState({
     Key? key,
     required this.sessionName,
+    required this.participants,
     required this.commands,
+    required this.participantCommands,
     required this.coffeeVoteCount,
     required this.spectatorCount,
   }) : super(key: key);
@@ -28,7 +33,10 @@ class PlanningHostNoneState extends StatelessWidget {
               coffeeVoteCount: coffeeVoteCount,
               spectatorCount: spectatorCount,
             ),
-            const PlanningSessionParticipantsCard(),
+            PlanningSessionParticipantsCard(
+              participants: participants,
+              participantCommands: participantCommands,
+            ),
           ],
         ),
       ),
