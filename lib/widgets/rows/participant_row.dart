@@ -23,15 +23,14 @@ class ParticipantRow extends StatelessWidget {
     return PopupMenuButton(
       itemBuilder: (context) => participantCommands
           .map((command) => PopupMenuItem(
-                value: command.onTap,
+                onTap: () => command.onTap?.call(participantId),
                 child: Text(
                   command.title,
                 ),
               ))
           .toList(),
-      onSelected: (callback) =>
-          (callback as Function(UuidValue)?)?.call(participantId),
       offset: const Offset(0, 43),
+      enabled: participantCommands.isNotEmpty,
       child: Container(
         constraints: const BoxConstraints(minWidth: 200, maxWidth: 400),
         decoration: BoxDecoration(
