@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mamba/screens/host/host_setup_screen.dart';
 import 'package:mamba/screens/participant/participant_setup_screen.dart';
 import 'package:mamba/screens/spectator/spectator_setup_screen.dart';
+import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/landing/landing_image_button.dart';
+import 'package:mamba/widgets/text/description_text.dart';
+import 'package:mamba/widgets/text/title_text.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({Key? key}) : super(key: key);
@@ -29,24 +32,56 @@ class _LandingScreenState extends State<LandingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          children: [
-            LandingImageButton(
-              title: 'HOST A SESSION',
-              imageName: 'images/planning_host.png',
-              onPressed: didTapHostSession,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints.tightFor(width: maxWidth),
+            child: ListView(
+              children: [
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  margin: const EdgeInsets.all(16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        Column(
+                          children: const [
+                            TitleText(
+                              text: 'MAMBA - Sprint SCRUM Poker Planning',
+                              textAlign: TextAlign.center,
+                            ),
+                            DescriptionText(
+                                text:
+                                    'Scrum poker, is a consensus-based, gamified technique for estimating, mostly used to estimate effort or relative size of development goals in software development'),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        LandingImageButton(
+                          title: 'Host a session',
+                          imageName: 'images/planning_host.png',
+                          onPressed: didTapHostSession,
+                        ),
+                        LandingImageButton(
+                          title: 'Join a session',
+                          imageName: 'images/planning_join.png',
+                          onPressed: didTapParticipantSession,
+                        ),
+                        LandingImageButton(
+                          title: 'Spectate a session',
+                          imageName: 'images/planning_spectate.png',
+                          onPressed: didTapSpectatorSession,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-            LandingImageButton(
-              title: 'JOIN A SESSION',
-              imageName: 'images/planning_join.png',
-              onPressed: didTapParticipantSession,
-            ),
-            LandingImageButton(
-              title: 'SPECTATE A SESSION',
-              imageName: 'images/planning_spectate.png',
-              onPressed: didTapSpectatorSession,
-            ),
-          ],
+          ),
         ),
       ),
     );

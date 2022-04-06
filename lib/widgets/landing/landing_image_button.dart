@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mamba/ui_constants.dart';
 
 class LandingImageButton extends StatelessWidget {
   final String title;
@@ -15,31 +16,45 @@ class LandingImageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(30),
-        child: Stack(
-          children: [
-            GestureDetector(
-              child: Image.asset(
-                imageName,
-                fit: BoxFit.fitWidth,
-              ),
-              onTap: onPressed,
+      padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
             ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
+          ],
+        ),
+        child: InkWell(
+          onTap: onPressed,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 1,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    bottomLeft: Radius.circular(8),
+                  ),
+                  child: Image.asset(
+                    imageName,
                   ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(
+                width: 16,
+              ),
+              Expanded(
+                flex: 4,
+                child: Text(
+                  title,
+                  style: landingImageButtonTextStyle,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -20,27 +20,27 @@ class ParticipantRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      itemBuilder: (context) => participantCommands
-          .map((command) => PopupMenuItem(
-                onTap: () => command.onTap?.call(participantId),
-                child: Text(
-                  command.title,
-                ),
-              ))
-          .toList(),
-      offset: const Offset(0, 43),
-      enabled: participantCommands.isNotEmpty,
-      child: Container(
-        constraints: const BoxConstraints(minWidth: 200, maxWidth: 400),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-            ),
-          ],
-        ),
+    return Container(
+      constraints: const BoxConstraints(minWidth: 200, maxWidth: 400),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+          ),
+        ],
+      ),
+      child: PopupMenuButton(
+        itemBuilder: (context) => participantCommands
+            .map((command) => PopupMenuItem(
+                  onTap: () => command.onTap?.call(participantId),
+                  child: Text(
+                    command.title,
+                  ),
+                ))
+            .toList(),
+        offset: const Offset(0, 43),
+        enabled: participantCommands.isNotEmpty,
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(

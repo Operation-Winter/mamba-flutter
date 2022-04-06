@@ -4,6 +4,7 @@ const primaryColor = Color(0xFFA288E3);
 const accentColor = Color(0xFFCEFDFF);
 const disabledColor = Color.fromARGB(255, 116, 116, 116);
 const inputBackgroundColor = Color.fromARGB(20, 0, 0, 0);
+const maxWidth = 1000.0;
 
 const titleTextStyle = TextStyle(
   color: primaryColor,
@@ -23,6 +24,11 @@ const roundedButtonTextStyle = TextStyle(
   fontSize: 14,
   fontWeight: FontWeight.bold,
   color: Colors.white,
+);
+
+const landingImageButtonTextStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 18,
 );
 
 bool isDarkMode(BuildContext context) {

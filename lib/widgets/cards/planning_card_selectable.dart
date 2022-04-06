@@ -21,7 +21,9 @@ class PlanningCardSelectable extends StatelessWidget {
       child: Stack(
         alignment: Alignment.topRight,
         children: [
-          planningCard.image,
+          Image(
+            image: planningCard.image,
+          ),
           Padding(
             padding: const EdgeInsets.all(4),
             child: selected

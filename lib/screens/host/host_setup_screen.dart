@@ -101,111 +101,119 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          children: [
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              margin: const EdgeInsets.only(
-                  top: 16, bottom: 8, left: 16, right: 16),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints.tightFor(width: maxWidth),
+            child: ListView(
+              children: [
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  margin: const EdgeInsets.only(
+                      top: 16, bottom: 8, left: 16, right: 16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          iconSize: 30,
-                          icon: const Icon(Icons.chevron_left),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              iconSize: 30,
+                              icon: const Icon(Icons.chevron_left),
+                            ),
+                            const Expanded(
+                              child: TitleText(
+                                text: 'Host a sizing session',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 48,
+                            ),
+                          ],
                         ),
-                        const Expanded(
-                          child: TitleText(
-                            text: 'Host a sizing session',
-                            textAlign: TextAlign.center,
-                          ),
+                        const DescriptionText(
+                          text:
+                              'Provide the details necessary start a new session below',
                         ),
                         const SizedBox(
-                          width: 48,
+                          height: 10,
                         ),
+                        StyledTextField(
+                          placeholder: 'Session name',
+                          input: sessionName,
+                          onChanged: sessionNameChanged,
+                        ),
+                        StyledTextField(
+                          placeholder: 'Password (Optional)',
+                          input: password,
+                          onChanged: (password) {
+                            this.password = password;
+                          },
+                        ),
+                        StyledSwitch(
+                          text:
+                              'Automatically finish voting when all participants have voted',
+                          value: automaticallyCompleteVoting,
+                          onChanged: automaticallyCompleteVotingChanged,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text(
+                          'Tags',
+                          style: descriptionColoredTextStyle,
+                        ),
+                        ChipWrap(
+                          children: chipList(),
+                        ),
+                        const Text(
+                          'Available cards',
+                          style: descriptionColoredTextStyle,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          direction: Axis.horizontal,
+                          alignment: WrapAlignment.center,
+                          children: PlanningCard.values
+                              .map((planningCard) => ConstrainedBox(
+                                    constraints:
+                                        const BoxConstraints(maxWidth: 75),
+                                    child: PlanningCardSelectable(
+                                        planningCard: planningCard,
+                                        selected: availableCards
+                                            .contains(planningCard),
+                                        onTap: () {
+                                          _didTapCard(planningCard);
+                                        }),
+                                  ))
+                              .toList(),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        RoundedButton(
+                          title: 'Start session',
+                          enabled: validationPassed,
+                          onPressed:
+                              validationPassed ? didTapStartSession : null,
+                        )
                       ],
                     ),
-                    const DescriptionText(
-                      text:
-                          'Provide the details necessary start a new session below',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    StyledTextField(
-                      placeholder: 'Session name',
-                      input: sessionName,
-                      onChanged: sessionNameChanged,
-                    ),
-                    StyledTextField(
-                      placeholder: 'Password (Optional)',
-                      input: password,
-                      onChanged: (password) {
-                        this.password = password;
-                      },
-                    ),
-                    StyledSwitch(
-                      text:
-                          'Automatically finish voting when all participants have voted',
-                      value: automaticallyCompleteVoting,
-                      onChanged: automaticallyCompleteVotingChanged,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Text(
-                      'Tags',
-                      style: descriptionColoredTextStyle,
-                    ),
-                    ChipWrap(
-                      children: chipList(),
-                    ),
-                    const Text(
-                      'Available cards',
-                      style: descriptionColoredTextStyle,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      direction: Axis.horizontal,
-                      children: PlanningCard.values
-                          .map((planningCard) => ConstrainedBox(
-                                constraints: const BoxConstraints(maxWidth: 75),
-                                child: PlanningCardSelectable(
-                                    planningCard: planningCard,
-                                    selected:
-                                        availableCards.contains(planningCard),
-                                    onTap: () {
-                                      _didTapCard(planningCard);
-                                    }),
-                              ))
-                          .toList(),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    RoundedButton(
-                      title: 'Start session',
-                      enabled: validationPassed,
-                      onPressed: validationPassed ? didTapStartSession : null,
-                    )
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
