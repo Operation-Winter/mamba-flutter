@@ -100,6 +100,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
   _didTapFinishVoting() => widget.session.add(HostSendFinishVoting());
 
   _didTapEndSession() => widget.session.add(HostSendEndSession());
+  // TODO: Add confirmation pop up for end session
 
   _didTapRemoveParticipant(UuidValue participantId) => widget.session
       .add(HostSendRemoveParticipant(participantId: participantId));

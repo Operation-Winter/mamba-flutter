@@ -9,6 +9,5 @@ class PlanningMessage {
   factory PlanningMessage.fromJson(Map<String, dynamic> data) =>
       _$PlanningMessageFromJson(data);
 
-  @override
   Map<String, dynamic> toJson() => _$PlanningMessageToJson(this);
 }

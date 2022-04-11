@@ -15,5 +15,6 @@ class PlanningInvalidCommandMessage implements PlanningMessage {
   factory PlanningInvalidCommandMessage.fromJson(Map<String, dynamic> data) =>
       _$PlanningInvalidCommandMessageFromJson(data);
 
+  @override
   Map<String, dynamic> toJson() => _$PlanningInvalidCommandMessageToJson(this);
 }

@@ -11,5 +11,6 @@ class PlanningAddTimerMessage implements PlanningMessage {
   factory PlanningAddTimerMessage.fromJson(Map<String, dynamic> data) =>
       _$PlanningAddTimerMessageFromJson(data);
 
+  @override
   Map<String, dynamic> toJson() => _$PlanningAddTimerMessageToJson(this);
 }

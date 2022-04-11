@@ -21,5 +21,6 @@ class PlanningSkipVoteMessage implements PlanningMessage {
   factory PlanningSkipVoteMessage.fromJson(Map<String, dynamic> data) =>
       _$PlanningSkipVoteMessageFromJson(data);
 
+  @override
   Map<String, dynamic> toJson() => _$PlanningSkipVoteMessageToJson(this);
 }

@@ -26,5 +26,6 @@ class PlanningSessionStateMessage implements PlanningMessage {
   factory PlanningSessionStateMessage.fromJson(Map<String, dynamic> data) =>
       _$PlanningSessionStateMessageFromJson(data);
 
+  @override
   Map<String, dynamic> toJson() => _$PlanningSessionStateMessageToJson(this);
 }

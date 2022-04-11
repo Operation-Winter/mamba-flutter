@@ -12,5 +12,6 @@ class PlanningTicketMessage implements PlanningMessage {
   factory PlanningTicketMessage.fromJson(Map<String, dynamic> data) =>
       _$PlanningTicketMessageFromJson(data);
 
+  @override
   Map<String, dynamic> toJson() => _$PlanningTicketMessageToJson(this);
 }

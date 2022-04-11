@@ -22,6 +22,7 @@ class PlanningRemoveParticipantMessage implements PlanningMessage {
           Map<String, dynamic> data) =>
       _$PlanningRemoveParticipantMessageFromJson(data);
 
+  @override
   Map<String, dynamic> toJson() =>
       _$PlanningRemoveParticipantMessageToJson(this);
 }

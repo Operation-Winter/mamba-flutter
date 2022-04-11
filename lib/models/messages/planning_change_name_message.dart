@@ -11,5 +11,6 @@ class PlanningChangeNameMessage implements PlanningMessage {
   factory PlanningChangeNameMessage.fromJson(Map<String, dynamic> data) =>
       _$PlanningChangeNameMessageFromJson(data);
 
+  @override
   Map<String, dynamic> toJson() => _$PlanningChangeNameMessageToJson(this);
 }

@@ -13,5 +13,6 @@ class PlanningVoteMessage implements PlanningMessage {
   factory PlanningVoteMessage.fromJson(Map<String, dynamic> data) =>
       _$PlanningVoteMessageFromJson(data);
 
+  @override
   Map<String, dynamic> toJson() => _$PlanningVoteMessageToJson(this);
 }
