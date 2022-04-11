@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mamba/models/planning_participant.dart';
+import 'package:mamba/models/planning_participant_dto.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
 
@@ -9,7 +9,7 @@ class PlanningHostNoneState extends StatelessWidget {
   final int spectatorCount;
   final List<PlanningCommandButton> commands;
   final List<PlanningParticipantCommand> participantCommands;
-  final List<PlanningParticipant> participants;
+  final List<PlanningParticipantDto> participants;
 
   const PlanningHostNoneState({
     Key? key,

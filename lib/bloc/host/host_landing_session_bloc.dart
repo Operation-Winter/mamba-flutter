@@ -4,10 +4,14 @@ import 'package:mamba/models/commands/host/planning_host_receive_command_type.da
 import 'package:mamba/models/messages/planning_session_state_message.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/models/planning_participant.dart';
+import 'package:mamba/models/planning_participant_dto.dart';
 import 'package:mamba/models/planning_ticket.dart';
+import 'package:mamba/models/planning_ticket_vote.dart';
+import 'package:mamba/repositories/local_storage_repository.dart';
 import 'package:mamba/repositories/planning_host_session_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
+import 'package:collection/collection.dart';
 
 part 'host_landing_session_event.dart';
 part 'host_landing_session_state.dart';
@@ -16,6 +20,8 @@ class HostLandingSessionBloc
     extends Bloc<HostLandingSessionEvent, HostLandingSessionState> {
   final PlanningHostSessionRepository _hostSessionRepository =
       PlanningHostSessionRepository();
+  final LocalStorageRepository _localStorageRepository =
+      LocalStorageRepository();
 
   String sessionName;
   String? password;
@@ -23,7 +29,18 @@ class HostLandingSessionBloc
   List<PlanningCard> availableCards = [];
   Set<String> tags;
 
-  UuidValue _uuid = const Uuid().v4obj();
+  Future<UuidValue> get _uuid async {
+    var localUuid = await _localStorageRepository.getUuid();
+
+    if (localUuid != null) {
+      return localUuid;
+    } else {
+      var uuid = const Uuid().v4obj();
+      _localStorageRepository.uuid = uuid;
+      return uuid;
+    }
+  }
+
   String? _sessionCode;
   String? _participantName;
   List<PlanningParticipant> _planningParticipants = [];
@@ -58,8 +75,8 @@ class HostLandingSessionBloc
       } else if (event is HostSendRemoveParticipant) {
         _sendRemoveParticipantCommand(participantId: event.participantId);
       } else if (event is HostSendEndSession) {
-        _sendEndSessionCommand();
         emit(HostLandingSessionEnded(sessionName: sessionName));
+        _sendEndSessionCommand();
       } else if (event is HostSendFinishVoting) {
         _sendFinishVotingCommand();
       } else if (event is HostSendRevote) {
@@ -117,6 +134,27 @@ class HostLandingSessionBloc
     }
   }
 
+  List<PlanningParticipantDto> _makeParticipantDtos({
+    required List<PlanningParticipant> participants,
+    List<PlanningTicketVote>? votes,
+  }) {
+    return participants.map((participant) {
+      var participantVotes = votes
+          ?.where(
+              (element) => element.participantId == participant.participantId)
+          .map((vote) => vote.planningCard?.title)
+          .whereNotNull()
+          .toList();
+
+      return PlanningParticipantDto(
+        participantId: participant.participantId,
+        name: participant.name,
+        connected: participant.connected,
+        votes: participantVotes,
+      );
+    }).toList();
+  }
+
   _handleStateEvent({required PlanningSessionStateMessage message}) {
     sessionName = message.sessionName;
     availableCards = message.availableCards;
@@ -129,9 +167,12 @@ class HostLandingSessionBloc
   _handleNoneStateEvent(Emitter<HostLandingSessionState> emit,
       {required PlanningSessionStateMessage message}) async {
     _handleStateEvent(message: message);
+    var participantDtos =
+        _makeParticipantDtos(participants: message.participants);
+
     emit(HostLandingSessionNone(
       sessionName: sessionName,
-      participants: message.participants,
+      participants: participantDtos,
       coffeeVoteCount: 0,
       spectatorCount: 0,
     ));
@@ -140,75 +181,99 @@ class HostLandingSessionBloc
   _handleVotingStateEvent(Emitter<HostLandingSessionState> emit,
       {required PlanningSessionStateMessage message}) async {
     _handleStateEvent(message: message);
-    // TODO: Map required data for voting state widgets
+    var ticket = message.ticket;
+    if (ticket == null) return;
+
+    var participantDtos = _makeParticipantDtos(
+      participants: message.participants,
+      votes: message.ticket?.ticketVotes,
+    );
+
     emit(HostLandingSessionVoting(
       sessionName: sessionName,
-      participants: message.participants,
+      participants: participantDtos,
       coffeeVoteCount: 0,
       spectatorCount: 0,
+      ticket: ticket,
     ));
   }
 
   _handleVotingFinishedStateEvent(Emitter<HostLandingSessionState> emit,
       {required PlanningSessionStateMessage message}) async {
     _handleStateEvent(message: message);
-    // TODO: Map required data for voting finished state widgets
-    emit(HostLandingSessionVotingFinished());
+    var ticket = message.ticket;
+    if (ticket == null) return;
+
+    var participantDtos = _makeParticipantDtos(
+      participants: message.participants,
+      votes: message.ticket?.ticketVotes,
+    );
+
+    emit(HostLandingSessionVotingFinished(
+      sessionName: sessionName,
+      participants: participantDtos,
+      coffeeVoteCount: 0,
+      spectatorCount: 0,
+      ticket: ticket,
+    ));
   }
 
-  _sendStartCommand() => _hostSessionRepository.sendStartSessionCommand(
-        uuid: _uuid,
+  _sendStartCommand() async => _hostSessionRepository.sendStartSessionCommand(
+        uuid: await _uuid,
         sessionName: sessionName,
         automaticallyCompleteVoting: automaticallyCompleteVoting,
         availableCards: availableCards,
       );
 
-  _sendAddTicketCommand({required String title, String? description}) =>
+  _sendAddTicketCommand({required String title, String? description}) async =>
       _hostSessionRepository.sendAddTicketCommand(
-        uuid: _uuid,
+        uuid: await _uuid,
         title: title,
         description: description,
       );
 
-  _sendSkipVoteCommand({required UuidValue participantId}) =>
+  _sendSkipVoteCommand({required UuidValue participantId}) async =>
       _hostSessionRepository.sendSkipVoteCommand(
-        uuid: _uuid,
+        uuid: await _uuid,
         participantId: participantId,
       );
 
-  _sendRemoveParticipantCommand({required UuidValue participantId}) =>
+  _sendRemoveParticipantCommand({required UuidValue participantId}) async =>
       _hostSessionRepository.sendRemoveParticipantCommand(
-        uuid: _uuid,
+        uuid: await _uuid,
         participantId: participantId,
       );
 
-  _sendEndSessionCommand() =>
-      _hostSessionRepository.sendEndSessionCommand(uuid: _uuid);
+  _sendEndSessionCommand() async {
+    _hostSessionRepository.sendEndSessionCommand(uuid: await _uuid);
+    _localStorageRepository.removeUuid();
+  }
 
-  _sendFinishVotingCommand() =>
-      _hostSessionRepository.sendFinishVotingCommand(uuid: _uuid);
+  _sendFinishVotingCommand() async =>
+      _hostSessionRepository.sendFinishVotingCommand(uuid: await _uuid);
 
-  _sendRevoteCommand() => _hostSessionRepository.sendRevoteCommand(uuid: _uuid);
+  _sendRevoteCommand() async =>
+      _hostSessionRepository.sendRevoteCommand(uuid: await _uuid);
 
-  _sendReconnectCommand() =>
-      _hostSessionRepository.sendReconnectCommand(uuid: _uuid);
+  _sendReconnectCommand() async =>
+      _hostSessionRepository.sendReconnectCommand(uuid: await _uuid);
 
-  _sendEditTicketCommand({required String title, String? description}) =>
+  _sendEditTicketCommand({required String title, String? description}) async =>
       _hostSessionRepository.sendEditTicketCommand(
-        uuid: _uuid,
+        uuid: await _uuid,
         title: title,
         description: description,
       );
 
-  _sendAddTimerCommand({required int timeInterval}) =>
+  _sendAddTimerCommand({required int timeInterval}) async =>
       _hostSessionRepository.sendAddTimerCommand(
-        uuid: _uuid,
+        uuid: await _uuid,
         timeInterval: timeInterval,
       );
 
-  _sendCancelTimerCommand() =>
-      _hostSessionRepository.sendCancelTimerCommand(uuid: _uuid);
+  _sendCancelTimerCommand() async =>
+      _hostSessionRepository.sendCancelTimerCommand(uuid: await _uuid);
 
-  _sendPreviousTicketsCommand() =>
-      _hostSessionRepository.sendPreviousTicketsCommand(uuid: _uuid);
+  _sendPreviousTicketsCommand() async =>
+      _hostSessionRepository.sendPreviousTicketsCommand(uuid: await _uuid);
 }

@@ -81,13 +81,17 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     );
   }
 
-  _didTapRequestCoffee() {
-    print('Did tap request coffee');
+  _didTapEditTicket() {
+    print('Did tap edit ticket');
   }
 
-  _didTapShare() {
-    print('Did tap share');
-  }
+  _didTapRequestCoffee() => print('Did tap request coffee');
+
+  _didTapShare() => print('Did tap share');
+
+  _didTapAddTimer() => print('Did tap add timer');
+
+  _didTapFinishVoting() => widget.session.add(HostSendFinishVoting());
 
   _didTapEndSession() => widget.session.add(HostSendEndSession());
 
@@ -96,6 +100,10 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
 
   _didTapSkipVote(UuidValue participantId) =>
       widget.session.add(HostSendSkipVote(participantId: participantId));
+
+  _didTapRevote() => widget.session.add(HostSendRevote());
+
+  _didTapExport() => widget.session.add(HostSendPreviousTickets());
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +127,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
                     } else if (state is HostLandingSessionVoting) {
                       return _votingState(context, state: state);
                     } else if (state is HostLandingSessionVotingFinished) {
-                      return _votingFinishedState(context);
+                      return _votingFinishedState(context, state: state);
                     } else if (state is HostLandingSessionCoffeeVoting) {
                       return _coffeeVotingState(context);
                     } else if (state
@@ -220,19 +228,86 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
       ],
       participantCommands: [
         PlanningParticipantCommand(
+          title: 'Skip vote',
+          onTap: _didTapSkipVote,
+        ),
+        PlanningParticipantCommand(
           title: 'Remove participant',
           onTap: _didTapRemoveParticipant,
         ),
-        PlanningParticipantCommand(
-          title: 'Skip vote',
-          onTap: _didTapSkipVote,
+      ],
+      ticketTitle: state.ticket.title,
+      ticketDescription: state.ticket.description,
+      ticketCommands: [
+        PlanningCommandButton(
+          icon: Icons.timer,
+          tooltip: 'Add timer',
+          onPressed: _didTapAddTimer,
+        ),
+        PlanningCommandButton(
+          icon: Icons.how_to_vote,
+          tooltip: 'Finish voting',
+          onPressed: _didTapFinishVoting,
+        ),
+        PlanningCommandButton(
+          icon: Icons.edit,
+          tooltip: 'Edit ticket',
+          onPressed: _didTapEditTicket,
         ),
       ],
     );
   }
 
-  Widget _votingFinishedState(BuildContext context) {
-    return const PlanningHostVotingFinishedState();
+  Widget _votingFinishedState(BuildContext context,
+      {required HostLandingSessionVotingFinished state}) {
+    return PlanningHostVotingFinishedState(
+      sessionName: state.sessionName,
+      participants: state.participants,
+      coffeeVoteCount: state.coffeeVoteCount,
+      spectatorCount: state.spectatorCount,
+      commands: [
+        PlanningCommandButton(
+          icon: Icons.coffee,
+          tooltip: 'Request coffee vote',
+          onPressed: _didTapRequestCoffee,
+        ),
+        PlanningCommandButton(
+          icon: Icons.add,
+          tooltip: 'Add ticket',
+          onPressed: _didTapAddTicket,
+        ),
+        PlanningCommandButton(
+          icon: Icons.share,
+          tooltip: 'Share session',
+          onPressed: _didTapShare,
+        ),
+        PlanningCommandButton(
+          icon: Icons.close,
+          tooltip: 'End session',
+          onPressed: _didTapEndSession,
+        ),
+      ],
+      participantCommands: [
+        PlanningParticipantCommand(
+          title: 'Remove participant',
+          onTap: _didTapRemoveParticipant,
+        ),
+      ],
+      ticketTitle: state.ticket.title,
+      ticketDescription: state.ticket.description,
+      ticketCommands: [
+        PlanningCommandButton(
+          icon: Icons.download,
+          tooltip: 'Export results',
+          onPressed: _didTapExport,
+        ),
+        PlanningCommandButton(
+          icon: Icons.replay,
+          tooltip: 'Revote',
+          onPressed: _didTapRevote,
+        ),
+      ],
+    );
   }
 
   Widget _coffeeVotingState(BuildContext context) {

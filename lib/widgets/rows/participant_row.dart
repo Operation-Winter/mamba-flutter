@@ -9,6 +9,7 @@ class ParticipantRow extends StatelessWidget {
   final String name;
   final bool connected;
   final List<PlanningParticipantCommand> participantCommands;
+  final bool shouldHideVotes;
 
   const ParticipantRow({
     Key? key,
@@ -16,6 +17,7 @@ class ParticipantRow extends StatelessWidget {
     required this.name,
     required this.connected,
     required this.participantCommands,
+    required this.shouldHideVotes,
   }) : super(key: key);
 
   @override

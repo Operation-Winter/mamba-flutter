@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mamba/models/planning_participant.dart';
+import 'package:mamba/models/planning_participant_dto.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
+import 'package:mamba/widgets/cards/planning_session_ticket_card.dart';
 
 class PlanningHostVotingState extends StatelessWidget {
   final String sessionName;
@@ -9,7 +10,10 @@ class PlanningHostVotingState extends StatelessWidget {
   final int spectatorCount;
   final List<PlanningCommandButton> commands;
   final List<PlanningParticipantCommand> participantCommands;
-  final List<PlanningParticipant> participants;
+  final List<PlanningCommandButton> ticketCommands;
+  final List<PlanningParticipantDto> participants;
+  final String ticketTitle;
+  final String? ticketDescription;
 
   const PlanningHostVotingState({
     Key? key,
@@ -19,6 +23,9 @@ class PlanningHostVotingState extends StatelessWidget {
     required this.participantCommands,
     required this.coffeeVoteCount,
     required this.spectatorCount,
+    required this.ticketTitle,
+    this.ticketDescription,
+    required this.ticketCommands,
   }) : super(key: key);
 
   @override
@@ -32,6 +39,11 @@ class PlanningHostVotingState extends StatelessWidget {
               commands: commands,
               coffeeVoteCount: coffeeVoteCount,
               spectatorCount: spectatorCount,
+            ),
+            PlanningSessionTicketCard(
+              ticketTitle: ticketTitle,
+              ticketDescription: ticketDescription,
+              commands: ticketCommands,
             ),
             PlanningSessionParticipantsCard(
               participants: participants,

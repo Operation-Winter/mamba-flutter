@@ -7,7 +7,7 @@ class HostLandingSessionLoading extends HostLandingSessionState {}
 
 class HostLandingSessionNone extends HostLandingSessionState {
   final String sessionName;
-  final List<PlanningParticipant> participants;
+  final List<PlanningParticipantDto> participants;
   final int coffeeVoteCount;
   final int spectatorCount;
 
@@ -21,19 +21,35 @@ class HostLandingSessionNone extends HostLandingSessionState {
 
 class HostLandingSessionVoting extends HostLandingSessionState {
   final String sessionName;
-  final List<PlanningParticipant> participants;
+  final List<PlanningParticipantDto> participants;
   final int coffeeVoteCount;
   final int spectatorCount;
+  final PlanningTicket ticket;
 
   HostLandingSessionVoting({
     required this.sessionName,
     required this.participants,
     required this.coffeeVoteCount,
     required this.spectatorCount,
+    required this.ticket,
   });
 }
 
-class HostLandingSessionVotingFinished extends HostLandingSessionState {}
+class HostLandingSessionVotingFinished extends HostLandingSessionState {
+  final String sessionName;
+  final List<PlanningParticipantDto> participants;
+  final int coffeeVoteCount;
+  final int spectatorCount;
+  final PlanningTicket ticket;
+
+  HostLandingSessionVotingFinished({
+    required this.sessionName,
+    required this.participants,
+    required this.coffeeVoteCount,
+    required this.spectatorCount,
+    required this.ticket,
+  });
+}
 
 class HostLandingSessionCoffeeVoting extends HostLandingSessionState {}
 
