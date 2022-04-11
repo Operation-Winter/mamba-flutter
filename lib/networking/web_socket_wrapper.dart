@@ -1,12 +1,17 @@
 import 'package:mamba/models/planning_command.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:universal_io/io.dart';
 import 'dart:convert';
 
 class WebSocketNetworking {
-  late final WebSocketChannel channel;
+  WebSocket? webSocket;
 
-  WebSocketNetworking({required Uri uri}) {
-    channel = WebSocketChannel.connect(uri);
+  Future<void> connect({required String url}) async {
+    try {
+      webSocket = await WebSocket.connect(url);
+      webSocket?.pingInterval = const Duration(seconds: 15);
+    } catch (_) {
+      rethrow;
+    }
   }
 
   void send({required PlanningCommand planningCommand}) {
@@ -14,10 +19,10 @@ class WebSocketNetworking {
     print(parsedCommand.toString());
 
     List<int> data = utf8.encode(parsedCommand.toString());
-    channel.sink.add(data);
+    webSocket?.add(data);
   }
 
   void close() {
-    channel.sink.close();
+    webSocket?.close();
   }
 }

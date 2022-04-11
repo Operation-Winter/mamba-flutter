@@ -73,9 +73,7 @@ class _ParticipantSetupScreenState extends State<ParticipantSetupScreen> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        const SizedBox(
-                          width: 48,
-                        ),
+                        const SizedBox(width: 48),
                       ],
                     ),
                     const DescriptionText(
@@ -98,6 +96,7 @@ class _ParticipantSetupScreenState extends State<ParticipantSetupScreen> {
                       input: userName,
                       onChanged: userNameChanged,
                     ),
+                    const SizedBox(height: 10),
                     RoundedButton(
                       title: 'Join session',
                       enabled: validationPassed,

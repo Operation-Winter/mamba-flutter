@@ -69,9 +69,7 @@ class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        const SizedBox(
-                          width: 48,
-                        ),
+                        const SizedBox(width: 48),
                       ],
                     ),
                     const DescriptionText(
@@ -89,6 +87,7 @@ class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {
                         this.password = password;
                       },
                     ),
+                    const SizedBox(height: 10),
                     RoundedButton(
                       title: 'Spectate session',
                       enabled: validationPassed,

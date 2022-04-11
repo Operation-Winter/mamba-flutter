@@ -15,18 +15,15 @@ class RoundedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8, bottom: 4),
-      child: TextButton(
-        onPressed: onPressed,
-        child: Text(
-          title,
-          style: roundedButtonTextStyle,
-        ),
-        style: TextButton.styleFrom(
-          backgroundColor: enabled ? primaryColor : disabledColor,
-          minimumSize: const Size.fromHeight(40),
-        ),
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(
+        title,
+        style: roundedButtonTextStyle,
+      ),
+      style: TextButton.styleFrom(
+        backgroundColor: enabled ? primaryColor : disabledColor,
+        minimumSize: const Size.fromHeight(40),
       ),
     );
   }

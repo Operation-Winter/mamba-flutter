@@ -15,17 +15,28 @@ import 'package:mamba/networking/web_socket_wrapper.dart';
 import 'package:uuid/uuid.dart';
 
 class PlanningHostSessionRepository {
-  final WebSocketNetworking _webSocket =
-      WebSocketNetworking(uri: URLCenter.planningHostPath);
+  final WebSocketNetworking _webSocket = WebSocketNetworking();
 
-  StreamSubscription listen(void Function(PlanningHostReceiveCommand)? onData,
+  Future<void> connect() async {
+    try {
+      await _webSocket.connect(url: URLCenter.planningHostPath.toString());
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  StreamSubscription? listen(void Function(PlanningHostReceiveCommand)? onData,
       {Function? onError, void Function()? onDone, bool? cancelOnError}) {
-    return _webSocket.channel.stream.listen((event) {
-      print(utf8.decode(event));
-      PlanningHostReceiveCommand planningCommand =
-          PlanningHostReceiveCommand.fromJson(jsonDecode(utf8.decode(event)));
-      onData?.call(planningCommand);
-    }, onError: onError, onDone: onDone);
+    return _webSocket.webSocket?.listen(
+      (event) {
+        print(utf8.decode(event));
+        PlanningHostReceiveCommand planningCommand =
+            PlanningHostReceiveCommand.fromJson(jsonDecode(utf8.decode(event)));
+        onData?.call(planningCommand);
+      },
+      onError: onError,
+      onDone: onDone,
+    );
   }
 
   void sendStartSessionCommand({

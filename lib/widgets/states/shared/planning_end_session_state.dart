@@ -40,15 +40,15 @@ class PlanningEndSessionState extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    TitleText(text: 'Session: $sessionName'),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 30,
+                        vertical: 20,
                         horizontal: 50,
                       ),
                       child: Image.asset('images/error.png'),
                     ),
-                    TitleText(text: 'Session: $sessionName'),
-                    const DescriptionText(text: 'The session has been ended'),
+                    const DescriptionText(text: 'The session has been ended.'),
                     const SizedBox(height: 20),
                     RoundedButton(
                       title: 'Back to landing',

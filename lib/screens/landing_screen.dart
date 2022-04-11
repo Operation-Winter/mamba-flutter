@@ -49,29 +49,30 @@ class _LandingScreenState extends State<LandingScreen> {
                         Column(
                           children: const [
                             TitleText(
-                              text: 'MAMBA - Sprint SCRUM Poker Planning',
+                              text: 'MAMBA',
                               textAlign: TextAlign.center,
                             ),
                             DescriptionText(
-                                text:
-                                    'Scrum poker, is a consensus-based, gamified technique for estimating, mostly used to estimate effort or relative size of development goals in software development'),
+                              text:
+                                  'Scrum poker is a consensus-based, gamified technique for estimating effort or relative size of development goals in software development',
+                            ),
                           ],
                         ),
                         const SizedBox(
                           height: 16,
                         ),
                         LandingImageButton(
-                          title: 'Host a session',
+                          title: 'Host a planning session',
                           imageName: 'images/planning_host.png',
                           onPressed: didTapHostSession,
                         ),
                         LandingImageButton(
-                          title: 'Join a session',
+                          title: 'Join a planning session',
                           imageName: 'images/planning_join.png',
                           onPressed: didTapParticipantSession,
                         ),
                         LandingImageButton(
-                          title: 'Spectate a session',
+                          title: 'Spectate a planning session',
                           imageName: 'images/planning_spectate.png',
                           onPressed: didTapSpectatorSession,
                         ),

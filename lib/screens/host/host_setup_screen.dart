@@ -132,18 +132,14 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                                 textAlign: TextAlign.center,
                               ),
                             ),
-                            const SizedBox(
-                              width: 48,
-                            ),
+                            const SizedBox(width: 48),
                           ],
                         ),
                         const DescriptionText(
                           text:
                               'Provide the details necessary start a new session below',
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
                         StyledTextField(
                           placeholder: 'Session name',
                           input: sessionName,
@@ -162,9 +158,7 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                           value: automaticallyCompleteVoting,
                           onChanged: automaticallyCompleteVotingChanged,
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
                         const Text(
                           'Tags',
                           style: descriptionColoredTextStyle,
@@ -176,9 +170,7 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                           'Available cards',
                           style: descriptionColoredTextStyle,
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
                         Wrap(
                           spacing: 8,
                           runSpacing: 8,
@@ -198,9 +190,7 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                                   ))
                               .toList(),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 20),
                         RoundedButton(
                           title: 'Start session',
                           enabled: validationPassed,

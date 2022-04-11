@@ -13,17 +13,28 @@ import 'package:mamba/networking/web_socket_wrapper.dart';
 import 'package:uuid/uuid.dart';
 
 class PlanningJoinSessionRepository {
-  final WebSocketNetworking _webSocket =
-      WebSocketNetworking(uri: URLCenter.planningJoinPath);
+  final WebSocketNetworking _webSocket = WebSocketNetworking();
 
-  StreamSubscription listen(void Function(PlanningJoinReceiveCommand)? onData,
+  connect() {
+    try {
+      _webSocket.connect(url: URLCenter.planningJoinPath.toString());
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  StreamSubscription? listen(void Function(PlanningJoinReceiveCommand)? onData,
       {Function? onError, void Function()? onDone, bool? cancelOnError}) {
-    return _webSocket.channel.stream.listen((event) {
-      print(utf8.decode(event));
-      PlanningJoinReceiveCommand planningCommand =
-          PlanningJoinReceiveCommand.fromJson(jsonDecode(utf8.decode(event)));
-      onData?.call(planningCommand);
-    }, onError: onError, onDone: onDone);
+    return _webSocket.webSocket?.listen(
+      (event) {
+        print(utf8.decode(event));
+        PlanningJoinReceiveCommand planningCommand =
+            PlanningJoinReceiveCommand.fromJson(jsonDecode(utf8.decode(event)));
+        onData?.call(planningCommand);
+      },
+      onError: onError,
+      onDone: onDone,
+    );
   }
 
   void sendJoinSessionCommand({

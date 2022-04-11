@@ -70,6 +70,20 @@ class HostReceiveVotingFinishedState extends HostLandingSessionEvent {
   HostReceiveVotingFinishedState({required this.message});
 }
 
-class HostReceiveInvalidCommand extends HostLandingSessionEvent {}
+class HostReceiveInvalidCommand extends HostLandingSessionEvent {
+  final PlanningInvalidCommandMessage message;
+
+  HostReceiveInvalidCommand({required this.message});
+}
 
 class HostReceivePreviousTickets extends HostLandingSessionEvent {}
+
+class HostLandingError extends HostLandingSessionEvent {
+  final String code;
+  final String description;
+
+  HostLandingError({
+    required this.code,
+    required this.description,
+  });
+}

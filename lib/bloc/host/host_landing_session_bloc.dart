@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:mamba/models/commands/host/planning_host_receive_command.dart';
 import 'package:mamba/models/commands/host/planning_host_receive_command_type.dart';
+import 'package:mamba/models/messages/planning_invalid_command_message.dart';
 import 'package:mamba/models/messages/planning_session_state_message.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/models/planning_participant.dart';
@@ -22,6 +23,8 @@ class HostLandingSessionBloc
       PlanningHostSessionRepository();
   final LocalStorageRepository _localStorageRepository =
       LocalStorageRepository();
+  bool _sessionHasStarted = false;
+  bool _sessionEnded = false;
 
   String sessionName;
   String? password;
@@ -42,9 +45,7 @@ class HostLandingSessionBloc
   }
 
   String? _sessionCode;
-  String? _participantName;
   List<PlanningParticipant> _planningParticipants = [];
-  PlanningCard? _selectedCard;
   PlanningTicket? _ticket;
   int? _timeLeft;
 
@@ -55,12 +56,6 @@ class HostLandingSessionBloc
     required this.automaticallyCompleteVoting,
     required this.tags,
   }) : super(HostLandingSessionLoading()) {
-    _hostSessionRepository.listen(_handleReceiveCommand, onError: (error) {
-      print('Socket error $error');
-    }, onDone: () {
-      print('Socket closed');
-    });
-
     on<HostLandingSessionEvent>((event, emit) {
       // Send commands
       if (event is HostSendStartSession) {
@@ -75,8 +70,9 @@ class HostLandingSessionBloc
       } else if (event is HostSendRemoveParticipant) {
         _sendRemoveParticipantCommand(participantId: event.participantId);
       } else if (event is HostSendEndSession) {
-        emit(HostLandingSessionEnded(sessionName: sessionName));
         _sendEndSessionCommand();
+        _sessionEnded = true;
+        emit(HostLandingSessionEnded(sessionName: sessionName));
       } else if (event is HostSendFinishVoting) {
         _sendFinishVotingCommand();
       } else if (event is HostSendRevote) {
@@ -104,9 +100,33 @@ class HostLandingSessionBloc
       } else if (event is HostReceiveVotingFinishedState) {
         _handleVotingFinishedStateEvent(emit, message: event.message);
       } else if (event is HostReceiveInvalidCommand) {
-        emit(HostLandingSessionError());
+        _handleInvalidCommand(emit, message: event.message);
       } else if (event is HostReceivePreviousTickets) {
         emit(HostLandingSessionPreviousTickets());
+      } else if (event is HostLandingError) {
+        emit(HostLandingSessionError(
+          sessionName: sessionName,
+          errorCode: event.code,
+          errorDescription: event.description,
+        ));
+      }
+    });
+  }
+
+  connect() async {
+    await _hostSessionRepository.connect().catchError((error) {
+      add(HostLandingError(
+          code: '1000', description: 'Failed to connect to server.'));
+    });
+
+    _hostSessionRepository.listen(_handleReceiveCommand, onError: (error) {
+      if (!_sessionEnded) {
+        add(HostLandingError(code: '1002', description: error.toString()));
+      }
+    }, onDone: () {
+      if (!_sessionEnded) {
+        add(HostLandingError(
+            code: '1001', description: 'Lost connection to server.'));
       }
     });
   }
@@ -126,7 +146,8 @@ class HostLandingSessionBloc
             message: command.message as PlanningSessionStateMessage));
         break;
       case PlanningHostReceiveCommandType.INVALID_COMMAND:
-        add(HostReceiveInvalidCommand());
+        add(HostReceiveInvalidCommand(
+            message: command.message as PlanningInvalidCommandMessage));
         break;
       case PlanningHostReceiveCommandType.PREVIOUS_TICKETS:
         add(HostReceivePreviousTickets());
@@ -156,6 +177,7 @@ class HostLandingSessionBloc
   }
 
   _handleStateEvent({required PlanningSessionStateMessage message}) {
+    _sessionHasStarted = true;
     sessionName = message.sessionName;
     availableCards = message.availableCards;
     _sessionCode = message.sessionCode;
@@ -218,6 +240,15 @@ class HostLandingSessionBloc
     ));
   }
 
+  _handleInvalidCommand(Emitter<HostLandingSessionState> emit,
+      {required PlanningInvalidCommandMessage message}) {
+    emit(HostLandingSessionError(
+      sessionName: sessionName,
+      errorCode: message.code,
+      errorDescription: message.description,
+    ));
+  }
+
   _sendStartCommand() async => _hostSessionRepository.sendStartSessionCommand(
         uuid: await _uuid,
         sessionName: sessionName,
@@ -255,8 +286,14 @@ class HostLandingSessionBloc
   _sendRevoteCommand() async =>
       _hostSessionRepository.sendRevoteCommand(uuid: await _uuid);
 
-  _sendReconnectCommand() async =>
+  _sendReconnectCommand() async {
+    await connect();
+    if (!_sessionHasStarted) {
+      _sendStartCommand();
+    } else {
       _hostSessionRepository.sendReconnectCommand(uuid: await _uuid);
+    }
+  }
 
   _sendEditTicketCommand({required String title, String? description}) async =>
       _hostSessionRepository.sendEditTicketCommand(

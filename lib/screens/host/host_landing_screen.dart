@@ -62,6 +62,11 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
   @override
   void initState() {
     super.initState();
+    _connect();
+  }
+
+  Future<void> _connect() async {
+    await widget.session.connect();
     widget.session.add(HostSendStartSession());
   }
 
@@ -70,14 +75,15 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
       expand: true,
       context: context,
       builder: (context) => HostAddTicketScreen(
-          tags: {},
-          onAddTicket: (title, description, tags) {
-            widget.session.add(HostSendAddTicket(
-              title: title,
-              description: description,
-            ));
-            Navigator.pop(context);
-          }),
+        tags: {},
+        onAddTicket: (title, description, tags) {
+          widget.session.add(HostSendAddTicket(
+            title: title,
+            description: description,
+          ));
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 
@@ -104,6 +110,8 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
   _didTapRevote() => widget.session.add(HostSendRevote());
 
   _didTapExport() => widget.session.add(HostSendPreviousTickets());
+
+  _didTapReconnect() => widget.session.add(HostSendReconnect());
 
   @override
   Widget build(BuildContext context) {
@@ -134,13 +142,11 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
                         is HostLandingSessionCoffeeVotingFinished) {
                       return _coffeeVotingFinishedState(context);
                     } else if (state is HostLandingSessionError) {
-                      return _errorState(context);
-                    } else if (state is HostLandingSessionInvalidCommand) {
-                      return _errorState(context);
+                      return _errorState(context, state: state);
                     } else if (state is HostLandingSessionEnded) {
                       return _endSessionState(context, state: state);
                     }
-                    return _errorState(context);
+                    return Container();
                   },
                 ),
               ),
@@ -155,8 +161,14 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     return const PlanningLoadingState();
   }
 
-  Widget _errorState(BuildContext context) {
-    return const PlanningErrorState();
+  Widget _errorState(BuildContext context,
+      {required HostLandingSessionError state}) {
+    return PlanningErrorState(
+      sessionName: state.sessionName,
+      errorCode: state.errorCode,
+      errorDescription: state.errorDescription,
+      onTapReconnect: _didTapReconnect,
+    );
   }
 
   Widget _noneState(BuildContext context,

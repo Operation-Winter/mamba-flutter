@@ -55,9 +55,17 @@ class HostLandingSessionCoffeeVoting extends HostLandingSessionState {}
 
 class HostLandingSessionCoffeeVotingFinished extends HostLandingSessionState {}
 
-class HostLandingSessionError extends HostLandingSessionState {}
+class HostLandingSessionError extends HostLandingSessionState {
+  final String sessionName;
+  final String errorCode;
+  final String errorDescription;
 
-class HostLandingSessionInvalidCommand extends HostLandingSessionState {}
+  HostLandingSessionError({
+    required this.sessionName,
+    required this.errorCode,
+    required this.errorDescription,
+  });
+}
 
 class HostLandingSessionPreviousTickets extends HostLandingSessionState {}
 
