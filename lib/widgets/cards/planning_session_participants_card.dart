@@ -46,21 +46,32 @@ class PlanningSessionParticipantsCard extends StatelessWidget {
                 ? const DescriptionText(
                     text: 'No participants have joined the session yet',
                   )
-                : Wrap(
-                    direction: Axis.horizontal,
-                    spacing: 5,
-                    runSpacing: 5,
-                    children: participants
-                        .map(
-                          (participant) => ParticipantRow(
-                            participantId: participant.participantId,
-                            name: participant.name,
-                            connected: participant.connected,
-                            participantCommands: participantCommands,
-                            shouldHideVotes: shouldHideVotes,
-                          ),
-                        )
-                        .toList(),
+                : LayoutBuilder(
+                    builder: (context, constraints) {
+                      return GridView(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: constraints.maxWidth > 500 ? 2 : 1,
+                          childAspectRatio: constraints.maxWidth > 500
+                              ? constraints.maxWidth / 92
+                              : constraints.maxWidth / 46,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 5,
+                        ),
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        children: participants
+                            .map(
+                              (participant) => ParticipantRow(
+                                participantId: participant.participantId,
+                                name: participant.name,
+                                connected: participant.connected,
+                                participantCommands: participantCommands,
+                                shouldHideVotes: shouldHideVotes,
+                              ),
+                            )
+                            .toList(),
+                      );
+                    },
                   ),
           ],
         ),
