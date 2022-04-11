@@ -59,6 +59,7 @@ class HostLandingSessionBloc
         _sendRemoveParticipantCommand(participantId: event.participantId);
       } else if (event is HostSendEndSession) {
         _sendEndSessionCommand();
+        emit(HostLandingSessionEnded(sessionName: sessionName));
       } else if (event is HostSendFinishVoting) {
         _sendFinishVotingCommand();
       } else if (event is HostSendRevote) {

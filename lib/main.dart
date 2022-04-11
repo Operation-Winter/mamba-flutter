@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
       final arguments = settings.arguments
           as HostLandingScreenArguments; // Retrieve the value.
       return MaterialPageRoute(
+        settings: RouteSettings(name: HostLandingScreen.route),
         builder: (_) => HostLandingScreen(
           sessionName: arguments.sessionName,
           automaticallyCompleteVoting: arguments.automaticallyCompleteVoting,

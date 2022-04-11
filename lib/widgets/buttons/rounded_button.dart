@@ -25,7 +25,7 @@ class RoundedButton extends StatelessWidget {
         ),
         style: TextButton.styleFrom(
           backgroundColor: enabled ? primaryColor : disabledColor,
-          minimumSize: const Size.fromHeight(36),
+          minimumSize: const Size.fromHeight(40),
         ),
       ),
     );

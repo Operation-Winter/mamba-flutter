@@ -33,4 +33,8 @@ class HostLandingSessionInvalidCommand extends HostLandingSessionState {}
 
 class HostLandingSessionPreviousTickets extends HostLandingSessionState {}
 
-// TODO: Add session ended state
+class HostLandingSessionEnded extends HostLandingSessionState {
+  final String sessionName;
+
+  HostLandingSessionEnded({required this.sessionName});
+}

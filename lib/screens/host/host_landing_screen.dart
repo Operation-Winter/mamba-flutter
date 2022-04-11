@@ -9,6 +9,7 @@ import 'package:mamba/widgets/states/host/planning_host_voting_finished_state.da
 import 'package:mamba/widgets/states/host/planning_host_voting_state.dart';
 import 'package:mamba/widgets/states/shared/planning_coffee_voting_finished_state.dart';
 import 'package:mamba/widgets/states/shared/planning_coffee_voting_state.dart';
+import 'package:mamba/widgets/states/shared/planning_end_session_state.dart';
 import 'package:mamba/widgets/states/shared/planning_loading_state.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/widgets/states/shared/planning_error_state.dart';
@@ -94,6 +95,8 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
                       return _errorState(context);
                     } else if (state is HostLandingSessionInvalidCommand) {
                       return _errorState(context);
+                    } else if (state is HostLandingSessionEnded) {
+                      return _endSessionState(context, state: state);
                     }
                     return _errorState(context);
                   },
@@ -184,4 +187,9 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
 
   _didTapRemoveParticipant(UuidValue participantId) => widget.session
       .add(HostSendRemoveParticipant(participantId: participantId));
+
+  _endSessionState(BuildContext context,
+      {required HostLandingSessionEnded state}) {
+    return PlanningEndSessionState(sessionName: state.sessionName);
+  }
 }
