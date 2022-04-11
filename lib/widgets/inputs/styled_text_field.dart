@@ -60,7 +60,7 @@ class _StyledTextFieldState extends State<StyledTextField> {
           ),
         ),
         onChanged: onChanged,
-        initialValue: text,
+        initialValue: widget.controller == null ? text : null,
         cursorColor: primaryColor,
         autofocus: widget.autofocus ?? false,
       ),

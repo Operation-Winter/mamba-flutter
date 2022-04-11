@@ -19,7 +19,19 @@ class HostLandingSessionNone extends HostLandingSessionState {
   });
 }
 
-class HostLandingSessionVoting extends HostLandingSessionState {}
+class HostLandingSessionVoting extends HostLandingSessionState {
+  final String sessionName;
+  final List<PlanningParticipant> participants;
+  final int coffeeVoteCount;
+  final int spectatorCount;
+
+  HostLandingSessionVoting({
+    required this.sessionName,
+    required this.participants,
+    required this.coffeeVoteCount,
+    required this.spectatorCount,
+  });
+}
 
 class HostLandingSessionVotingFinished extends HostLandingSessionState {}
 

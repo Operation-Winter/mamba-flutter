@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/bloc/host/host_landing_session_bloc.dart';
+import 'package:mamba/screens/host/host_add_ticket_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
@@ -13,6 +14,7 @@ import 'package:mamba/widgets/states/shared/planning_end_session_state.dart';
 import 'package:mamba/widgets/states/shared/planning_loading_state.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/widgets/states/shared/planning_error_state.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:uuid/uuid.dart';
 
 class HostLandingScreenArguments {
@@ -63,6 +65,38 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     widget.session.add(HostSendStartSession());
   }
 
+  _didTapAddTicket() {
+    showBarModalBottomSheet(
+      expand: true,
+      context: context,
+      builder: (context) => HostAddTicketScreen(
+          tags: {},
+          onAddTicket: (title, description, tags) {
+            widget.session.add(HostSendAddTicket(
+              title: title,
+              description: description,
+            ));
+            Navigator.pop(context);
+          }),
+    );
+  }
+
+  _didTapRequestCoffee() {
+    print('Did tap request coffee');
+  }
+
+  _didTapShare() {
+    print('Did tap share');
+  }
+
+  _didTapEndSession() => widget.session.add(HostSendEndSession());
+
+  _didTapRemoveParticipant(UuidValue participantId) => widget.session
+      .add(HostSendRemoveParticipant(participantId: participantId));
+
+  _didTapSkipVote(UuidValue participantId) =>
+      widget.session.add(HostSendSkipVote(participantId: participantId));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +117,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
                     } else if (state is HostLandingSessionNone) {
                       return _noneState(context, state: state);
                     } else if (state is HostLandingSessionVoting) {
-                      return _votingState(context);
+                      return _votingState(context, state: state);
                     } else if (state is HostLandingSessionVotingFinished) {
                       return _votingFinishedState(context);
                     } else if (state is HostLandingSessionCoffeeVoting) {
@@ -155,8 +189,46 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     );
   }
 
-  Widget _votingState(BuildContext context) {
-    return const PlanningHostVotingState();
+  Widget _votingState(BuildContext context,
+      {required HostLandingSessionVoting state}) {
+    return PlanningHostVotingState(
+      sessionName: state.sessionName,
+      participants: state.participants,
+      coffeeVoteCount: state.coffeeVoteCount,
+      spectatorCount: state.spectatorCount,
+      commands: [
+        PlanningCommandButton(
+          icon: Icons.coffee,
+          tooltip: 'Request coffee vote',
+          onPressed: _didTapRequestCoffee,
+        ),
+        PlanningCommandButton(
+          icon: Icons.add,
+          tooltip: 'Add ticket',
+          onPressed: _didTapAddTicket,
+        ),
+        PlanningCommandButton(
+          icon: Icons.share,
+          tooltip: 'Share session',
+          onPressed: _didTapShare,
+        ),
+        PlanningCommandButton(
+          icon: Icons.close,
+          tooltip: 'End session',
+          onPressed: _didTapEndSession,
+        ),
+      ],
+      participantCommands: [
+        PlanningParticipantCommand(
+          title: 'Remove participant',
+          onTap: _didTapRemoveParticipant,
+        ),
+        PlanningParticipantCommand(
+          title: 'Skip vote',
+          onTap: _didTapSkipVote,
+        ),
+      ],
+    );
   }
 
   Widget _votingFinishedState(BuildContext context) {
@@ -171,24 +243,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     return const PlanningCoffeeVotingFinishedState();
   }
 
-  _didTapAddTicket() {
-    print('Did tap add ticket');
-  }
-
-  _didTapRequestCoffee() {
-    print('Did tap request coffee');
-  }
-
-  _didTapShare() {
-    print('Did tap share');
-  }
-
-  _didTapEndSession() => widget.session.add(HostSendEndSession());
-
-  _didTapRemoveParticipant(UuidValue participantId) => widget.session
-      .add(HostSendRemoveParticipant(participantId: participantId));
-
-  _endSessionState(BuildContext context,
+  Widget _endSessionState(BuildContext context,
       {required HostLandingSessionEnded state}) {
     return PlanningEndSessionState(sessionName: state.sessionName);
   }
