@@ -25,6 +25,8 @@ class JoinLandingSessionVoting extends JoinLandingSessionState {
   final int coffeeVoteCount;
   final int spectatorCount;
   final PlanningTicket ticket;
+  final List<PlanningCard> availableCards;
+  final PlanningCard? selectedCard;
 
   JoinLandingSessionVoting({
     required this.sessionName,
@@ -32,6 +34,8 @@ class JoinLandingSessionVoting extends JoinLandingSessionState {
     required this.coffeeVoteCount,
     required this.spectatorCount,
     required this.ticket,
+    required this.availableCards,
+    this.selectedCard,
   });
 }
 

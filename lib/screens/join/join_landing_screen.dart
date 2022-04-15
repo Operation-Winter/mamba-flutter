@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/bloc/join/join_landing_session_bloc.dart';
+import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/screens/join/join_edit_name_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/dialog/confirmation_dialog.dart';
-import 'package:mamba/widgets/states/host/planning_host_none_state.dart';
+import 'package:mamba/widgets/states/join/planning_join_voting_state.dart';
+import 'package:mamba/widgets/states/shared/planning_none_state.dart';
 import 'package:mamba/widgets/states/host/planning_host_voting_finished_state.dart';
-import 'package:mamba/widgets/states/host/planning_host_voting_state.dart';
 import 'package:mamba/widgets/states/shared/planning_coffee_voting_finished_state.dart';
 import 'package:mamba/widgets/states/shared/planning_coffee_voting_state.dart';
 import 'package:mamba/widgets/states/shared/planning_end_session_state.dart';
@@ -93,6 +94,9 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
     );
   }
 
+  _didSelectCard(PlanningCard selectedCard) =>
+      widget.session.add(JoinSendVote(selectedCard: selectedCard));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,7 +161,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
 
   Widget _noneState(BuildContext context,
       {required JoinLandingSessionNone state}) {
-    return PlanningHostNoneState(
+    return PlanningNoneState(
       sessionName: state.sessionName,
       participants: state.participants,
       coffeeVoteCount: state.coffeeVoteCount,
@@ -190,7 +194,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
 
   Widget _votingState(BuildContext context,
       {required JoinLandingSessionVoting state}) {
-    return PlanningHostVotingState(
+    return PlanningJoinVotingState(
       sessionName: state.sessionName,
       participants: state.participants,
       coffeeVoteCount: state.coffeeVoteCount,
@@ -217,10 +221,11 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
           onPressed: _didTapLeaveSession,
         ),
       ],
-      participantCommands: const [],
       ticketTitle: state.ticket.title,
       ticketDescription: state.ticket.description,
-      ticketCommands: const [],
+      availableCards: state.availableCards,
+      selectedCard: state.selectedCard,
+      onSelectCard: _didSelectCard,
     );
   }
 

@@ -6,7 +6,7 @@ import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
 import 'package:mamba/widgets/dialog/confirmation_dialog.dart';
-import 'package:mamba/widgets/states/host/planning_host_none_state.dart';
+import 'package:mamba/widgets/states/shared/planning_none_state.dart';
 import 'package:mamba/widgets/states/host/planning_host_voting_finished_state.dart';
 import 'package:mamba/widgets/states/host/planning_host_voting_state.dart';
 import 'package:mamba/widgets/states/shared/planning_coffee_voting_finished_state.dart';
@@ -198,7 +198,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
 
   Widget _noneState(BuildContext context,
       {required HostLandingSessionNone state}) {
-    return PlanningHostNoneState(
+    return PlanningNoneState(
       sessionName: state.sessionName,
       participants: state.participants,
       coffeeVoteCount: state.coffeeVoteCount,

@@ -1,0 +1,68 @@
+import 'package:flutter/material.dart';
+import 'package:mamba/models/planning_card.dart';
+import 'package:mamba/models/planning_participant_dto.dart';
+import 'package:mamba/widgets/cards/planning_session_name_card.dart';
+import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
+import 'package:mamba/widgets/cards/planning_session_ticket_card.dart';
+import 'package:mamba/widgets/cards/planning_session_voting_card.dart';
+import 'package:mamba/widgets/rows/participant_row.dart';
+
+class PlanningJoinVotingState extends StatelessWidget {
+  final String sessionName;
+  final int coffeeVoteCount;
+  final int spectatorCount;
+  final List<PlanningCommandButton> commands;
+  final List<PlanningParticipantDto> participants;
+  final String ticketTitle;
+  final String? ticketDescription;
+  final List<PlanningCard> availableCards;
+  final PlanningCard? selectedCard;
+  final Function(PlanningCard) onSelectCard;
+
+  const PlanningJoinVotingState({
+    Key? key,
+    required this.sessionName,
+    required this.participants,
+    required this.commands,
+    required this.coffeeVoteCount,
+    required this.spectatorCount,
+    required this.ticketTitle,
+    this.ticketDescription,
+    required this.availableCards,
+    this.selectedCard,
+    required this.onSelectCard,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: ListView(
+          children: [
+            PlanningSessionNameCard(
+              sessionName: sessionName,
+              commands: commands,
+              coffeeVoteCount: coffeeVoteCount,
+              spectatorCount: spectatorCount,
+            ),
+            PlanningSessionTicketCard(
+              ticketTitle: ticketTitle,
+              ticketDescription: ticketDescription,
+              commands: const [],
+            ),
+            PlanningSessionVotingCard(
+              planningCards: availableCards,
+              selectedCard: selectedCard,
+              onSelectCard: onSelectCard,
+            ),
+            PlanningSessionParticipantsCard(
+              participants: participants,
+              participantCommands: const [],
+              voteState: ParticipantRowVoteState.obfuscated,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

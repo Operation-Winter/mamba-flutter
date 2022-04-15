@@ -7,7 +7,11 @@ abstract class JoinLandingSessionEvent {}
 
 class JoinSendJoinSession extends JoinLandingSessionEvent {}
 
-class JoinSendVote extends JoinLandingSessionEvent {}
+class JoinSendVote extends JoinLandingSessionEvent {
+  final PlanningCard selectedCard;
+
+  JoinSendVote({required this.selectedCard});
+}
 
 class JoinSendLeaveSession extends JoinLandingSessionEvent {}
 

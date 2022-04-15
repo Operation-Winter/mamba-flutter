@@ -12,6 +12,7 @@ import 'package:mamba/repositories/local_storage_repository.dart';
 import 'package:mamba/repositories/planning_join_session_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
+import 'package:collection/collection.dart';
 
 part 'join_landing_session_event.dart';
 part 'join_landing_session_state.dart';
@@ -54,12 +55,12 @@ class JoinLandingSessionBloc
     this.password,
     required this.username,
   }) : super(JoinLandingSessionLoading()) {
-    on<JoinLandingSessionEvent>((event, emit) {
+    on<JoinLandingSessionEvent>((event, emit) async {
       // Send commands
       if (event is JoinSendJoinSession) {
         _sendJoinCommand();
       } else if (event is JoinSendVote) {
-        _sendVoteCommand();
+        _sendVoteCommand(selectedCard: event.selectedCard);
       } else if (event is JoinSendLeaveSession) {
         _sendLeaveSessionCommand();
         emit(JoinLandingLeftSession(sessionName: _sessionName));
@@ -74,7 +75,7 @@ class JoinLandingSessionBloc
       else if (event is JoinReceiveNoneState) {
         _handleNoneStateEvent(emit, message: event.message);
       } else if (event is JoinReceiveVotingState) {
-        _handleVotingStateEvent(emit, message: event.message);
+        await _handleVotingStateEvent(emit, message: event.message);
       } else if (event is JoinReceiveVotingFinishedState) {
         _handleVotingFinishedStateEvent(emit, message: event.message);
       } else if (event is JoinReceiveInvalidCommand) {
@@ -179,6 +180,11 @@ class JoinLandingSessionBloc
     var ticket = message.ticket;
     if (ticket == null) return;
 
+    var uuid = await _uuid;
+    var selectedCard = ticket.ticketVotes
+        .firstWhereOrNull((element) => element.participantId == uuid)
+        ?.selectedCard;
+
     var participantDtos = makeParticipantDtos(
       participants: message.participants,
       votes: message.ticket?.ticketVotes,
@@ -190,6 +196,8 @@ class JoinLandingSessionBloc
       coffeeVoteCount: 0,
       spectatorCount: 0,
       ticket: ticket,
+      availableCards: message.availableCards,
+      selectedCard: selectedCard,
     ));
   }
 
@@ -250,9 +258,9 @@ class JoinLandingSessionBloc
   _sendChangeNameCommand() async => _joinSessionRepository
       .sendChangeNameCommand(uuid: await _uuid, name: username);
 
-  _sendVoteCommand() {
-    print('Join: Send vote command');
-  }
+  _sendVoteCommand({required PlanningCard selectedCard}) async =>
+      _joinSessionRepository.sendVoteCommand(
+          uuid: await _uuid, selectedCard: selectedCard);
 
   _sendLeaveSessionCommand() async {
     _sessionEnded = true;
