@@ -222,10 +222,17 @@ class JoinLandingSessionBloc
     ));
   }
 
-  _handleInvalidSessionCommand(Emitter<JoinLandingSessionState> emit) {}
+  _handleInvalidSessionCommand(Emitter<JoinLandingSessionState> emit) {
+    emit(JoinLandingSessionError(
+      sessionName: _sessionName,
+      errorCode: '0001',
+      errorDescription:
+          'The specified session code doesn\'t exist or is no longer available.',
+    ));
+  }
 
   _handleRemoveParticipantCommand(Emitter<JoinLandingSessionState> emit) {
-    emit(JoinLandingLeftSession(sessionName: _sessionName));
+    emit(JoinLandingRemovedFromSession(sessionName: _sessionName));
   }
 
   _handleEndSessionCommand(Emitter<JoinLandingSessionState> emit) =>
