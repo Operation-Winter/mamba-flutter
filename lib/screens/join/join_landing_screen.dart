@@ -127,6 +127,8 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
                       return _endLeftSessionState(context, state: state);
                     } else if (state is JoinLandingSessionEnded) {
                       return _sessionEndedState(context, state: state);
+                    } else if (state is JoinLandingRemovedFromSession) {
+                      return _removedFromSessionState(context, state: state);
                     }
                     return Container();
                   },
@@ -268,12 +270,25 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
 
   Widget _endLeftSessionState(BuildContext context,
       {required JoinLandingLeftSession state}) {
-    // TODO: Show left session state screen
-    return PlanningEndSessionState(sessionName: state.sessionName);
+    return PlanningEndSessionState(
+      sessionName: state.sessionName,
+      description: 'You have left the session.',
+    );
+  }
+
+  Widget _removedFromSessionState(BuildContext context,
+      {required JoinLandingRemovedFromSession state}) {
+    return PlanningEndSessionState(
+      sessionName: state.sessionName,
+      description: 'You have been removed from the session by the host.',
+    );
   }
 
   Widget _sessionEndedState(BuildContext context,
       {required JoinLandingSessionEnded state}) {
-    return PlanningEndSessionState(sessionName: state.sessionName);
+    return PlanningEndSessionState(
+      sessionName: state.sessionName,
+      description: 'The session has been ended by the host.',
+    );
   }
 }

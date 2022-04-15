@@ -7,10 +7,12 @@ import 'package:mamba/widgets/text/title_text.dart';
 
 class PlanningEndSessionState extends StatelessWidget {
   final String sessionName;
+  final String description;
 
   const PlanningEndSessionState({
     Key? key,
     required this.sessionName,
+    required this.description,
   }) : super(key: key);
 
   _didTapBackToLanding(BuildContext context) =>
@@ -48,7 +50,7 @@ class PlanningEndSessionState extends StatelessWidget {
                       ),
                       child: Image.asset('images/error.png'),
                     ),
-                    const DescriptionText(text: 'The session has been ended.'),
+                    DescriptionText(text: description),
                     const SizedBox(height: 20),
                     RoundedButton(
                       title: 'Back to landing',

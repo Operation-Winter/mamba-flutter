@@ -357,6 +357,9 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
 
   Widget _endSessionState(BuildContext context,
       {required HostLandingSessionEnded state}) {
-    return PlanningEndSessionState(sessionName: state.sessionName);
+    return PlanningEndSessionState(
+      sessionName: state.sessionName,
+      description: 'You have ended the session.',
+    );
   }
 }

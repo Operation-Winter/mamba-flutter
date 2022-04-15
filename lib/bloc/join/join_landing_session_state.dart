@@ -67,6 +67,12 @@ class JoinLandingSessionError extends JoinLandingSessionState {
   });
 }
 
+class JoinLandingRemovedFromSession extends JoinLandingSessionState {
+  final String sessionName;
+
+  JoinLandingRemovedFromSession({required this.sessionName});
+}
+
 class JoinLandingLeftSession extends JoinLandingSessionState {
   final String sessionName;
 
