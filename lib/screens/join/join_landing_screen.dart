@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/bloc/join/join_landing_session_bloc.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
+import 'package:mamba/widgets/dialog/confirmation_dialog.dart';
 import 'package:mamba/widgets/states/host/planning_host_none_state.dart';
 import 'package:mamba/widgets/states/host/planning_host_voting_finished_state.dart';
 import 'package:mamba/widgets/states/host/planning_host_voting_state.dart';
@@ -61,7 +62,18 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
 
   _didTapShare() => print('Did tap share');
 
-  _didTapReconnect() => print('Did tap reconnect');
+  _didTapReconnect() => widget.session.add(JoinSendReconnect());
+
+  _didTapLeaveSession() {
+    ConfirmationAlertDialog.show(
+      context,
+      title: 'Leave session',
+      description: 'Are you sure you want to leave the session?',
+      onConfirmation: () {
+        widget.session.add(JoinSendLeaveSession());
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +106,9 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
                     } else if (state is JoinLandingSessionError) {
                       return _errorState(context, state: state);
                     } else if (state is JoinLandingLeftSession) {
-                      return _endLeftSession(context, state: state);
+                      return _endLeftSessionState(context, state: state);
+                    } else if (state is JoinLandingSessionEnded) {
+                      return _sessionEndedState(context, state: state);
                     }
                     return Container();
                   },
@@ -147,7 +161,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
         PlanningCommandButton(
           icon: Icons.close,
           tooltip: 'Leave session',
-          onPressed: null,
+          onPressed: _didTapLeaveSession,
         ),
       ],
       participantCommands: const [],
@@ -180,7 +194,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
         PlanningCommandButton(
           icon: Icons.close,
           tooltip: 'Leave session',
-          onPressed: null,
+          onPressed: _didTapLeaveSession,
         ),
       ],
       participantCommands: const [],
@@ -216,7 +230,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
         PlanningCommandButton(
           icon: Icons.close,
           tooltip: 'Leave session',
-          onPressed: null,
+          onPressed: _didTapLeaveSession,
         ),
       ],
       participantCommands: const [],
@@ -234,9 +248,14 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
     return const PlanningCoffeeVotingFinishedState();
   }
 
-  Widget _endLeftSession(BuildContext context,
+  Widget _endLeftSessionState(BuildContext context,
       {required JoinLandingLeftSession state}) {
     // TODO: Show left session state screen
+    return PlanningEndSessionState(sessionName: state.sessionName);
+  }
+
+  Widget _sessionEndedState(BuildContext context,
+      {required JoinLandingSessionEnded state}) {
     return PlanningEndSessionState(sessionName: state.sessionName);
   }
 }

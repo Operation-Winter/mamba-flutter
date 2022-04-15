@@ -13,7 +13,11 @@ class JoinSendLeaveSession extends JoinLandingSessionEvent {}
 
 class JoinSendReconnect extends JoinLandingSessionEvent {}
 
-class JoinSendChangeName extends JoinLandingSessionEvent {}
+class JoinSendChangeName extends JoinLandingSessionEvent {
+  final String newUsername;
+
+  JoinSendChangeName({required this.newUsername});
+}
 
 // Receive commands
 class JoinReceiveNoneState extends JoinLandingSessionEvent {

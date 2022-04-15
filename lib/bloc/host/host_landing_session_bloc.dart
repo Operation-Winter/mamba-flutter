@@ -119,16 +119,20 @@ class HostLandingSessionBloc
           code: '1000', description: 'Failed to connect to server.'));
     });
 
-    _hostSessionRepository.listen(_handleReceiveCommand, onError: (error) {
-      if (!_sessionEnded) {
-        add(HostLandingError(code: '1002', description: error.toString()));
-      }
-    }, onDone: () {
-      if (!_sessionEnded) {
-        add(HostLandingError(
-            code: '1001', description: 'Lost connection to server.'));
-      }
-    });
+    _hostSessionRepository.listen(
+      _handleReceiveCommand,
+      onError: (error) {
+        if (!_sessionEnded) {
+          add(HostLandingError(code: '1002', description: error.toString()));
+        }
+      },
+      onDone: () {
+        if (!_sessionEnded) {
+          add(HostLandingError(
+              code: '1001', description: 'Lost connection to server.'));
+        }
+      },
+    );
   }
 
   _handleReceiveCommand(PlanningHostReceiveCommand command) async {
@@ -229,12 +233,15 @@ class HostLandingSessionBloc
     ));
   }
 
-  _sendStartCommand() async => _hostSessionRepository.sendStartSessionCommand(
-        uuid: await _uuid,
-        sessionName: sessionName,
-        automaticallyCompleteVoting: automaticallyCompleteVoting,
-        availableCards: availableCards,
-      );
+  _sendStartCommand() async {
+    _localStorageRepository.removeUuid();
+    _hostSessionRepository.sendStartSessionCommand(
+      uuid: await _uuid,
+      sessionName: sessionName,
+      automaticallyCompleteVoting: automaticallyCompleteVoting,
+      availableCards: availableCards,
+    );
+  }
 
   _sendAddTicketCommand({required String title, String? description}) async =>
       _hostSessionRepository.sendAddTicketCommand(

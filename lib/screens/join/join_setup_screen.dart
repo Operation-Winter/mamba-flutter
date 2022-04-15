@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mamba/screens/participant/join_landing_screen.dart';
+import 'package:mamba/screens/join/join_landing_screen.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
 import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/widgets/text/description_text.dart';

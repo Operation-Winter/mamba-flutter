@@ -17,7 +17,7 @@ class PlanningJoinSessionRepository {
 
   Future<void> connect() async {
     try {
-      _webSocket.connect(url: URLCenter.planningJoinPath.toString());
+      await _webSocket.connect(url: URLCenter.planningJoinPath.toString());
     } catch (_) {
       rethrow;
     }

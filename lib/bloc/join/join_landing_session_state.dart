@@ -72,3 +72,9 @@ class JoinLandingLeftSession extends JoinLandingSessionState {
 
   JoinLandingLeftSession({required this.sessionName});
 }
+
+class JoinLandingSessionEnded extends JoinLandingSessionState {
+  final String sessionName;
+
+  JoinLandingSessionEnded({required this.sessionName});
+}

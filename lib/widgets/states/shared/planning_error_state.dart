@@ -46,7 +46,7 @@ class PlanningErrorState extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TitleText(text: 'Session: $sessionName'),
+                    TitleText(text: sessionName),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         vertical: 20,

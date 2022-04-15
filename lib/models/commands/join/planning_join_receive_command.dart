@@ -26,19 +26,21 @@ class PlanningJoinReceiveCommand extends PlanningCommand {
         $enumDecode(_$PlanningJoinReceiveCommandTypeEnumMap, json['type']);
     return PlanningJoinReceiveCommand(
       uuid: PlanningCommand.idFromString(json['uuid'] as String?),
-      message: _parseMessage(type, json['message'] as Map<String, dynamic>),
+      message: _parseMessage(type, json['message'] as Map<String, dynamic>?),
       type: type,
     );
   }
 
   static PlanningMessage? _parseMessage(
-      PlanningJoinReceiveCommandType type, Map<String, dynamic> data) {
+      PlanningJoinReceiveCommandType type, Map<String, dynamic>? data) {
     switch (type) {
       case PlanningJoinReceiveCommandType.NONE_STATE:
       case PlanningJoinReceiveCommandType.VOTING_STATE:
       case PlanningJoinReceiveCommandType.FINISHED_STATE:
+        if (data == null) return null;
         return PlanningSessionStateMessage.fromJson(data);
       case PlanningJoinReceiveCommandType.INVALID_COMMAND:
+        if (data == null) return null;
         return PlanningInvalidCommandMessage.fromJson(data);
       case PlanningJoinReceiveCommandType.INVALID_SESSION:
       case PlanningJoinReceiveCommandType.REMOVE_PARTICIPANT:

@@ -26,7 +26,7 @@ class JoinLandingSessionBloc
 
   final String sessionCode;
   final String? password;
-  final String username;
+  String username;
 
   String _sessionName = '';
   List<PlanningCard> availableCards = [];
@@ -65,6 +65,7 @@ class JoinLandingSessionBloc
       } else if (event is JoinSendReconnect) {
         _sendReconnectCommand();
       } else if (event is JoinSendChangeName) {
+        username = event.newUsername;
         _sendChangeNameCommand();
       }
 
@@ -99,16 +100,20 @@ class JoinLandingSessionBloc
           code: '1000', description: 'Failed to connect to server.'));
     });
 
-    _joinSessionRepository.listen(_handleReceiveCommand, onError: (error) {
-      if (!_sessionEnded) {
-        add(JoinLandingError(code: '1002', description: error.toString()));
-      }
-    }, onDone: () {
-      if (!_sessionEnded) {
-        add(JoinLandingError(
-            code: '1001', description: 'Lost connection to server.'));
-      }
-    });
+    _joinSessionRepository.listen(
+      _handleReceiveCommand,
+      onError: (error) {
+        if (!_sessionEnded) {
+          add(JoinLandingError(code: '1002', description: error.toString()));
+        }
+      },
+      onDone: () {
+        if (!_sessionEnded) {
+          add(JoinLandingError(
+              code: '1001', description: 'Lost connection to server.'));
+        }
+      },
+    );
   }
 
   _handleReceiveCommand(PlanningJoinReceiveCommand command) async {
@@ -130,13 +135,14 @@ class JoinLandingSessionBloc
             message: command.message as PlanningInvalidCommandMessage));
         break;
       case PlanningJoinReceiveCommandType.INVALID_SESSION:
-        // TODO: Handle this case.
+        add(JoinReceiveInvalidSession());
         break;
       case PlanningJoinReceiveCommandType.REMOVE_PARTICIPANT:
-        // TODO: Handle this case.
+        add(JoinReceiveRemoveParticipant());
         break;
       case PlanningJoinReceiveCommandType.END_SESSION:
-        // TODO: Handle this case.
+        _sessionEnded = true;
+        add(JoinReceiveEndSession());
         break;
     }
   }
@@ -216,29 +222,38 @@ class JoinLandingSessionBloc
 
   _handleInvalidSessionCommand(Emitter<JoinLandingSessionState> emit) {}
 
-  _handleRemoveParticipantCommand(Emitter<JoinLandingSessionState> emit) {}
+  _handleRemoveParticipantCommand(Emitter<JoinLandingSessionState> emit) {
+    emit(JoinLandingLeftSession(sessionName: _sessionName));
+  }
 
-  _handleEndSessionCommand(Emitter<JoinLandingSessionState> emit) {}
+  _handleEndSessionCommand(Emitter<JoinLandingSessionState> emit) =>
+      emit(JoinLandingSessionEnded(sessionName: _sessionName));
 
-  _sendJoinCommand() async => _joinSessionRepository.sendJoinSessionCommand(
-        uuid: await _uuid,
-        participantName: username,
-        sessionCode: sessionCode,
-      );
+  _sendJoinCommand() async {
+    _localStorageRepository.removeUuid();
+    _joinSessionRepository.sendJoinSessionCommand(
+      uuid: await _uuid,
+      participantName: username,
+      sessionCode: sessionCode,
+    );
+  }
+
+  _sendChangeNameCommand() async => _joinSessionRepository
+      .sendChangeNameCommand(uuid: await _uuid, name: username);
 
   _sendVoteCommand() {
     print('Join: Send vote command');
   }
 
-  _sendLeaveSessionCommand() {
-    print('Join: Leave session command');
-  }
+  _sendLeaveSessionCommand() async =>
+      _joinSessionRepository.sendLeaveSessionCommand(uuid: await _uuid);
 
-  _sendReconnectCommand() {
-    print('Join: Reconnect command');
-  }
-
-  _sendChangeNameCommand() {
-    print('Join: Change name command');
+  _sendReconnectCommand() async {
+    await connect();
+    if (!_sessionJoined) {
+      _sendJoinCommand();
+    } else {
+      _joinSessionRepository.sendReconnectCommand(uuid: await _uuid);
+    }
   }
 }
