@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:mamba/mixins/participants_list_mixin.dart';
 import 'package:mamba/models/commands/host/planning_host_receive_command.dart';
 import 'package:mamba/models/commands/host/planning_host_receive_command_type.dart';
 import 'package:mamba/models/messages/planning_invalid_command_message.dart';
@@ -7,18 +8,17 @@ import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/models/planning_participant.dart';
 import 'package:mamba/models/planning_participant_dto.dart';
 import 'package:mamba/models/planning_ticket.dart';
-import 'package:mamba/models/planning_ticket_vote.dart';
 import 'package:mamba/repositories/local_storage_repository.dart';
 import 'package:mamba/repositories/planning_host_session_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
-import 'package:collection/collection.dart';
 
 part 'host_landing_session_event.dart';
 part 'host_landing_session_state.dart';
 
 class HostLandingSessionBloc
-    extends Bloc<HostLandingSessionEvent, HostLandingSessionState> {
+    extends Bloc<HostLandingSessionEvent, HostLandingSessionState>
+    with ParticipantsListMixin {
   final PlanningHostSessionRepository _hostSessionRepository =
       PlanningHostSessionRepository();
   final LocalStorageRepository _localStorageRepository =
@@ -155,30 +155,6 @@ class HostLandingSessionBloc
     }
   }
 
-  List<PlanningParticipantDto> _makeParticipantDtos({
-    required List<PlanningParticipant> participants,
-    List<PlanningTicketVote>? votes,
-  }) {
-    return participants.map((participant) {
-      var participantSpecificVotes = votes?.where(
-          (element) => element.participantId == participant.participantId);
-
-      var participantVotes = participantSpecificVotes?.isEmpty == true
-          ? null
-          : participantSpecificVotes
-              ?.map((vote) => vote.selectedCard?.title)
-              .whereNotNull()
-              .toList();
-
-      return PlanningParticipantDto(
-        participantId: participant.participantId,
-        name: participant.name,
-        connected: participant.connected,
-        votes: participantVotes,
-      );
-    }).toList();
-  }
-
   _handleStateEvent({required PlanningSessionStateMessage message}) {
     sessionName = message.sessionName;
     availableCards = message.availableCards;
@@ -194,7 +170,7 @@ class HostLandingSessionBloc
       {required PlanningSessionStateMessage message}) async {
     _handleStateEvent(message: message);
     var participantDtos =
-        _makeParticipantDtos(participants: message.participants);
+        makeParticipantDtos(participants: message.participants);
 
     emit(HostLandingSessionNone(
       sessionName: sessionName,
@@ -210,7 +186,7 @@ class HostLandingSessionBloc
     var ticket = message.ticket;
     if (ticket == null) return;
 
-    var participantDtos = _makeParticipantDtos(
+    var participantDtos = makeParticipantDtos(
       participants: message.participants,
       votes: message.ticket?.ticketVotes,
     );
@@ -230,7 +206,7 @@ class HostLandingSessionBloc
     var ticket = message.ticket;
     if (ticket == null) return;
 
-    var participantDtos = _makeParticipantDtos(
+    var participantDtos = makeParticipantDtos(
       participants: message.participants,
       votes: message.ticket?.ticketVotes,
     );

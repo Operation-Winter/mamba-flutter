@@ -41,14 +41,19 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
   }
 
   void didTapStartSession() {
-    Navigator.pushNamed(context, HostLandingScreen.route,
-        arguments: HostLandingScreenArguments(
-          sessionName: sessionName!,
-          automaticallyCompleteVoting: automaticallyCompleteVoting,
-          availableCards: availableCards,
-          password: password,
-          tags: tags,
-        ));
+    if (sessionName == null) return;
+
+    Navigator.pushNamed(
+      context,
+      HostLandingScreen.route,
+      arguments: HostLandingScreenArguments(
+        sessionName: sessionName!,
+        automaticallyCompleteVoting: automaticallyCompleteVoting,
+        availableCards: availableCards,
+        password: password,
+        tags: tags,
+      ),
+    );
   }
 
   bool get formIsValid {

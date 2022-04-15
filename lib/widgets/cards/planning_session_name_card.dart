@@ -41,7 +41,7 @@ class PlanningSessionNameCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TitleText(text: 'Session: $sessionName'),
+            TitleText(text: sessionName),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

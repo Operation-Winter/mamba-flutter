@@ -28,12 +28,11 @@ class PlanningSessionTicketCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TitleText(text: 'Ticket: $ticketTitle'),
+            TitleText(text: ticketTitle, textAlign: TextAlign.center),
             ...[
+              if (ticketDescription != null) const SizedBox(height: 10),
               if (ticketDescription != null)
-                DescriptionText(text: ticketDescription ?? '')
-            ],
-            ...[
+                DescriptionText(text: ticketDescription ?? ''),
               if (commands.isNotEmpty) const SizedBox(height: 10),
               if (commands.isNotEmpty)
                 Row(

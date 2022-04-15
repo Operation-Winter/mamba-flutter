@@ -17,7 +17,7 @@ class _ParticipantSetupScreenState extends State<ParticipantSetupScreen> {
   bool validationPassed = false;
   String? sessionCode;
   String? password;
-  String? userName;
+  String? username;
 
   void sessionCodeChanged(String? newValue) {
     sessionCode = newValue;
@@ -27,18 +27,28 @@ class _ParticipantSetupScreenState extends State<ParticipantSetupScreen> {
   }
 
   void userNameChanged(String? newValue) {
-    userName = newValue;
+    username = newValue;
     setState(() {
       validationPassed = formIsValid;
     });
   }
 
   void didTapJoinSession() {
-    Navigator.pushNamed(context, ParticipantLandingScreen.route);
+    if (sessionCode == null || username == null) return;
+
+    Navigator.pushNamed(
+      context,
+      JoinLandingScreen.route,
+      arguments: JoinLandingScreenArguments(
+        sessionCode: sessionCode!,
+        username: username!,
+        password: password,
+      ),
+    );
   }
 
   bool get formIsValid {
-    return sessionCode?.isEmpty == false && userName?.isEmpty == false;
+    return sessionCode?.isEmpty == false && username?.isEmpty == false;
   }
 
   @override
@@ -93,7 +103,7 @@ class _ParticipantSetupScreenState extends State<ParticipantSetupScreen> {
                     ),
                     StyledTextField(
                       placeholder: 'Your name *',
-                      input: userName,
+                      input: username,
                       onChanged: userNameChanged,
                     ),
                     const SizedBox(height: 10),

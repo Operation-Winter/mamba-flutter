@@ -27,8 +27,6 @@ class MyApp extends StatelessWidget {
       LandingScreen.route: (context) => const LandingScreen(),
       HostSetupScreen.route: (context) => const HostSetupScreen(),
       ParticipantSetupScreen.route: (context) => const ParticipantSetupScreen(),
-      ParticipantLandingScreen.route: (context) =>
-          const ParticipantLandingScreen(),
       SpectatorSetupScreen.route: (context) => const SpectatorSetupScreen(),
       SpectatorLandingScreen.route: (context) => const SpectatorLandingScreen(),
     };
@@ -45,6 +43,16 @@ class MyApp extends StatelessWidget {
           availableCards: arguments.availableCards,
           password: arguments.password,
           tags: arguments.tags,
+        ),
+      );
+    } else if (settings.name == JoinLandingScreen.route) {
+      final arguments = settings.arguments as JoinLandingScreenArguments;
+      return MaterialPageRoute(
+        settings: RouteSettings(name: JoinLandingScreen.route),
+        builder: (_) => JoinLandingScreen(
+          sessionCode: arguments.sessionCode,
+          username: arguments.sessionCode,
+          password: arguments.password,
         ),
       );
     }

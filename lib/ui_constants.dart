@@ -16,6 +16,11 @@ const descriptionColoredTextStyle = TextStyle(
   fontSize: 14,
 );
 
+const mediumDescriptionTextStyle = TextStyle(
+  fontSize: 15,
+  fontWeight: FontWeight.w500,
+);
+
 const descriptionTextStyle = TextStyle(
   fontSize: 14,
 );
