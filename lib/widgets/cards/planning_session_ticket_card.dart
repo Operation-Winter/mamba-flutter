@@ -30,8 +30,11 @@ class PlanningSessionTicketCard extends StatelessWidget {
           children: [
             TitleText(text: ticketTitle, textAlign: TextAlign.center),
             ...[
-              if (ticketDescription != null) const SizedBox(height: 10),
-              if (ticketDescription != null)
+              if (ticketDescription != null &&
+                  ticketDescription?.isNotEmpty == true)
+                const SizedBox(height: 10),
+              if (ticketDescription != null &&
+                  ticketDescription?.isNotEmpty == true)
                 DescriptionText(text: ticketDescription ?? ''),
               if (commands.isNotEmpty) const SizedBox(height: 10),
               if (commands.isNotEmpty)
