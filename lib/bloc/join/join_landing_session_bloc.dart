@@ -44,7 +44,7 @@ class JoinLandingSessionBloc
       return localUuid;
     } else {
       var uuid = const Uuid().v4obj();
-      _localStorageRepository.uuid = uuid;
+      await _localStorageRepository.uuid(uuid);
       return uuid;
     }
   }
@@ -62,6 +62,7 @@ class JoinLandingSessionBloc
         _sendVoteCommand();
       } else if (event is JoinSendLeaveSession) {
         _sendLeaveSessionCommand();
+        emit(JoinLandingLeftSession(sessionName: _sessionName));
       } else if (event is JoinSendReconnect) {
         _sendReconnectCommand();
       } else if (event is JoinSendChangeName) {
@@ -138,6 +139,7 @@ class JoinLandingSessionBloc
         add(JoinReceiveInvalidSession());
         break;
       case PlanningJoinReceiveCommandType.REMOVE_PARTICIPANT:
+        _sessionEnded = true;
         add(JoinReceiveRemoveParticipant());
         break;
       case PlanningJoinReceiveCommandType.END_SESSION:
@@ -245,8 +247,10 @@ class JoinLandingSessionBloc
     print('Join: Send vote command');
   }
 
-  _sendLeaveSessionCommand() async =>
-      _joinSessionRepository.sendLeaveSessionCommand(uuid: await _uuid);
+  _sendLeaveSessionCommand() async {
+    _sessionEnded = true;
+    _joinSessionRepository.sendLeaveSessionCommand(uuid: await _uuid);
+  }
 
   _sendReconnectCommand() async {
     await connect();

@@ -1,25 +1,26 @@
-import 'package:localstore/localstore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class LocalStorageRepository {
-  final _kCollectionKey = 'PLANNING';
-  final _kUuidKey = 'UUID-KEY';
+  final _kUuidKey = 'UUID';
 
-  final db = Localstore.instance;
+  final Future<SharedPreferences> _preferences =
+      SharedPreferences.getInstance();
 
-  set uuid(UuidValue newValue) {
-    db.collection(_kCollectionKey).doc(_kUuidKey).set({
-      _kUuidKey: newValue.uuid,
-    });
+  Future<void> uuid(UuidValue newValue) async {
+    var preferences = await _preferences;
+    await preferences.setString(_kUuidKey, newValue.uuid);
   }
 
   Future<UuidValue?> getUuid() async {
-    var value = await db.collection(_kCollectionKey).doc(_kUuidKey).get();
+    var preferences = await _preferences;
+    var value = await preferences.getString(_kUuidKey);
     if (value == null) return null;
-    return UuidValue(value[_kUuidKey]);
+    return UuidValue(value);
   }
 
   Future<void> removeUuid() async {
-    await db.collection(_kCollectionKey).doc(_kUuidKey).delete();
+    var preferences = await _preferences;
+    await preferences.remove(_kUuidKey);
   }
 }

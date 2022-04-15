@@ -40,8 +40,8 @@ class HostLandingSessionBloc
       return localUuid;
     } else {
       var uuid = const Uuid().v4obj();
-      _localStorageRepository.uuid = uuid;
-      return uuid;
+      await _localStorageRepository.uuid(uuid);
+      return await _uuid;
     }
   }
 
