@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mamba/models/planning_participant_dto.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
+import 'package:mamba/widgets/rows/participant_row.dart';
 
 class PlanningHostNoneState extends StatelessWidget {
   final String sessionName;
@@ -36,6 +37,7 @@ class PlanningHostNoneState extends StatelessWidget {
             PlanningSessionParticipantsCard(
               participants: participants,
               participantCommands: participantCommands,
+              voteState: ParticipantRowVoteState.hidden,
             ),
           ],
         ),

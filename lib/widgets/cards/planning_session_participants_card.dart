@@ -18,13 +18,13 @@ class PlanningParticipantCommand {
 class PlanningSessionParticipantsCard extends StatelessWidget {
   final List<PlanningParticipantDto> participants;
   final List<PlanningParticipantCommand> participantCommands;
-  final bool shouldHideVotes;
+  final ParticipantRowVoteState voteState;
 
   const PlanningSessionParticipantsCard({
     Key? key,
     required this.participants,
     required this.participantCommands,
-    this.shouldHideVotes = true,
+    required this.voteState,
   }) : super(key: key);
 
   @override
@@ -66,7 +66,8 @@ class PlanningSessionParticipantsCard extends StatelessWidget {
                                 name: participant.name,
                                 connected: participant.connected,
                                 participantCommands: participantCommands,
-                                shouldHideVotes: shouldHideVotes,
+                                voteState: voteState,
+                                votes: participant.votes,
                               ),
                             )
                             .toList(),

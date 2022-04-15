@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/bloc/host/host_landing_session_bloc.dart';
-import 'package:mamba/screens/host/host_add_ticket_screen.dart';
+import 'package:mamba/screens/host/host_ticket_details_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
+import 'package:mamba/widgets/dialog/confirmation_dialog.dart';
 import 'package:mamba/widgets/states/host/planning_host_none_state.dart';
 import 'package:mamba/widgets/states/host/planning_host_voting_finished_state.dart';
 import 'package:mamba/widgets/states/host/planning_host_voting_state.dart';
@@ -74,8 +75,8 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     showBarModalBottomSheet(
       expand: true,
       context: context,
-      builder: (context) => HostAddTicketScreen(
-        tags: {},
+      builder: (context) => HostTicketDetailsScreen(
+        tags: widget.session.tags,
         onAddTicket: (title, description, tags) {
           widget.session.add(HostSendAddTicket(
             title: title,
@@ -88,7 +89,22 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
   }
 
   _didTapEditTicket() {
-    print('Did tap edit ticket');
+    showBarModalBottomSheet(
+      expand: true,
+      context: context,
+      builder: (context) => HostTicketDetailsScreen(
+        title: widget.session.ticket?.title,
+        description: widget.session.ticket?.description,
+        tags: widget.session.tags,
+        onAddTicket: (title, description, tags) {
+          widget.session.add(HostSendEditTicket(
+            title: title,
+            description: description,
+          ));
+          Navigator.pop(context);
+        },
+      ),
+    );
   }
 
   _didTapRequestCoffee() => print('Did tap request coffee');
@@ -99,8 +115,16 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
 
   _didTapFinishVoting() => widget.session.add(HostSendFinishVoting());
 
-  _didTapEndSession() => widget.session.add(HostSendEndSession());
-  // TODO: Add confirmation pop up for end session
+  _didTapEndSession() {
+    ConfirmationAlertDialog.show(
+      context,
+      title: 'End session',
+      description: 'Are you sure you want to end the session?',
+      onConfirmation: () {
+        widget.session.add(HostSendEndSession());
+      },
+    );
+  }
 
   _didTapRemoveParticipant(UuidValue participantId) => widget.session
       .add(HostSendRemoveParticipant(participantId: participantId));

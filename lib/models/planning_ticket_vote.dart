@@ -7,9 +7,9 @@ part 'planning_ticket_vote.g.dart';
 class PlanningTicketVote {
   @JsonKey(fromJson: _idFromString, toJson: _stringFromId)
   UuidValue participantId;
-  PlanningCard? planningCard;
+  PlanningCard? selectedCard;
 
-  PlanningTicketVote({required this.participantId, this.planningCard});
+  PlanningTicketVote({required this.participantId, this.selectedCard});
 
   static String _stringFromId(UuidValue uuid) {
     return uuid.uuid;

@@ -28,29 +28,35 @@ class PlanningSessionTicketCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TitleText(text: ticketTitle),
+            TitleText(text: 'Ticket: $ticketTitle'),
             ...[
               if (ticketDescription != null)
                 DescriptionText(text: ticketDescription ?? '')
             ],
             ...[
+              if (commands.isNotEmpty) const SizedBox(height: 10),
               if (commands.isNotEmpty)
-                Wrap(
-                  alignment: WrapAlignment.end,
-                  direction: Axis.horizontal,
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: commands
-                      .map(
-                        (command) => StyledIconButton(
-                          icon: command.icon,
-                          tooltip: command.tooltip,
-                          onPressed: command.onPressed,
-                        ),
-                      )
-                      .toList(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Wrap(
+                      alignment: WrapAlignment.end,
+                      direction: Axis.horizontal,
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: commands
+                          .map(
+                            (command) => StyledIconButton(
+                              icon: command.icon,
+                              tooltip: command.tooltip,
+                              onPressed: command.onPressed,
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ],
                 ),
-            ]
+            ],
           ],
         ),
       ),

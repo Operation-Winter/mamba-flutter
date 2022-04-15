@@ -31,6 +31,7 @@ class HostLandingSessionBloc
   bool automaticallyCompleteVoting;
   List<PlanningCard> availableCards = [];
   Set<String> tags;
+  PlanningTicket? ticket;
 
   Future<UuidValue> get _uuid async {
     var localUuid = await _localStorageRepository.getUuid();
@@ -46,7 +47,7 @@ class HostLandingSessionBloc
 
   String? _sessionCode;
   List<PlanningParticipant> _planningParticipants = [];
-  PlanningTicket? _ticket;
+
   int? _timeLeft;
 
   HostLandingSessionBloc({
@@ -160,12 +161,15 @@ class HostLandingSessionBloc
     List<PlanningTicketVote>? votes,
   }) {
     return participants.map((participant) {
-      var participantVotes = votes
-          ?.where(
-              (element) => element.participantId == participant.participantId)
-          .map((vote) => vote.planningCard?.title)
-          .whereNotNull()
-          .toList();
+      var participantSpecificVotes = votes?.where(
+          (element) => element.participantId == participant.participantId);
+
+      var participantVotes = participantSpecificVotes?.isEmpty == true
+          ? null
+          : participantSpecificVotes
+              ?.map((vote) => vote.selectedCard?.title)
+              .whereNotNull()
+              .toList();
 
       return PlanningParticipantDto(
         participantId: participant.participantId,
@@ -177,12 +181,13 @@ class HostLandingSessionBloc
   }
 
   _handleStateEvent({required PlanningSessionStateMessage message}) {
-    _sessionHasStarted = true;
     sessionName = message.sessionName;
     availableCards = message.availableCards;
+    ticket = message.ticket;
+
+    _sessionHasStarted = true;
     _sessionCode = message.sessionCode;
     _planningParticipants = message.participants;
-    _ticket = message.ticket;
     _timeLeft = message.timeLeft;
   }
 

@@ -4,25 +4,38 @@ import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
 
-class HostAddTicketScreen extends StatefulWidget {
+class HostTicketDetailsScreen extends StatefulWidget {
   final Set<String> tags;
   final Function(String, String?, Set<String> tags) onAddTicket;
+  final String? title;
+  final String? description;
 
-  const HostAddTicketScreen({
+  const HostTicketDetailsScreen({
     Key? key,
     required this.tags,
     required this.onAddTicket,
+    this.title,
+    this.description,
   }) : super(key: key);
 
   @override
-  State<HostAddTicketScreen> createState() => _HostAddTicketScreenState();
+  State<HostTicketDetailsScreen> createState() =>
+      _HostTicketDetailsScreenState();
 }
 
-class _HostAddTicketScreenState extends State<HostAddTicketScreen> {
+class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
 
   get shouldEnableAddButton => _titleController.text.isNotEmpty;
+  get editMode => widget.title != null || widget.description != null;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController.text = widget.title ?? '';
+    _descriptionController.text = widget.description ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +51,7 @@ class _HostAddTicketScreenState extends State<HostAddTicketScreen> {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                const TitleText(text: 'Add a new ticket'),
+                TitleText(text: editMode ? 'Edit ticket' : 'Add a new ticket'),
                 const DescriptionText(text: 'Ticket details'),
                 StyledTextField(
                   placeholder: 'Title *',
@@ -51,7 +64,7 @@ class _HostAddTicketScreenState extends State<HostAddTicketScreen> {
                 ),
                 //TODO: Tag selection
                 RoundedButton(
-                  title: 'Add ticket',
+                  title: editMode ? 'Edit ticket' : 'Add ticket',
                   enabled: shouldEnableAddButton,
                   onPressed: () {
                     widget.onAddTicket(
