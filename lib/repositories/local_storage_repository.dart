@@ -19,7 +19,7 @@ class LocalStorageRepository {
     return UuidValue(value[_kUuidKey]);
   }
 
-  removeUuid() {
-    db.collection(_kCollectionKey).doc(_kUuidKey).delete();
+  Future<void> removeUuid() async {
+    await db.collection(_kCollectionKey).doc(_kUuidKey).delete();
   }
 }

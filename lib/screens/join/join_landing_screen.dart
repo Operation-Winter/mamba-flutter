@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/bloc/join/join_landing_session_bloc.dart';
+import 'package:mamba/screens/join/join_edit_name_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/dialog/confirmation_dialog.dart';
@@ -12,6 +13,7 @@ import 'package:mamba/widgets/states/shared/planning_coffee_voting_state.dart';
 import 'package:mamba/widgets/states/shared/planning_end_session_state.dart';
 import 'package:mamba/widgets/states/shared/planning_error_state.dart';
 import 'package:mamba/widgets/states/shared/planning_loading_state.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class JoinLandingScreenArguments {
   final String sessionCode;
@@ -72,6 +74,22 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
       onConfirmation: () {
         widget.session.add(JoinSendLeaveSession());
       },
+    );
+  }
+
+  _didTapEditName() {
+    showBarModalBottomSheet(
+      expand: true,
+      context: context,
+      builder: (context) => JoinEditNameScreen(
+        name: widget.session.username,
+        onChangeName: (newName) {
+          widget.session.add(JoinSendChangeName(
+            newUsername: newName,
+          ));
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 
@@ -146,7 +164,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
         PlanningCommandButton(
           icon: Icons.edit,
           tooltip: 'Edit name',
-          onPressed: null,
+          onPressed: _didTapEditName,
         ),
         PlanningCommandButton(
           icon: Icons.coffee,
@@ -179,7 +197,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
         PlanningCommandButton(
           icon: Icons.edit,
           tooltip: 'Edit name',
-          onPressed: null,
+          onPressed: _didTapEditName,
         ),
         PlanningCommandButton(
           icon: Icons.coffee,
@@ -215,7 +233,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
         PlanningCommandButton(
           icon: Icons.edit,
           tooltip: 'Edit name',
-          onPressed: null,
+          onPressed: _didTapEditName,
         ),
         PlanningCommandButton(
           icon: Icons.coffee,

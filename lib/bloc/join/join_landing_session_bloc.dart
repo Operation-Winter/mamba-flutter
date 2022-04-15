@@ -230,7 +230,7 @@ class JoinLandingSessionBloc
       emit(JoinLandingSessionEnded(sessionName: _sessionName));
 
   _sendJoinCommand() async {
-    _localStorageRepository.removeUuid();
+    await _localStorageRepository.removeUuid();
     _joinSessionRepository.sendJoinSessionCommand(
       uuid: await _uuid,
       participantName: username,

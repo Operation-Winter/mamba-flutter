@@ -234,7 +234,7 @@ class HostLandingSessionBloc
   }
 
   _sendStartCommand() async {
-    _localStorageRepository.removeUuid();
+    await _localStorageRepository.removeUuid();
     _hostSessionRepository.sendStartSessionCommand(
       uuid: await _uuid,
       sessionName: sessionName,
@@ -264,7 +264,6 @@ class HostLandingSessionBloc
 
   _sendEndSessionCommand() async {
     _hostSessionRepository.sendEndSessionCommand(uuid: await _uuid);
-    _localStorageRepository.removeUuid();
   }
 
   _sendFinishVotingCommand() async =>
