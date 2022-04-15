@@ -36,8 +36,7 @@ class MyApp extends StatelessWidget {
 
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     if (settings.name == HostLandingScreen.route) {
-      final arguments = settings.arguments
-          as HostLandingScreenArguments; // Retrieve the value.
+      final arguments = settings.arguments as HostLandingScreenArguments;
       return MaterialPageRoute(
         settings: RouteSettings(name: HostLandingScreen.route),
         builder: (_) => HostLandingScreen(
@@ -47,7 +46,7 @@ class MyApp extends StatelessWidget {
           password: arguments.password,
           tags: arguments.tags,
         ),
-      ); // Pass it to BarPage.
+      );
     }
     return null;
   }

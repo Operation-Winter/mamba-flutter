@@ -5,10 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "mamba-flutter",
+            "name": "Mamba iOS",
             "request": "launch",
             "type": "dart",
             "deviceId": "iphone",
+            "console": "debugConsole",
+            "flutterMode": "debug"
+        },
+        {
+            "name": "Mamba Web",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "chrome",
             "console": "debugConsole",
             "flutterMode": "debug"
         }

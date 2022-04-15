@@ -47,7 +47,6 @@ class HostLandingSessionBloc
 
   String? _sessionCode;
   List<PlanningParticipant> _planningParticipants = [];
-
   int? _timeLeft;
 
   HostLandingSessionBloc({

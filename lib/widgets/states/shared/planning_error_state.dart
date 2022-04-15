@@ -76,6 +76,7 @@ class PlanningErrorState extends StatelessWidget {
                       enabled: true,
                       onPressed: () => onTapReconnect?.call(),
                     ),
+                    const SizedBox(height: 8),
                     RoundedButton(
                       title: 'Back to landing',
                       enabled: true,
