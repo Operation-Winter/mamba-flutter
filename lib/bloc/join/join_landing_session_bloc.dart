@@ -220,9 +220,11 @@ class JoinLandingSessionBloc
 
   _handleEndSessionCommand(Emitter<JoinLandingSessionState> emit) {}
 
-  _sendJoinCommand() {
-    print('Join: Send join command');
-  }
+  _sendJoinCommand() async => _joinSessionRepository.sendJoinSessionCommand(
+        uuid: await _uuid,
+        participantName: username,
+        sessionCode: sessionCode,
+      );
 
   _sendVoteCommand() {
     print('Join: Send vote command');

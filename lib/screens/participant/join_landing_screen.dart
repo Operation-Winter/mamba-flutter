@@ -25,7 +25,7 @@ class JoinLandingScreenArguments {
 }
 
 class JoinLandingScreen extends StatefulWidget {
-  static String route = '/participant/landing';
+  static String route = '/join/landing';
   late final JoinLandingSessionBloc session;
 
   JoinLandingScreen({
@@ -54,7 +54,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
 
   Future<void> _connect() async {
     await widget.session.connect();
-    // widget.session.add(JoinSendStartSession());
+    widget.session.add(JoinSendJoinSession());
   }
 
   _didTapRequestCoffee() => print('Did tap request coffee');

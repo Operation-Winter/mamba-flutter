@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:mamba/screens/participant/participant_landing_screen.dart';
+import 'package:mamba/screens/participant/join_landing_screen.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
 import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
 
-class ParticipantSetupScreen extends StatefulWidget {
-  const ParticipantSetupScreen({Key? key}) : super(key: key);
-  static String route = '/participant/setup';
+class JoinSetupScreen extends StatefulWidget {
+  const JoinSetupScreen({Key? key}) : super(key: key);
+  static String route = '/join/setup';
 
   @override
-  _ParticipantSetupScreenState createState() => _ParticipantSetupScreenState();
+  _JoinSetupScreenState createState() => _JoinSetupScreenState();
 }
 
-class _ParticipantSetupScreenState extends State<ParticipantSetupScreen> {
+class _JoinSetupScreenState extends State<JoinSetupScreen> {
   bool validationPassed = false;
   String? sessionCode;
   String? password;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mamba/screens/host/host_setup_screen.dart';
-import 'package:mamba/screens/participant/participant_setup_screen.dart';
+import 'package:mamba/screens/participant/join_setup_screen.dart';
 import 'package:mamba/screens/spectator/spectator_setup_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/landing/landing_image_button.dart';
@@ -21,7 +21,7 @@ class _LandingScreenState extends State<LandingScreen> {
   }
 
   void didTapParticipantSession() {
-    Navigator.pushNamed(context, ParticipantSetupScreen.route);
+    Navigator.pushNamed(context, JoinSetupScreen.route);
   }
 
   void didTapSpectatorSession() {

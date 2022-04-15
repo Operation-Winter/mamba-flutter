@@ -15,7 +15,7 @@ import 'package:uuid/uuid.dart';
 class PlanningJoinSessionRepository {
   final WebSocketNetworking _webSocket = WebSocketNetworking();
 
-  connect() {
+  Future<void> connect() async {
     try {
       _webSocket.connect(url: URLCenter.planningJoinPath.toString());
     } catch (_) {

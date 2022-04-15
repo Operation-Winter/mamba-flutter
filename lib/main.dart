@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mamba/screens/host/host_landing_screen.dart';
 import 'package:mamba/screens/host/host_setup_screen.dart';
-import 'package:mamba/screens/participant/participant_landing_screen.dart';
-import 'package:mamba/screens/participant/participant_setup_screen.dart';
+import 'package:mamba/screens/participant/join_landing_screen.dart';
+import 'package:mamba/screens/participant/join_setup_screen.dart';
 import 'package:mamba/screens/spectator/spectator_landing_screen.dart';
 import 'package:mamba/screens/spectator/spectator_setup_screen.dart';
 import 'package:mamba/ui_constants.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     return {
       LandingScreen.route: (context) => const LandingScreen(),
       HostSetupScreen.route: (context) => const HostSetupScreen(),
-      ParticipantSetupScreen.route: (context) => const ParticipantSetupScreen(),
+      JoinSetupScreen.route: (context) => const JoinSetupScreen(),
       SpectatorSetupScreen.route: (context) => const SpectatorSetupScreen(),
       SpectatorLandingScreen.route: (context) => const SpectatorLandingScreen(),
     };
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
         settings: RouteSettings(name: JoinLandingScreen.route),
         builder: (_) => JoinLandingScreen(
           sessionCode: arguments.sessionCode,
-          username: arguments.sessionCode,
+          username: arguments.username,
           password: arguments.password,
         ),
       );
