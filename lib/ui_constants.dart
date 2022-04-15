@@ -36,6 +36,10 @@ const landingImageButtonTextStyle = TextStyle(
   fontSize: 18,
 );
 
+const errorTextStyle = TextStyle(
+  color: Colors.red,
+);
+
 bool isDarkMode(BuildContext context) {
   var brightness = MediaQuery.of(context).platformBrightness;
   return brightness == Brightness.dark;

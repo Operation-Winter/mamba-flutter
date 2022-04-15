@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mamba/screens/landing_screen.dart';
+import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
 import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
@@ -60,15 +61,13 @@ class PlanningErrorState extends StatelessWidget {
                     const SizedBox(height: 20),
                     Text(
                       'Error code: $errorCode',
-                      style: const TextStyle(
-                        color: Colors.red,
-                      ),
+                      style: errorTextStyle,
+                      textAlign: TextAlign.center,
                     ),
                     Text(
                       errorDescription,
-                      style: const TextStyle(
-                        color: Colors.red,
-                      ),
+                      style: errorTextStyle,
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 30),
                     RoundedButton(
