@@ -212,12 +212,18 @@ class JoinLandingSessionBloc
       votes: message.ticket?.ticketVotes,
     );
 
+    var votes = ticket.ticketVotes
+        .map((vote) => vote.selectedCard)
+        .whereNotNull()
+        .toList();
+
     emit(JoinLandingSessionVotingFinished(
       sessionName: _sessionName,
       participants: participantDtos,
       coffeeVoteCount: 0,
       spectatorCount: 0,
       ticket: ticket,
+      votes: votes,
     ));
   }
 

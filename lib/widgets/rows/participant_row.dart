@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
 import 'package:uuid/uuid.dart';
 
@@ -10,9 +11,10 @@ class ParticipantRow extends StatelessWidget {
   final UuidValue participantId;
   final String name;
   final bool connected;
-  final List<String>? votes;
+  final List<PlanningCard>? votes;
   final List<PlanningParticipantCommand> participantCommands;
   final ParticipantRowVoteState voteState;
+  final bool highlighted;
 
   const ParticipantRow({
     Key? key,
@@ -21,6 +23,7 @@ class ParticipantRow extends StatelessWidget {
     required this.connected,
     required this.participantCommands,
     required this.voteState,
+    required this.highlighted,
     this.votes,
   }) : super(key: key);
 
@@ -34,6 +37,9 @@ class ParticipantRow extends StatelessWidget {
             color: Colors.grey.withOpacity(0.1),
           ),
         ],
+        border: highlighted && voteState == ParticipantRowVoteState.visible
+            ? Border.all(color: primaryColor, width: 2)
+            : null,
       ),
       child: PopupMenuButton(
         itemBuilder: (context) => participantCommands
@@ -49,6 +55,8 @@ class ParticipantRow extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (participantCommands.isNotEmpty) ...[
                 const Icon(
@@ -93,7 +101,22 @@ class ParticipantRow extends StatelessWidget {
                     )
         ];
       case ParticipantRowVoteState.visible:
-        return [];
+        return [
+          votes == null || votes?.isEmpty == true
+              ? const Icon(
+                  Icons.redo,
+                  color: disabledColor,
+                )
+              : Row(
+                  children: votes!
+                      .asMap()
+                      .entries
+                      .map((vote) => vote.key < votes!.length - 1
+                          ? Text('${vote.value} → ')
+                          : Text(vote.value.title))
+                      .toList(),
+                )
+        ];
     }
   }
 }

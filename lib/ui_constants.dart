@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const primaryColor = Color(0xFFA288E3);
+const darkPurple = Color(0xFF38023B);
 const accentColor = Color(0xFFCEFDFF);
 const disabledColor = Color.fromARGB(255, 116, 116, 116);
 const inputBackgroundColor = Color.fromARGB(20, 0, 0, 0);

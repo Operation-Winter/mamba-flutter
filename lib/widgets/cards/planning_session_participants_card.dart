@@ -3,7 +3,9 @@ import 'package:mamba/models/planning_participant_dto.dart';
 import 'package:mamba/widgets/rows/participant_row.dart';
 import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
+import 'package:mamba/models/planning_card.dart';
 import 'package:uuid/uuid.dart';
+import 'package:collection/collection.dart';
 
 class PlanningParticipantCommand {
   final Function(UuidValue)? onTap;
@@ -16,16 +18,27 @@ class PlanningParticipantCommand {
 }
 
 class PlanningSessionParticipantsCard extends StatelessWidget {
-  final List<PlanningParticipantDto> participants;
+  late final List<PlanningParticipantDto> participants;
   final List<PlanningParticipantCommand> participantCommands;
   final ParticipantRowVoteState voteState;
 
-  const PlanningSessionParticipantsCard({
+  PlanningSessionParticipantsCard({
     Key? key,
-    required this.participants,
+    required List<PlanningParticipantDto> participants,
     required this.participantCommands,
     required this.voteState,
-  }) : super(key: key);
+  }) : super(key: key) {
+    this.participants = participants.sorted((a, b) {
+      var sortOrderA =
+          a.votes?.isNotEmpty == true ? a.votes!.last.sortOrder : 100;
+      var sortOrderB =
+          b.votes?.isNotEmpty == true ? b.votes!.last.sortOrder : 100;
+
+      if (a.highlighted) return sortOrderA = -1;
+
+      return (sortOrderA).compareTo(sortOrderB);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +65,8 @@ class PlanningSessionParticipantsCard extends StatelessWidget {
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: constraints.maxWidth > 500 ? 2 : 1,
                           childAspectRatio: constraints.maxWidth > 500
-                              ? constraints.maxWidth / 92
-                              : constraints.maxWidth / 46,
+                              ? constraints.maxWidth / 100
+                              : constraints.maxWidth / 50,
                           crossAxisSpacing: 5,
                           mainAxisSpacing: 5,
                         ),
@@ -68,6 +81,7 @@ class PlanningSessionParticipantsCard extends StatelessWidget {
                                 participantCommands: participantCommands,
                                 voteState: voteState,
                                 votes: participant.votes,
+                                highlighted: participant.highlighted,
                               ),
                             )
                             .toList(),

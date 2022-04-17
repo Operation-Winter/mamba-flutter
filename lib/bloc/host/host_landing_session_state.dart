@@ -41,6 +41,7 @@ class HostLandingSessionVotingFinished extends HostLandingSessionState {
   final int coffeeVoteCount;
   final int spectatorCount;
   final PlanningTicket ticket;
+  final List<PlanningCard> votes;
 
   HostLandingSessionVotingFinished({
     required this.sessionName,
@@ -48,6 +49,7 @@ class HostLandingSessionVotingFinished extends HostLandingSessionState {
     required this.coffeeVoteCount,
     required this.spectatorCount,
     required this.ticket,
+    required this.votes,
   });
 }
 

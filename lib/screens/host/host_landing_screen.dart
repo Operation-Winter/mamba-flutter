@@ -7,7 +7,7 @@ import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
 import 'package:mamba/widgets/dialog/confirmation_dialog.dart';
 import 'package:mamba/widgets/states/shared/planning_none_state.dart';
-import 'package:mamba/widgets/states/host/planning_host_voting_finished_state.dart';
+import 'package:mamba/widgets/states/shared/planning_voting_finished_state.dart';
 import 'package:mamba/widgets/states/host/planning_host_voting_state.dart';
 import 'package:mamba/widgets/states/shared/planning_coffee_voting_finished_state.dart';
 import 'package:mamba/widgets/states/shared/planning_coffee_voting_state.dart';
@@ -297,7 +297,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
 
   Widget _votingFinishedState(BuildContext context,
       {required HostLandingSessionVotingFinished state}) {
-    return PlanningHostVotingFinishedState(
+    return PlanningVotingFinishedState(
       sessionName: state.sessionName,
       participants: state.participants,
       coffeeVoteCount: state.coffeeVoteCount,
@@ -344,6 +344,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
           onPressed: _didTapRevote,
         ),
       ],
+      votes: state.votes,
     );
   }
 

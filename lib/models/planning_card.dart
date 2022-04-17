@@ -70,4 +70,31 @@ extension PlanningCardExtension on PlanningCard {
         return '?';
     }
   }
+
+  int get sortOrder {
+    switch (this) {
+      case PlanningCard.ZERO:
+        return 0;
+      case PlanningCard.ONE:
+        return 1;
+      case PlanningCard.TWO:
+        return 2;
+      case PlanningCard.THREE:
+        return 3;
+      case PlanningCard.FIVE:
+        return 4;
+      case PlanningCard.EIGHT:
+        return 5;
+      case PlanningCard.THIRTEEN:
+        return 6;
+      case PlanningCard.TWENTY:
+        return 7;
+      case PlanningCard.FOURTY:
+        return 8;
+      case PlanningCard.HUNDRED:
+        return 9;
+      case PlanningCard.QUESTION:
+        return 10;
+    }
+  }
 }

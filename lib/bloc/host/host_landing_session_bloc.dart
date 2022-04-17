@@ -10,6 +10,7 @@ import 'package:mamba/models/planning_participant_dto.dart';
 import 'package:mamba/models/planning_ticket.dart';
 import 'package:mamba/repositories/local_storage_repository.dart';
 import 'package:mamba/repositories/planning_host_session_repository.dart';
+import "package:collection/collection.dart";
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
@@ -215,12 +216,18 @@ class HostLandingSessionBloc
       votes: message.ticket?.ticketVotes,
     );
 
+    var votes = ticket.ticketVotes
+        .map((vote) => vote.selectedCard)
+        .whereNotNull()
+        .toList();
+
     emit(HostLandingSessionVotingFinished(
       sessionName: sessionName,
       participants: participantDtos,
       coffeeVoteCount: 0,
       spectatorCount: 0,
       ticket: ticket,
+      votes: votes,
     ));
   }
 
