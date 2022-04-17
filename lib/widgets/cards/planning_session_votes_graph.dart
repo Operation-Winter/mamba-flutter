@@ -20,7 +20,7 @@ class PlanningSessionVotesGraph extends StatelessWidget {
         votingGroups.entries.map((votingGroup) {
       return PlanningVotingResult(
         title: votingGroup.key,
-        transparency: 255,
+        transparency: 1,
         color: Colors.white,
         ratio: votingGroup.value.length,
       );
@@ -30,9 +30,8 @@ class PlanningSessionVotesGraph extends StatelessWidget {
 
     voteResults.forEachIndexed((index, element) {
       element.transparency =
-          (((votingGroups.length - index) / votingGroups.length) * 255).round();
-      element.color =
-          element.transparency > 127.5 ? Colors.white : Colors.black;
+          ((votingGroups.length - index) / votingGroups.length);
+      element.color = element.transparency >= 0.5 ? Colors.white : Colors.black;
     });
 
     return voteResults;
@@ -53,27 +52,30 @@ class PlanningSessionVotesGraph extends StatelessWidget {
             const SizedBox(height: 16),
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Row(
-                children: votingResults
-                    .map(
-                      (votingResult) => Flexible(
-                        flex: votingResult.ratio,
-                        child: Container(
-                          color:
-                              darkPurple.withAlpha(votingResult.transparency),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Center(
-                              child: Text(
-                                votingResult.title,
-                                style: TextStyle(color: votingResult.color),
+              child: Container(
+                color: Colors.white,
+                child: Row(
+                  children: votingResults
+                      .map(
+                        (votingResult) => Flexible(
+                          flex: votingResult.ratio,
+                          child: Container(
+                            color: darkPurple
+                                .withOpacity(votingResult.transparency),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Center(
+                                child: Text(
+                                  votingResult.title,
+                                  style: TextStyle(color: votingResult.color),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    )
-                    .toList(),
+                      )
+                      .toList(),
+                ),
               ),
             ),
           ],

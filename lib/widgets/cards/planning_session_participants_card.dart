@@ -30,11 +30,12 @@ class PlanningSessionParticipantsCard extends StatelessWidget {
   }) : super(key: key) {
     this.participants = participants.sorted((a, b) {
       var sortOrderA =
-          a.votes?.isNotEmpty == true ? a.votes!.last.sortOrder : 100;
+          a.votes?.isNotEmpty == true ? a.votes!.last.sortOrder + 20 : 100;
       var sortOrderB =
-          b.votes?.isNotEmpty == true ? b.votes!.last.sortOrder : 100;
+          b.votes?.isNotEmpty == true ? b.votes!.last.sortOrder + 20 : 100;
 
-      if (a.highlighted) return sortOrderA = -1;
+      if (a.highlighted) sortOrderA -= 10;
+      if (b.highlighted) sortOrderB -= 10;
 
       return (sortOrderA).compareTo(sortOrderB);
     });

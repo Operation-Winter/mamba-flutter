@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class PlanningVotingResult {
   final String title;
-  int transparency;
+  double transparency;
   Color color;
   final int ratio;
 
