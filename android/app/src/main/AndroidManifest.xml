@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mamba">
+    package="za.co.armandkamffer.mamba">
    <application
         android:label="mamba"
         android:name="${applicationName}"
