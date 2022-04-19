@@ -41,10 +41,12 @@ class PlanningJoinSessionRepository {
     required UuidValue uuid,
     required String participantName,
     required String sessionCode,
+    String? password,
   }) {
     var message = PlanningJoinSessionMessage(
       participantName: participantName,
       sessionCode: sessionCode,
+      password: password,
     );
     var planningCommand = PlanningJoinSendCommand(
       uuid: uuid,

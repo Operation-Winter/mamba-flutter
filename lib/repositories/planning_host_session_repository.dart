@@ -44,11 +44,16 @@ class PlanningHostSessionRepository {
     required String sessionName,
     required bool automaticallyCompleteVoting,
     required List<PlanningCard> availableCards,
+    String? password,
+    required Set<String> tags,
   }) {
     var message = PlanningStartSessionMessage(
-        sessionName: sessionName,
-        autoCompleteVoting: automaticallyCompleteVoting,
-        availableCards: availableCards);
+      sessionName: sessionName,
+      autoCompleteVoting: automaticallyCompleteVoting,
+      availableCards: availableCards,
+      password: password,
+      tags: tags,
+    );
     var planningCommand = PlanningHostSendCommand(
       uuid: uuid,
       type: PlanningHostSendCommandType.START_SESSION,

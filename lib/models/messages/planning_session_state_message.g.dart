@@ -21,6 +21,12 @@ PlanningSessionStateMessage _$PlanningSessionStateMessageFromJson(
           ? null
           : PlanningTicket.fromJson(json['ticket'] as Map<String, dynamic>),
       timeLeft: json['timeLeft'] as int?,
+      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toSet(),
+      spectatorCount: json['spectatorCount'] as int,
+      coffeeRequestCount: json['coffeeRequestCount'] as int,
+      coffeeVotes: (json['coffeeVotes'] as List<dynamic>?)
+          ?.map((e) => PlanningCoffeeVote.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$PlanningSessionStateMessageToJson(
@@ -33,6 +39,10 @@ Map<String, dynamic> _$PlanningSessionStateMessageToJson(
       'participants': instance.participants.map((e) => e.toJson()).toList(),
       'ticket': instance.ticket?.toJson(),
       'timeLeft': instance.timeLeft,
+      'tags': instance.tags.toList(),
+      'spectatorCount': instance.spectatorCount,
+      'coffeeRequestCount': instance.coffeeRequestCount,
+      'coffeeVotes': instance.coffeeVotes?.map((e) => e.toJson()).toList(),
     };
 
 const _$PlanningCardEnumMap = {

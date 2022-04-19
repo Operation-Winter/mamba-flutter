@@ -169,8 +169,8 @@ class JoinLandingSessionBloc
     emit(JoinLandingSessionNone(
       sessionName: _sessionName,
       participants: participantDtos,
-      coffeeVoteCount: 0,
-      spectatorCount: 0,
+      coffeeVoteCount: message.coffeeRequestCount,
+      spectatorCount: message.spectatorCount,
     ));
   }
 
@@ -193,8 +193,8 @@ class JoinLandingSessionBloc
     emit(JoinLandingSessionVoting(
       sessionName: _sessionName,
       participants: participantDtos,
-      coffeeVoteCount: 0,
-      spectatorCount: 0,
+      coffeeVoteCount: message.coffeeRequestCount,
+      spectatorCount: message.spectatorCount,
       ticket: ticket,
       availableCards: message.availableCards,
       selectedCard: selectedCard,
@@ -220,8 +220,8 @@ class JoinLandingSessionBloc
     emit(JoinLandingSessionVotingFinished(
       sessionName: _sessionName,
       participants: participantDtos,
-      coffeeVoteCount: 0,
-      spectatorCount: 0,
+      coffeeVoteCount: message.coffeeRequestCount,
+      spectatorCount: message.spectatorCount,
       ticket: ticket,
       votes: votes,
     ));
@@ -258,6 +258,7 @@ class JoinLandingSessionBloc
       uuid: await _uuid,
       participantName: username,
       sessionCode: sessionCode,
+      password: password,
     );
   }
 

@@ -14,7 +14,7 @@ class LocalStorageRepository {
 
   Future<UuidValue?> getUuid() async {
     var preferences = await _preferences;
-    var value = await preferences.getString(_kUuidKey);
+    var value = preferences.getString(_kUuidKey);
     if (value == null) return null;
     return UuidValue(value);
   }

@@ -14,6 +14,8 @@ PlanningStartSessionMessage _$PlanningStartSessionMessageFromJson(
       availableCards: (json['availableCards'] as List<dynamic>)
           .map((e) => $enumDecode(_$PlanningCardEnumMap, e))
           .toList(),
+      password: json['password'] as String?,
+      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toSet(),
     );
 
 Map<String, dynamic> _$PlanningStartSessionMessageToJson(
@@ -23,6 +25,8 @@ Map<String, dynamic> _$PlanningStartSessionMessageToJson(
       'autoCompleteVoting': instance.autoCompleteVoting,
       'availableCards':
           instance.availableCards.map((e) => _$PlanningCardEnumMap[e]).toList(),
+      'password': instance.password,
+      'tags': instance.tags.toList(),
     };
 
 const _$PlanningCardEnumMap = {

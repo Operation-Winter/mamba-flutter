@@ -11,6 +11,7 @@ PlanningJoinSessionMessage _$PlanningJoinSessionMessageFromJson(
     PlanningJoinSessionMessage(
       sessionCode: json['sessionCode'] as String,
       participantName: json['participantName'] as String,
+      password: json['password'] as String?,
     );
 
 Map<String, dynamic> _$PlanningJoinSessionMessageToJson(
@@ -18,4 +19,5 @@ Map<String, dynamic> _$PlanningJoinSessionMessageToJson(
     <String, dynamic>{
       'sessionCode': instance.sessionCode,
       'participantName': instance.participantName,
+      'password': instance.password,
     };

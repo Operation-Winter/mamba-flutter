@@ -180,8 +180,8 @@ class HostLandingSessionBloc
     emit(HostLandingSessionNone(
       sessionName: sessionName,
       participants: participantDtos,
-      coffeeVoteCount: 0,
-      spectatorCount: 0,
+      coffeeVoteCount: message.coffeeRequestCount,
+      spectatorCount: message.spectatorCount,
     ));
   }
 
@@ -199,8 +199,8 @@ class HostLandingSessionBloc
     emit(HostLandingSessionVoting(
       sessionName: sessionName,
       participants: participantDtos,
-      coffeeVoteCount: 0,
-      spectatorCount: 0,
+      coffeeVoteCount: message.coffeeRequestCount,
+      spectatorCount: message.spectatorCount,
       ticket: ticket,
     ));
   }
@@ -224,8 +224,8 @@ class HostLandingSessionBloc
     emit(HostLandingSessionVotingFinished(
       sessionName: sessionName,
       participants: participantDtos,
-      coffeeVoteCount: 0,
-      spectatorCount: 0,
+      coffeeVoteCount: message.coffeeRequestCount,
+      spectatorCount: message.spectatorCount,
       ticket: ticket,
       votes: votes,
     ));
@@ -247,6 +247,8 @@ class HostLandingSessionBloc
       sessionName: sessionName,
       automaticallyCompleteVoting: automaticallyCompleteVoting,
       availableCards: availableCards,
+      password: password,
+      tags: tags,
     );
   }
 

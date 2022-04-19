@@ -6,10 +6,12 @@ part 'planning_join_session_message.g.dart';
 class PlanningJoinSessionMessage implements PlanningMessage {
   final String sessionCode;
   final String participantName;
+  final String? password;
 
   PlanningJoinSessionMessage({
     required this.sessionCode,
     required this.participantName,
+    this.password,
   });
 
   factory PlanningJoinSessionMessage.fromJson(Map<String, dynamic> data) =>
