@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/bloc/host/host_landing_session_bloc.dart';
 import 'package:mamba/screens/host/host_ticket_details_screen.dart';
+import 'package:mamba/screens/planning_session_sharing_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
@@ -109,7 +110,19 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
 
   _didTapRequestCoffee() => print('Did tap request coffee');
 
-  _didTapShare() => print('Did tap share');
+  _didTapShare() {
+    var sessionCode = widget.session.sessionCode;
+    if (sessionCode == null) return;
+
+    showBarModalBottomSheet(
+      expand: true,
+      context: context,
+      builder: (context) => PlanningSessionSharingScreen(
+        sessionCode: sessionCode,
+        password: widget.session.password,
+      ),
+    );
+  }
 
   _didTapAddTimer() => print('Did tap add timer');
 

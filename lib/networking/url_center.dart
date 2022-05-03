@@ -22,4 +22,13 @@ class URLCenter {
     return Uri.parse(
         currentEnvironment.baseWebsocketURL + '/planning/spectator');
   }
+
+  static Uri sharePath({required String sessionCode, String? password}) {
+    var urlPath =
+        currentEnvironment.baseURL + '/planning/share?sessionCode=$sessionCode';
+    if (password != null) {
+      urlPath + '&password=$password';
+    }
+    return Uri.parse(urlPath);
+  }
 }

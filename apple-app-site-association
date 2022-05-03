@@ -1,0 +1,26 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": [
+          "47QLT56GDU.za.co.armandkamffer.mamba"
+        ],
+        "appID": "47QLT56GDU.za.co.armandkamffer.mamba",
+        "components": [
+          {
+            "/": "/planning/share"
+          }
+        ],
+        "paths": [
+          "/planning/share"
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "47QLT56GDU.za.co.armandkamffer.mamba"
+    ]
+  }
+}

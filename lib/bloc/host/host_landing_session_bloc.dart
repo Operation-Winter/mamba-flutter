@@ -28,6 +28,7 @@ class HostLandingSessionBloc
   bool _sessionEnded = false;
 
   String sessionName;
+  String? sessionCode;
   String? password;
   bool automaticallyCompleteVoting;
   List<PlanningCard> availableCards = [];
@@ -164,6 +165,7 @@ class HostLandingSessionBloc
     sessionName = message.sessionName;
     availableCards = message.availableCards;
     ticket = message.ticket;
+    sessionCode = message.sessionCode;
 
     _sessionHasStarted = true;
     _sessionCode = message.sessionCode;

@@ -9,4 +9,8 @@ extension ExtensionNetworkEnvironment on NetworkEnvironment {
         return 'wss://mamba.armandkamffer.co.za/api';
     }
   }
+
+  String get baseURL {
+    return 'https://mamba.armandkamffer.co.za';
+  }
 }

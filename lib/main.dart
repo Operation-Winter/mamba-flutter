@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:mamba/screens/planning_share_screen.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:universal_io/io.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
+  final _navigatorKey = GlobalKey<NavigatorState>();
   Uri? _initialUri;
   Uri? _latestUri;
   Object? _err;
@@ -61,8 +63,20 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  /// Handle incoming links - the ones that the app will recieve from the OS
-  /// while already started.
+  _handleShareURL(Uri? uri) {
+    var sessionCode = uri?.queryParameters['sessionCode'];
+    var password = uri?.queryParameters['sessionCode'];
+
+    if (sessionCode == null) return;
+    _navigatorKey.currentState?.pushNamed(
+      PlanningShareScreen.route,
+      arguments: PlanningShareScreenArguments(
+        sessionCode: sessionCode,
+        password: password,
+      ),
+    );
+  }
+
   void _handleIncomingLinks() {
     if (!kIsWeb) {
       // It will handle app links while the app is already started - be it in
@@ -70,21 +84,19 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
       _sub = uriLinkStream.listen((Uri? uri) {
         if (!mounted) return;
         print('got uri: $uri');
-        setState(() {
-          _latestUri = uri;
-          _err = null;
-        });
+        if (uri?.pathSegments.contains('planning') == true &&
+            uri?.pathSegments.contains('share') == true) {
+          _handleShareURL(uri);
+        }
       }, onError: (Object err) {
         if (!mounted) return;
         print('got err: $err');
-        setState(() {
-          _latestUri = null;
-          if (err is FormatException) {
-            _err = err;
-          } else {
-            _err = null;
-          }
-        });
+        _latestUri = null;
+        if (err is FormatException) {
+          _err = err;
+        } else {
+          _err = null;
+        }
       });
     }
   }
@@ -108,16 +120,20 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           print('no initial uri');
         } else {
           print('got initial uri: $uri');
+          if (uri.pathSegments.contains('planning') == true &&
+              uri.pathSegments.contains('share') == true) {
+            _handleShareURL(uri);
+          }
         }
         if (!mounted) return;
-        setState(() => _initialUri = uri);
+        _initialUri = uri;
       } on PlatformException {
         // Platform messages may fail but we ignore the exception
         print('falied to get initial uri');
       } on FormatException catch (err) {
         if (!mounted) return;
         print('malformed initial uri');
-        setState(() => _err = err);
+        _err = err;
       }
     }
   }
@@ -145,12 +161,22 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           password: arguments.password,
         ),
       );
+    } else if (settings.name == PlanningShareScreen.route) {
+      final arguments = settings.arguments as PlanningShareScreenArguments;
+      return MaterialPageRoute(
+        settings: RouteSettings(name: PlanningShareScreen.route),
+        builder: (_) => PlanningShareScreen(
+          sessionCode: arguments.sessionCode,
+          password: arguments.password,
+        ),
+      );
     }
     return null;
   }
 
   MaterialApp _defaultApp() {
     return MaterialApp(
+      navigatorKey: _navigatorKey,
       title: 'Mamba',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
@@ -170,6 +196,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         primaryColor: primaryColor,
       ),
       child: CupertinoApp(
+        navigatorKey: _navigatorKey,
         title: 'Mamba',
         theme: CupertinoThemeData(
             brightness: platformBrightness, primaryColor: primaryColor),

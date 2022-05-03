@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/bloc/join/join_landing_session_bloc.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/screens/join/join_edit_name_screen.dart';
+import 'package:mamba/screens/planning_session_sharing_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/dialog/confirmation_dialog.dart';
@@ -63,7 +64,16 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
 
   _didTapRequestCoffee() => print('Did tap request coffee');
 
-  _didTapShare() => print('Did tap share');
+  _didTapShare() {
+    showBarModalBottomSheet(
+      expand: true,
+      context: context,
+      builder: (context) => PlanningSessionSharingScreen(
+        sessionCode: widget.session.sessionCode,
+        password: widget.session.password,
+      ),
+    );
+  }
 
   _didTapReconnect() => widget.session.add(JoinSendReconnect());
 

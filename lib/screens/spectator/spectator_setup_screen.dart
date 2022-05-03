@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mamba/screens/spectator/spectator_landing_screen.dart';
+import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
 import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/widgets/text/description_text.dart';
@@ -37,68 +38,73 @@ class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          children: [
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              margin: const EdgeInsets.only(
-                top: 16,
-                bottom: 8,
-                left: 16,
-                right: 16,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints.tightFor(width: maxWidth),
+            child: ListView(
+              children: [
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  margin: const EdgeInsets.only(
+                    top: 16,
+                    bottom: 8,
+                    left: 16,
+                    right: 16,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              iconSize: 30,
+                              icon: const Icon(Icons.chevron_left),
+                            ),
+                            const Expanded(
+                              child: TitleText(
+                                text: 'Spectate a sizing session',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            const SizedBox(width: 48),
+                          ],
+                        ),
+                        const DescriptionText(
+                            text:
+                                'Provide the details necessary spectate a session below'),
+                        StyledTextField(
+                          placeholder: 'Session code *',
+                          input: sessionCode,
+                          onChanged: sessionCodeChanged,
+                        ),
+                        StyledTextField(
+                          placeholder: 'Password (Optional)',
+                          input: password,
+                          onChanged: (password) {
+                            this.password = password;
                           },
-                          iconSize: 30,
-                          icon: const Icon(Icons.chevron_left),
                         ),
-                        const Expanded(
-                          child: TitleText(
-                            text: 'Spectate a sizing session',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const SizedBox(width: 48),
+                        const SizedBox(height: 10),
+                        RoundedButton(
+                          title: 'Spectate session',
+                          enabled: validationPassed,
+                          onPressed:
+                              validationPassed ? didTapSpectateSession : null,
+                        )
                       ],
                     ),
-                    const DescriptionText(
-                        text:
-                            'Provide the details necessary spectate a session below'),
-                    StyledTextField(
-                      placeholder: 'Session code *',
-                      input: sessionCode,
-                      onChanged: sessionCodeChanged,
-                    ),
-                    StyledTextField(
-                      placeholder: 'Password (Optional)',
-                      input: password,
-                      onChanged: (password) {
-                        this.password = password;
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    RoundedButton(
-                      title: 'Spectate session',
-                      enabled: validationPassed,
-                      onPressed:
-                          validationPassed ? didTapSpectateSession : null,
-                    )
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
