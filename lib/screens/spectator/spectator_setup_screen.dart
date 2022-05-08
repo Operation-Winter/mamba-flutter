@@ -36,13 +36,16 @@ class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {
   String? sessionCode;
   String? password;
 
+  bool get formIsValid {
+    return sessionCode?.isEmpty == false;
+  }
+
   @override
   void initState() {
     super.initState();
-    setState(() {
-      sessionCode = widget.sessionCode;
-      password = widget.password;
-    });
+    sessionCode = widget.sessionCode;
+    password = widget.password;
+    validationPassed = formIsValid;
   }
 
   void sessionCodeChanged(String? newValue) {
@@ -54,10 +57,6 @@ class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {
 
   void didTapSpectateSession() {
     Navigator.pushNamed(context, SpectatorLandingScreen.route);
-  }
-
-  bool get formIsValid {
-    return sessionCode?.isEmpty == false;
   }
 
   @override
@@ -109,6 +108,7 @@ class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {
                           placeholder: 'Session code *',
                           input: sessionCode,
                           onChanged: sessionCodeChanged,
+                          autofocus: true,
                         ),
                         StyledTextField(
                           placeholder: 'Password (Optional)',

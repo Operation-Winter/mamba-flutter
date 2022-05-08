@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mamba/repositories/local_storage_repository.dart';
 import 'package:mamba/screens/join/join_landing_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
@@ -36,17 +37,28 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
   String? sessionCode;
   String? password;
   String? username;
+  final _localStorageRepository = LocalStorageRepository();
 
   bool get formIsValid {
     return sessionCode?.isEmpty == false && username?.isEmpty == false;
   }
 
+  Future<String?> get getStoredUsername async {
+    return await _localStorageRepository.getUsername;
+  }
+
   @override
   void initState() {
     super.initState();
+    configureUsername();
+    sessionCode = widget.sessionCode;
+    password = widget.password;
+  }
+
+  Future<void> configureUsername() async {
+    username = await getStoredUsername;
     setState(() {
-      sessionCode = widget.sessionCode;
-      password = widget.password;
+      validationPassed = formIsValid;
     });
   }
 
@@ -123,6 +135,7 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
                           placeholder: 'Session code *',
                           input: sessionCode,
                           onChanged: sessionCodeChanged,
+                          autofocus: true,
                         ),
                         StyledTextField(
                           placeholder: 'Password (Optional)',

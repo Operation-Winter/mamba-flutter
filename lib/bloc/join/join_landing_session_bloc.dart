@@ -254,6 +254,7 @@ class JoinLandingSessionBloc
 
   _sendJoinCommand() async {
     await _localStorageRepository.removeUuid();
+    await _localStorageRepository.username(username);
     _joinSessionRepository.sendJoinSessionCommand(
       uuid: await _uuid,
       participantName: username,
@@ -262,8 +263,11 @@ class JoinLandingSessionBloc
     );
   }
 
-  _sendChangeNameCommand() async => _joinSessionRepository
-      .sendChangeNameCommand(uuid: await _uuid, name: username);
+  _sendChangeNameCommand() async {
+    await _localStorageRepository.username(username);
+    _joinSessionRepository.sendChangeNameCommand(
+        uuid: await _uuid, name: username);
+  }
 
   _sendVoteCommand({required PlanningCard selectedCard}) async =>
       _joinSessionRepository.sendVoteCommand(

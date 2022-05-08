@@ -24,12 +24,24 @@ class StyledTextField extends StatefulWidget {
 }
 
 class _StyledTextFieldState extends State<StyledTextField> {
+  late TextEditingController _controller;
   String? text;
 
   @override
   void initState() {
     super.initState();
     text = widget.input;
+    _controller = widget.controller ?? TextEditingController(text: text);
+  }
+
+  @override
+  void didUpdateWidget(covariant StyledTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    text = widget.input;
+
+    if (text?.isNotEmpty == true) {
+      _controller.text = text!;
+    }
   }
 
   void onChanged(String? newValue) {
@@ -45,7 +57,7 @@ class _StyledTextFieldState extends State<StyledTextField> {
             vertical: 8,
           ),
       child: TextFormField(
-        controller: widget.controller,
+        controller: _controller,
         decoration: InputDecoration(
           labelText: widget.placeholder,
           contentPadding: const EdgeInsets.all(10),
@@ -60,7 +72,6 @@ class _StyledTextFieldState extends State<StyledTextField> {
           ),
         ),
         onChanged: onChanged,
-        initialValue: widget.controller == null ? text : null,
         cursorColor: primaryColor,
         autofocus: widget.autofocus ?? false,
       ),

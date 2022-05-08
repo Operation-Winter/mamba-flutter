@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mamba/models/planning_card.dart';
+import 'package:mamba/repositories/local_storage_repository.dart';
 import 'package:mamba/screens/host/host_landing_screen.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
 import 'package:mamba/widgets/cards/planning_card_selectable.dart';
@@ -28,6 +29,11 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
   String? password;
   Set<String> tags = {};
   List<PlanningCard> availableCards = PlanningCard.values.toList();
+  final _textController = TextEditingController();
+
+  bool get formIsValid {
+    return sessionName?.isEmpty == false && availableCards.isNotEmpty;
+  }
 
   void automaticallyCompleteVotingChanged(bool newValue) {
     automaticallyCompleteVoting = newValue;
@@ -55,12 +61,6 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
       ),
     );
   }
-
-  bool get formIsValid {
-    return sessionName?.isEmpty == false && availableCards.isNotEmpty;
-  }
-
-  final _textController = TextEditingController();
 
   void _addChip(String tag) {
     setState(() {
@@ -149,6 +149,7 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                           placeholder: 'Session name',
                           input: sessionName,
                           onChanged: sessionNameChanged,
+                          autofocus: true,
                         ),
                         StyledTextField(
                           placeholder: 'Password (Optional)',
