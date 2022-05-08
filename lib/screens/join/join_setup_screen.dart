@@ -38,6 +38,7 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
   String? password;
   String? username;
   final _localStorageRepository = LocalStorageRepository();
+  late TextEditingController _usernameController;
 
   bool get formIsValid {
     return sessionCode?.isEmpty == false && username?.isEmpty == false;
@@ -53,10 +54,14 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
     configureUsername();
     sessionCode = widget.sessionCode;
     password = widget.password;
+    _usernameController = TextEditingController();
   }
 
   Future<void> configureUsername() async {
-    username = await getStoredUsername;
+    var username = await getStoredUsername;
+
+    if (username == null) return;
+    _usernameController.text = username;
     setState(() {
       validationPassed = formIsValid;
     });
@@ -146,8 +151,8 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
                         ),
                         StyledTextField(
                           placeholder: 'Your name *',
-                          input: username,
                           onChanged: userNameChanged,
+                          controller: _usernameController,
                         ),
                         const SizedBox(height: 10),
                         RoundedButton(

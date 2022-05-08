@@ -34,16 +34,6 @@ class _StyledTextFieldState extends State<StyledTextField> {
     _controller = widget.controller ?? TextEditingController(text: text);
   }
 
-  @override
-  void didUpdateWidget(covariant StyledTextField oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    text = widget.input;
-
-    if (text?.isNotEmpty == true) {
-      _controller.text = text!;
-    }
-  }
-
   void onChanged(String? newValue) {
     text = newValue;
     widget.onChanged?.call(newValue);
