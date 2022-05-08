@@ -16,7 +16,7 @@ dependencies:
   json_annotation: ^4.4.0
   flutter_spinkit: ^5.1.0
   universal_io: ^2.0.4
-  web_socket_channel: ^2.1.0
+  web_socket_channel: ^2.2.0
   uuid: ^3.0.6
   flutter_bloc: ^8.0.1
   modal_bottom_sheet: ^2.0.1

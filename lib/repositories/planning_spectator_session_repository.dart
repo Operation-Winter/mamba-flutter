@@ -6,7 +6,7 @@ import 'package:mamba/models/commands/spectator/planning_spectator_send_command.
 import 'package:mamba/models/commands/spectator/planning_spectator_send_command_type.dart';
 import 'package:mamba/models/messages/planning_spectate_session_message.dart';
 import 'package:mamba/networking/url_center.dart';
-import 'package:mamba/networking/web_socket_wrapper.dart';
+import 'package:mamba/networking/web_socket_networking.dart';
 import 'package:uuid/uuid.dart';
 
 class PlanningSpectatorSessionRepository {
@@ -25,7 +25,7 @@ class PlanningSpectatorSessionRepository {
       {Function? onError,
       void Function()? onDone,
       bool? cancelOnError}) {
-    return _webSocket.webSocket?.listen(
+    return _webSocket.listen(
       (event) {
         print(utf8.decode(event));
         PlanningSpectatorReceiveCommand planningCommand =
