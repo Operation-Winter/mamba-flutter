@@ -1,9 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:mamba/screens/planning_share_screen.dart';
-import 'package:uni_links/uni_links.dart';
-import 'package:flutter/services.dart' show PlatformException;
 import 'package:universal_io/io.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +11,9 @@ import 'package:mamba/screens/join/join_setup_screen.dart';
 import 'package:mamba/screens/spectator/spectator_landing_screen.dart';
 import 'package:mamba/screens/spectator/spectator_setup_screen.dart';
 import 'package:mamba/ui_constants.dart';
+import 'package:app_links/app_links.dart';
 
 import 'screens/landing_screen.dart';
-
-bool _initialUriIsHandled = false;
 
 void main() => runApp(const MyApp());
 
@@ -30,11 +26,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   final _navigatorKey = GlobalKey<NavigatorState>();
-  Uri? _initialUri;
-  Uri? _latestUri;
-  Object? _err;
-
-  StreamSubscription? _sub;
+  late AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
 
   get _initialRoute {
     return LandingScreen.route;
@@ -44,8 +37,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     return {
       LandingScreen.route: (context) => const LandingScreen(),
       HostSetupScreen.route: (context) => const HostSetupScreen(),
-      JoinSetupScreen.route: (context) => const JoinSetupScreen(),
-      SpectatorSetupScreen.route: (context) => const SpectatorSetupScreen(),
       SpectatorLandingScreen.route: (context) => const SpectatorLandingScreen(),
     };
   }
@@ -53,19 +44,42 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _handleIncomingLinks();
-    _handleInitialUri();
+    _initDeepLinks();
   }
 
   @override
   void dispose() {
-    _sub?.cancel();
+    _linkSubscription?.cancel();
     super.dispose();
+  }
+
+  Future<void> _initDeepLinks() async {
+    _appLinks = AppLinks();
+
+    // Check initial link if app was in cold state (terminated)
+    final appLink = await _appLinks.getInitialAppLink();
+    if (appLink != null) {
+      print('getInitialAppLink: $appLink');
+      openAppLink(appLink);
+    }
+
+    // Handle link when app is in warm state (front or background)
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      print('onAppLink: $uri');
+      openAppLink(uri);
+    });
+  }
+
+  void openAppLink(Uri uri) {
+    if (uri.pathSegments.contains('planning') == true &&
+        uri.pathSegments.contains('share') == true) {
+      _handleShareURL(uri);
+    }
   }
 
   _handleShareURL(Uri? uri) {
     var sessionCode = uri?.queryParameters['sessionCode'];
-    var password = uri?.queryParameters['sessionCode'];
+    var password = uri?.queryParameters['password'];
 
     if (sessionCode == null) return;
     _navigatorKey.currentState?.pushNamed(
@@ -75,67 +89,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         password: password,
       ),
     );
-  }
-
-  void _handleIncomingLinks() {
-    if (!kIsWeb) {
-      // It will handle app links while the app is already started - be it in
-      // the foreground or in the background.
-      _sub = uriLinkStream.listen((Uri? uri) {
-        if (!mounted) return;
-        print('got uri: $uri');
-        if (uri?.pathSegments.contains('planning') == true &&
-            uri?.pathSegments.contains('share') == true) {
-          _handleShareURL(uri);
-        }
-      }, onError: (Object err) {
-        if (!mounted) return;
-        print('got err: $err');
-        _latestUri = null;
-        if (err is FormatException) {
-          _err = err;
-        } else {
-          _err = null;
-        }
-      });
-    }
-  }
-
-  /// Handle the initial Uri - the one the app was started with
-  ///
-  /// **ATTENTION**: `getInitialLink`/`getInitialUri` should be handled
-  /// ONLY ONCE in your app's lifetime, since it is not meant to change
-  /// throughout your app's life.
-  ///
-  /// We handle all exceptions, since it is called from initState.
-  Future<void> _handleInitialUri() async {
-    // In this example app this is an almost useless guard, but it is here to
-    // show we are not going to call getInitialUri multiple times, even if this
-    // was a weidget that will be disposed of (ex. a navigation route change).
-    if (!_initialUriIsHandled) {
-      _initialUriIsHandled = true;
-      try {
-        final uri = await getInitialUri();
-        if (uri == null) {
-          print('no initial uri');
-        } else {
-          print('got initial uri: $uri');
-          if (uri.pathSegments.contains('planning') == true &&
-              uri.pathSegments.contains('share') == true) {
-            _handleShareURL(uri);
-          }
-        }
-        if (!mounted) return;
-        _initialUri = uri;
-      } on PlatformException {
-        // Platform messages may fail but we ignore the exception
-        print('falied to get initial uri');
-      } on FormatException catch (err) {
-        if (!mounted) return;
-        print('malformed initial uri');
-        _err = err;
-      }
-    }
   }
 
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -168,6 +121,28 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         builder: (_) => PlanningShareScreen(
           sessionCode: arguments.sessionCode,
           password: arguments.password,
+        ),
+      );
+    } else if (settings.name == SpectatorSetupScreen.route) {
+      final arguments = settings.arguments == null
+          ? null
+          : settings.arguments as SpectatorSetupScreenArguments;
+      return MaterialPageRoute(
+        settings: RouteSettings(name: SpectatorSetupScreen.route),
+        builder: (_) => SpectatorSetupScreen(
+          sessionCode: arguments?.sessionCode,
+          password: arguments?.password,
+        ),
+      );
+    } else if (settings.name == JoinSetupScreen.route) {
+      final arguments = settings.arguments == null
+          ? null
+          : settings.arguments as JoinSetupScreenArguments;
+      return MaterialPageRoute(
+        settings: RouteSettings(name: JoinSetupScreen.route),
+        builder: (_) => JoinSetupScreen(
+          sessionCode: arguments?.sessionCode,
+          password: arguments?.password,
         ),
       );
     }

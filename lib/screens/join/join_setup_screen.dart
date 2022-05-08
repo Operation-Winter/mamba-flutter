@@ -6,9 +6,26 @@ import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
 
+class JoinSetupScreenArguments {
+  final String? sessionCode;
+  final String? password;
+
+  JoinSetupScreenArguments({
+    this.sessionCode,
+    this.password,
+  });
+}
+
 class JoinSetupScreen extends StatefulWidget {
-  const JoinSetupScreen({Key? key}) : super(key: key);
   static String route = '/join/setup';
+  final String? sessionCode;
+  final String? password;
+
+  const JoinSetupScreen({
+    Key? key,
+    this.sessionCode,
+    this.password,
+  }) : super(key: key);
 
   @override
   _JoinSetupScreenState createState() => _JoinSetupScreenState();
@@ -19,6 +36,19 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
   String? sessionCode;
   String? password;
   String? username;
+
+  bool get formIsValid {
+    return sessionCode?.isEmpty == false && username?.isEmpty == false;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      sessionCode = widget.sessionCode;
+      password = widget.password;
+    });
+  }
 
   void sessionCodeChanged(String? newValue) {
     sessionCode = newValue;
@@ -46,10 +76,6 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
         password: password,
       ),
     );
-  }
-
-  bool get formIsValid {
-    return sessionCode?.isEmpty == false && username?.isEmpty == false;
   }
 
   @override

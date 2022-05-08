@@ -4,7 +4,6 @@ import 'package:mamba/screens/landing_screen.dart';
 import 'package:mamba/screens/spectator/spectator_setup_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/landing/landing_image_button.dart';
-import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
 
 class PlanningShareScreenArguments {
@@ -44,13 +43,25 @@ class _PlanningShareScreenState extends State<PlanningShareScreen> {
   }
 
   void didTapParticipantSession() {
-    Navigator.pushNamed(context, JoinSetupScreen.route);
-    // TODO: Pre populate password/session code
+    Navigator.pushNamed(
+      context,
+      JoinSetupScreen.route,
+      arguments: JoinSetupScreenArguments(
+        sessionCode: sessionCode,
+        password: password,
+      ),
+    );
   }
 
   void didTapSpectatorSession() {
-    Navigator.pushNamed(context, SpectatorSetupScreen.route);
-    // TODO: Pre populate password/session code
+    Navigator.pushNamed(
+      context,
+      SpectatorSetupScreen.route,
+      arguments: SpectatorSetupScreenArguments(
+        sessionCode: sessionCode,
+        password: password,
+      ),
+    );
   }
 
   @override

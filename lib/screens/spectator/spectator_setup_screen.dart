@@ -6,9 +6,26 @@ import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
 
+class SpectatorSetupScreenArguments {
+  final String? sessionCode;
+  final String? password;
+
+  SpectatorSetupScreenArguments({
+    this.sessionCode,
+    this.password,
+  });
+}
+
 class SpectatorSetupScreen extends StatefulWidget {
-  const SpectatorSetupScreen({Key? key}) : super(key: key);
   static String route = '/spectator/setup';
+  final String? sessionCode;
+  final String? password;
+
+  const SpectatorSetupScreen({
+    Key? key,
+    this.sessionCode,
+    this.password,
+  }) : super(key: key);
 
   @override
   _SpectatorSetupScreenState createState() => _SpectatorSetupScreenState();
@@ -18,6 +35,15 @@ class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {
   bool validationPassed = false;
   String? sessionCode;
   String? password;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      sessionCode = widget.sessionCode;
+      password = widget.password;
+    });
+  }
 
   void sessionCodeChanged(String? newValue) {
     sessionCode = newValue;

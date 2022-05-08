@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  app_links_windows
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)
