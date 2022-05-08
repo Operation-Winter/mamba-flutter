@@ -146,7 +146,11 @@ class JoinLandingSessionBloc
         add(JoinReceiveEndSession());
         break;
       case PlanningJoinReceiveCommandType.SESSION_IDLE_TIMEOUT:
-        // TODO: Handle this case.
+        add(JoinLandingError(
+          code: '0007',
+          description:
+              'The session has been idle for too long and has been terminated.',
+        ));
         break;
     }
   }

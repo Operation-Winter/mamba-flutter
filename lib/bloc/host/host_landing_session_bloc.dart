@@ -157,7 +157,11 @@ class HostLandingSessionBloc
         add(HostReceivePreviousTickets());
         break;
       case PlanningHostReceiveCommandType.SESSION_IDLE_TIMEOUT:
-        // TODO: Handle this case.
+        add(HostLandingError(
+          code: '0007',
+          description:
+              'The session has been idle for too long and has been terminated.',
+        ));
         break;
     }
   }
