@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
 import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/widgets/text/description_text.dart';
@@ -32,43 +34,49 @@ class _JoinEditNameScreenState extends State<JoinEditNameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          margin: const EdgeInsets.only(
-            top: 16,
-            bottom: 8,
-            left: 16,
-            right: 16,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                const TitleText(text: 'Edit name'),
-                const DescriptionText(text: 'Ticket details'),
-                StyledTextField(
-                  placeholder: 'Name *',
-                  controller: _nameController,
-                  onChanged: (_) => setState(() {}),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints.tightFor(width: maxWidth),
+        child: ListView(
+          shrinkWrap: kIsWeb,
+          children: [
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              margin: const EdgeInsets.only(
+                top: 16,
+                bottom: 8,
+                left: 16,
+                right: 16,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    const TitleText(text: 'Edit name'),
+                    const DescriptionText(text: 'Ticket details'),
+                    StyledTextField(
+                      placeholder: 'Name *',
+                      controller: _nameController,
+                      onChanged: (_) => setState(() {}),
+                    ),
+                    RoundedButton(
+                      title: 'Edit name',
+                      enabled: shouldEnableEditButton,
+                      onPressed: () {
+                        widget.onChangeName(
+                          _nameController.text,
+                        );
+                      },
+                    ),
+                  ],
                 ),
-                RoundedButton(
-                  title: 'Edit name',
-                  enabled: shouldEnableEditButton,
-                  onPressed: () {
-                    widget.onChangeName(
-                      _nameController.text,
-                    );
-                  },
-                ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

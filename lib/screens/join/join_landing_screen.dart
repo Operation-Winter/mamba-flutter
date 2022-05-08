@@ -7,6 +7,7 @@ import 'package:mamba/screens/planning_session_sharing_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/dialog/confirmation_dialog.dart';
+import 'package:mamba/widgets/dialog/modal_dialog.dart';
 import 'package:mamba/widgets/states/join/planning_join_voting_state.dart';
 import 'package:mamba/widgets/states/shared/planning_none_state.dart';
 import 'package:mamba/widgets/states/shared/planning_voting_finished_state.dart';
@@ -65,8 +66,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
   _didTapRequestCoffee() => print('Did tap request coffee');
 
   _didTapShare() {
-    showBarModalBottomSheet(
-      expand: true,
+    ModalDialog.showModalBottomSheet(
       context: context,
       builder: (context) => PlanningSessionSharingScreen(
         sessionCode: widget.session.sessionCode,
@@ -89,8 +89,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
   }
 
   _didTapEditName() {
-    showBarModalBottomSheet(
-      expand: true,
+    ModalDialog.showModalBottomSheet(
       context: context,
       builder: (context) => JoinEditNameScreen(
         name: widget.session.username,

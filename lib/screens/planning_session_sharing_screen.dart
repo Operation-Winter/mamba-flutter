@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mamba/networking/url_center.dart';
@@ -24,46 +25,53 @@ class PlanningSessionSharingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        children: [
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            margin:
-                const EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  const TitleText(text: 'Share session'),
-                  Text(
-                    'Session code: $sessionCode',
-                    style: mediumDescriptionTextStyle,
-                  ),
-                  const SizedBox(height: 16),
-                  RoundedButton(
-                    title: 'Copy URL',
-                    onPressed: () async {
-                      await _didTapCopyLink(context);
-                    },
-                    enabled: true,
-                  ),
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: QrImage(
-                      data: _urlForSharing.toString(),
-                      version: QrVersions.auto,
-                      foregroundColor: primaryColor,
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints.tightFor(width: maxWidth),
+        child: ListView(
+          shrinkWrap: kIsWeb,
+          children: [
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              margin: const EdgeInsets.only(
+                  top: 16, bottom: 8, left: 16, right: 16),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    const TitleText(text: 'Share session'),
+                    Text(
+                      'Session code: $sessionCode',
+                      style: mediumDescriptionTextStyle,
                     ),
-                  )
-                ],
+                    const SizedBox(height: 16),
+                    RoundedButton(
+                      title: 'Copy URL',
+                      onPressed: () async {
+                        await _didTapCopyLink(context);
+                      },
+                      enabled: true,
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints.tightFor(width: 300),
+                        child: QrImage(
+                          data: _urlForSharing.toString(),
+                          version: QrVersions.auto,
+                          foregroundColor: primaryColor,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -3,15 +3,15 @@ import 'dart:convert';
 
 import 'package:mamba/models/planning_command.dart';
 import 'package:mamba/networking/websockets/mamba_web_socket.dart';
-import 'package:web_socket_channel/html.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class BrowserMambaWebSocket implements MambaWebSocket {
-  HtmlWebSocketChannel? _channel;
+  WebSocketChannel? _channel;
 
   @override
   Future<void> connect({required String url}) async {
     try {
-      _channel = HtmlWebSocketChannel.connect(url);
+      _channel = WebSocketChannel.connect(Uri.parse(url));
     } catch (_) {
       rethrow;
     }
