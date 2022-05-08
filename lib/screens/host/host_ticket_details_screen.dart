@@ -5,6 +5,7 @@ import 'package:mamba/widgets/buttons/rounded_button.dart';
 import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
+import 'package:universal_io/io.dart';
 
 class HostTicketDetailsScreen extends StatefulWidget {
   final Set<String> tags;
@@ -31,6 +32,7 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
 
   get shouldEnableAddButton => _titleController.text.isNotEmpty;
   get editMode => widget.title != null || widget.description != null;
+  get shouldShowBackButton => Platform.isAndroid;
 
   @override
   void initState() {
@@ -57,8 +59,28 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    TitleText(
-                        text: editMode ? 'Edit ticket' : 'Add a new ticket'),
+                    Row(
+                      children: [
+                        if (shouldShowBackButton) ...[
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            iconSize: 30,
+                            icon: const Icon(Icons.chevron_left),
+                          ),
+                        ],
+                        Expanded(
+                          child: TitleText(
+                            text: editMode ? 'Edit ticket' : 'Add a new ticket',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        if (shouldShowBackButton) ...[
+                          const SizedBox(width: 48),
+                        ],
+                      ],
+                    ),
                     const DescriptionText(text: 'Ticket details'),
                     StyledTextField(
                       placeholder: 'Title *',

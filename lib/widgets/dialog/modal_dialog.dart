@@ -13,11 +13,18 @@ class ModalDialog {
         context: context,
         builder: builder,
       );
+    } else if (Platform.isAndroid) {
+      showMaterialModalBottomSheet(
+        expand: true,
+        context: context,
+        builder: builder,
+      );
     } else {
       showDialog(
         context: context,
         builder: builder,
         barrierDismissible: true,
+        useSafeArea: true,
       );
     }
   }

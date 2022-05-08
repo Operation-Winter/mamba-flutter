@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="za.co.armandkamffer.mamba">
    <application
-        android:label="mamba"
+        android:label="Mamba"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

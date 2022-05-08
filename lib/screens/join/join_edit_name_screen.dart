@@ -5,6 +5,7 @@ import 'package:mamba/widgets/buttons/rounded_button.dart';
 import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
+import 'package:universal_io/io.dart';
 
 class JoinEditNameScreen extends StatefulWidget {
   final Function(String) onChangeName;
@@ -25,6 +26,7 @@ class _JoinEditNameScreenState extends State<JoinEditNameScreen> {
 
   get shouldEnableEditButton => _nameController.text.isNotEmpty;
   get editMode => widget.name.isNotEmpty;
+  get shouldShowBackButton => Platform.isAndroid;
 
   @override
   void initState() {
@@ -54,7 +56,28 @@ class _JoinEditNameScreenState extends State<JoinEditNameScreen> {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    const TitleText(text: 'Edit name'),
+                    Row(
+                      children: [
+                        if (shouldShowBackButton) ...[
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            iconSize: 30,
+                            icon: const Icon(Icons.chevron_left),
+                          ),
+                        ],
+                        const Expanded(
+                          child: TitleText(
+                            text: 'Edit name',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        if (shouldShowBackButton) ...[
+                          const SizedBox(width: 48),
+                        ],
+                      ],
+                    ),
                     const DescriptionText(text: 'Ticket details'),
                     StyledTextField(
                       placeholder: 'Name *',

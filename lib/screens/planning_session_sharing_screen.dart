@@ -6,6 +6,7 @@ import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
 import 'package:mamba/widgets/text/title_text.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:universal_io/io.dart';
 
 class PlanningSessionSharingScreen extends StatelessWidget {
   final String sessionCode;
@@ -19,6 +20,7 @@ class PlanningSessionSharingScreen extends StatelessWidget {
 
   get _urlForSharing =>
       URLCenter.sharePath(sessionCode: sessionCode, password: password);
+  get shouldShowBackButton => Platform.isAndroid;
 
   _didTapCopyLink(BuildContext context) async =>
       await Clipboard.setData(ClipboardData(text: _urlForSharing.toString()));
@@ -41,7 +43,28 @@ class PlanningSessionSharingScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    const TitleText(text: 'Share session'),
+                    Row(
+                      children: [
+                        if (shouldShowBackButton) ...[
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            iconSize: 30,
+                            icon: const Icon(Icons.chevron_left),
+                          ),
+                        ],
+                        const Expanded(
+                          child: TitleText(
+                            text: 'Share session',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        if (shouldShowBackButton) ...[
+                          const SizedBox(width: 48),
+                        ],
+                      ],
+                    ),
                     Text(
                       'Session code: $sessionCode',
                       style: mediumDescriptionTextStyle,

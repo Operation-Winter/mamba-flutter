@@ -32,7 +32,12 @@ const roundedButtonTextStyle = TextStyle(
   color: Colors.white,
 );
 
-const landingImageButtonTextStyle = TextStyle(
+const landingImageButtonTextStyleLightMode = TextStyle(
+  color: Colors.black,
+  fontSize: 18,
+);
+
+const landingImageButtonTextStyleDarkMode = TextStyle(
   color: Colors.white,
   fontSize: 18,
 );

@@ -50,7 +50,9 @@ class LandingImageButton extends StatelessWidget {
                 flex: 4,
                 child: Text(
                   title,
-                  style: landingImageButtonTextStyle,
+                  style: isDarkMode(context)
+                      ? landingImageButtonTextStyleDarkMode
+                      : landingImageButtonTextStyleLightMode,
                 ),
               ),
             ],

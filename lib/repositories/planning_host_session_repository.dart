@@ -20,7 +20,8 @@ class PlanningHostSessionRepository {
   Future<void> connect() async {
     try {
       await _webSocket.connect(url: URLCenter.planningHostPath.toString());
-    } catch (_) {
+    } catch (error) {
+      print(error.toString());
       rethrow;
     }
   }
