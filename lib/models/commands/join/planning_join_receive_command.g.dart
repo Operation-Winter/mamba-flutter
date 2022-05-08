@@ -32,4 +32,5 @@ const _$PlanningJoinReceiveCommandTypeEnumMap = {
   PlanningJoinReceiveCommandType.INVALID_SESSION: 'INVALID_SESSION',
   PlanningJoinReceiveCommandType.REMOVE_PARTICIPANT: 'REMOVE_PARTICIPANT',
   PlanningJoinReceiveCommandType.END_SESSION: 'END_SESSION',
+  PlanningJoinReceiveCommandType.SESSION_IDLE_TIMEOUT: 'SESSION_IDLE_TIMEOUT',
 };

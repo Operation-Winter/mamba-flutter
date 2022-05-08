@@ -5,7 +5,6 @@ import 'package:mamba/models/commands/join/planning_join_receive_command_type.da
 import 'package:mamba/models/messages/planning_invalid_command_message.dart';
 import 'package:mamba/models/messages/planning_session_state_message.dart';
 import 'package:mamba/models/planning_card.dart';
-import 'package:mamba/models/planning_participant.dart';
 import 'package:mamba/models/planning_participant_dto.dart';
 import 'package:mamba/models/planning_ticket.dart';
 import 'package:mamba/repositories/local_storage_repository.dart';
@@ -33,7 +32,6 @@ class JoinLandingSessionBloc
   List<PlanningCard> availableCards = [];
   Set<String> tags = {};
   PlanningTicket? ticket;
-  List<PlanningParticipant> _planningParticipants = [];
   int? _timeLeft;
   bool _sessionJoined = false;
   bool _sessionEnded = false;
@@ -147,6 +145,9 @@ class JoinLandingSessionBloc
         _sessionEnded = true;
         add(JoinReceiveEndSession());
         break;
+      case PlanningJoinReceiveCommandType.SESSION_IDLE_TIMEOUT:
+        // TODO: Handle this case.
+        break;
     }
   }
 
@@ -156,7 +157,6 @@ class JoinLandingSessionBloc
     ticket = message.ticket;
 
     _sessionJoined = true;
-    _planningParticipants = message.participants;
     _timeLeft = message.timeLeft;
   }
 

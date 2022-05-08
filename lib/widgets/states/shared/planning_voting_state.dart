@@ -5,7 +5,7 @@ import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
 import 'package:mamba/widgets/cards/planning_session_ticket_card.dart';
 import 'package:mamba/widgets/rows/participant_row.dart';
 
-class PlanningHostVotingState extends StatelessWidget {
+class PlanningVotingState extends StatelessWidget {
   final String sessionName;
   final int coffeeVoteCount;
   final int spectatorCount;
@@ -16,7 +16,7 @@ class PlanningHostVotingState extends StatelessWidget {
   final String ticketTitle;
   final String? ticketDescription;
 
-  const PlanningHostVotingState({
+  const PlanningVotingState({
     Key? key,
     required this.sessionName,
     required this.participants,

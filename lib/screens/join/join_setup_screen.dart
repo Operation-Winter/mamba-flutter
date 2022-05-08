@@ -58,10 +58,10 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
   }
 
   Future<void> configureUsername() async {
-    var username = await getStoredUsername;
+    username = await getStoredUsername;
 
     if (username == null) return;
-    _usernameController.text = username;
+    _usernameController.text = username!;
     setState(() {
       validationPassed = formIsValid;
     });

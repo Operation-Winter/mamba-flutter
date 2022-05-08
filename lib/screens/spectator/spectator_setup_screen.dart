@@ -56,7 +56,14 @@ class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {
   }
 
   void didTapSpectateSession() {
-    Navigator.pushNamed(context, SpectatorLandingScreen.route);
+    Navigator.pushNamed(
+      context,
+      SpectatorLandingScreen.route,
+      arguments: SpectatorLandingScreenArguments(
+        sessionCode: sessionCode!,
+        password: password,
+      ),
+    );
   }
 
   @override

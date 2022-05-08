@@ -45,6 +45,7 @@ class PlanningJoinReceiveCommand extends PlanningCommand {
       case PlanningJoinReceiveCommandType.INVALID_SESSION:
       case PlanningJoinReceiveCommandType.REMOVE_PARTICIPANT:
       case PlanningJoinReceiveCommandType.END_SESSION:
+      case PlanningJoinReceiveCommandType.SESSION_IDLE_TIMEOUT:
         return null;
     }
   }

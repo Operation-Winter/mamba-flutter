@@ -43,6 +43,8 @@ class PlanningHostReceiveCommand extends PlanningCommand {
         return PlanningInvalidCommandMessage.fromJson(data);
       case PlanningHostReceiveCommandType.PREVIOUS_TICKETS:
         return PlanningPreviousTicketsMessage.fromJson(data);
+      case PlanningHostReceiveCommandType.SESSION_IDLE_TIMEOUT:
+        return null;
     }
   }
 

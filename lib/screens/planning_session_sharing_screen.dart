@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:mamba/networking/url_center.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
-import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 

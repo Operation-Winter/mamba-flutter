@@ -1,10 +1,11 @@
 // ignore_for_file: constant_identifier_names
 
-enum PlanningHostReceiveCommandType {
+enum PlanningSpectatorReceiveCommandType {
   NONE_STATE,
   VOTING_STATE,
   FINISHED_STATE,
   INVALID_COMMAND,
-  PREVIOUS_TICKETS,
-  SESSION_IDLE_TIMEOUT
+  INVALID_SESSION,
+  END_SESSION,
+  SESSION_IDLE_TIMEOUT,
 }

@@ -47,8 +47,6 @@ class HostLandingSessionBloc
     }
   }
 
-  String? _sessionCode;
-  List<PlanningParticipant> _planningParticipants = [];
   int? _timeLeft;
 
   HostLandingSessionBloc({
@@ -158,6 +156,9 @@ class HostLandingSessionBloc
       case PlanningHostReceiveCommandType.PREVIOUS_TICKETS:
         add(HostReceivePreviousTickets());
         break;
+      case PlanningHostReceiveCommandType.SESSION_IDLE_TIMEOUT:
+        // TODO: Handle this case.
+        break;
     }
   }
 
@@ -168,8 +169,6 @@ class HostLandingSessionBloc
     sessionCode = message.sessionCode;
 
     _sessionHasStarted = true;
-    _sessionCode = message.sessionCode;
-    _planningParticipants = message.participants;
     _timeLeft = message.timeLeft;
   }
 

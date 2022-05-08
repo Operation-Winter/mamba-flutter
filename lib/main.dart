@@ -37,7 +37,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     return {
       LandingScreen.route: (context) => const LandingScreen(),
       HostSetupScreen.route: (context) => const HostSetupScreen(),
-      SpectatorLandingScreen.route: (context) => const SpectatorLandingScreen(),
     };
   }
 
@@ -114,6 +113,15 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           password: arguments.password,
         ),
       );
+    } else if (settings.name == SpectatorLandingScreen.route) {
+      final arguments = settings.arguments as SpectatorLandingScreenArguments;
+      return MaterialPageRoute(
+        settings: RouteSettings(name: SpectatorLandingScreen.route),
+        builder: (_) => SpectatorLandingScreen(
+          sessionCode: arguments.sessionCode,
+          password: arguments.password,
+        ),
+      );
     } else if (settings.name == PlanningShareScreen.route) {
       final arguments = settings.arguments as PlanningShareScreenArguments;
       return MaterialPageRoute(
@@ -124,9 +132,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         ),
       );
     } else if (settings.name == SpectatorSetupScreen.route) {
-      final arguments = settings.arguments == null
-          ? null
-          : settings.arguments as SpectatorSetupScreenArguments;
+      final arguments = settings.arguments as SpectatorSetupScreenArguments?;
       return MaterialPageRoute(
         settings: RouteSettings(name: SpectatorSetupScreen.route),
         builder: (_) => SpectatorSetupScreen(
@@ -135,9 +141,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         ),
       );
     } else if (settings.name == JoinSetupScreen.route) {
-      final arguments = settings.arguments == null
-          ? null
-          : settings.arguments as JoinSetupScreenArguments;
+      final arguments = settings.arguments as JoinSetupScreenArguments?;
       return MaterialPageRoute(
         settings: RouteSettings(name: JoinSetupScreen.route),
         builder: (_) => JoinSetupScreen(

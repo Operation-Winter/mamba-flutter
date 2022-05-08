@@ -30,4 +30,5 @@ const _$PlanningHostReceiveCommandTypeEnumMap = {
   PlanningHostReceiveCommandType.FINISHED_STATE: 'FINISHED_STATE',
   PlanningHostReceiveCommandType.INVALID_COMMAND: 'INVALID_COMMAND',
   PlanningHostReceiveCommandType.PREVIOUS_TICKETS: 'PREVIOUS_TICKETS',
+  PlanningHostReceiveCommandType.SESSION_IDLE_TIMEOUT: 'SESSION_IDLE_TIMEOUT',
 };
