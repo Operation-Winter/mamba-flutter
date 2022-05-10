@@ -14,7 +14,6 @@ import 'package:mamba/widgets/states/shared/planning_loading_state.dart';
 import 'package:mamba/widgets/states/shared/planning_none_state.dart';
 import 'package:mamba/widgets/states/shared/planning_voting_finished_state.dart';
 import 'package:mamba/widgets/states/shared/planning_voting_state.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class SpectatorLandingScreenArguments {
   final String sessionCode;

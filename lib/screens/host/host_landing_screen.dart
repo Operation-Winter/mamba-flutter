@@ -6,6 +6,7 @@ import 'package:mamba/screens/planning_session_sharing_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
+import 'package:mamba/widgets/dialog/coming_soon_dialog.dart';
 import 'package:mamba/widgets/dialog/confirmation_dialog.dart';
 import 'package:mamba/widgets/dialog/modal_dialog.dart';
 import 'package:mamba/widgets/states/shared/planning_none_state.dart';
@@ -17,7 +18,6 @@ import 'package:mamba/widgets/states/shared/planning_end_session_state.dart';
 import 'package:mamba/widgets/states/shared/planning_loading_state.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/widgets/states/shared/planning_error_state.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:uuid/uuid.dart';
 
 class HostLandingScreenArguments {
@@ -107,7 +107,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     );
   }
 
-  _didTapRequestCoffee() => print('Did tap request coffee');
+  _didTapRequestCoffee() => ComingSoonDialog.show(context);
 
   _didTapShare() {
     var sessionCode = widget.session.sessionCode;
@@ -122,7 +122,9 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     );
   }
 
-  _didTapAddTimer() => print('Did tap add timer');
+  _didTapAddTimer() => ComingSoonDialog.show(context);
+
+  _didTapCancelTimer() => ComingSoonDialog.show(context);
 
   _didTapFinishVoting() => widget.session.add(HostSendFinishVoting());
 
@@ -145,7 +147,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
 
   _didTapRevote() => widget.session.add(HostSendRevote());
 
-  _didTapExport() => widget.session.add(HostSendPreviousTickets());
+  _didTapExport() => ComingSoonDialog.show(context);
 
   _didTapReconnect() => widget.session.add(HostSendReconnect());
 
@@ -291,6 +293,11 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
           icon: Icons.timer,
           tooltip: 'Add timer',
           onPressed: _didTapAddTimer,
+        ),
+        PlanningCommandButton(
+          icon: Icons.timer_off,
+          tooltip: 'Cancel timer',
+          onPressed: _didTapCancelTimer,
         ),
         PlanningCommandButton(
           icon: Icons.how_to_vote,
