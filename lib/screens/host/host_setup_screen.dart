@@ -75,7 +75,7 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
     });
   }
 
-  List<Widget> chipList() {
+  List<Widget> _chipList() {
     List<Widget> styledChipList = tags
         .map((tag) => StyledChip(
               text: tag,
@@ -169,8 +169,9 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                           style: descriptionColoredTextStyle,
                         ),
                         ChipWrap(
-                          children: chipList(),
+                          children: _chipList(),
                         ),
+                        const SizedBox(height: 10),
                         const Text(
                           'Available cards',
                           style: descriptionColoredTextStyle,

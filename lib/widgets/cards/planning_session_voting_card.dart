@@ -2,17 +2,66 @@ import 'package:flutter/material.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/ui_constants.dart';
 
-class PlanningSessionVotingCard extends StatelessWidget {
+class PlanningSessionVotingCard extends StatefulWidget {
   final List<PlanningCard> planningCards;
   final PlanningCard? selectedCard;
-  final Function(PlanningCard) onSelectCard;
+  final Set<String> tags;
+  final Function(PlanningCard, String?) onSelectCard;
 
   const PlanningSessionVotingCard({
     Key? key,
     required this.planningCards,
+    required this.tags,
     this.selectedCard,
     required this.onSelectCard,
   }) : super(key: key);
+
+  @override
+  State<PlanningSessionVotingCard> createState() =>
+      _PlanningSessionVotingCardState();
+}
+
+class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+  int _initialIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _configureTabController();
+  }
+
+  @override
+  void didUpdateWidget(covariant PlanningSessionVotingCard oldWidget) {
+    _configureTabController();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  _configureTabController() {
+    if (_initialIndex >= widget.tags.length) _initialIndex = 0;
+    _tabController = TabController(
+      initialIndex: _initialIndex,
+      length: widget.tags.length,
+      vsync: this,
+    );
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging) {
+        _didTapCard(null);
+      }
+    });
+  }
+
+  _didTapCard(PlanningCard? planningCard) {
+    var selectedCard = planningCard ?? widget.selectedCard;
+    if (selectedCard == null) return;
+    _initialIndex = _tabController.index;
+    var selectedTag = widget.tags.elementAt(_tabController.index);
+    widget.onSelectCard(
+      selectedCard,
+      selectedTag.isNotEmpty ? selectedTag : null,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,33 +72,46 @@ class PlanningSessionVotingCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          direction: Axis.horizontal,
-          alignment: WrapAlignment.center,
-          children: planningCards
-              .map(
-                (planningCard) => GestureDetector(
-                  onTap: () => onSelectCard(planningCard),
-                  child: Container(
-                    constraints: const BoxConstraints(maxWidth: 75),
-                    decoration: selectedCard == planningCard
-                        ? BoxDecoration(
-                            border: Border.all(
-                              width: 2,
-                              color: primaryColor,
-                            ),
-                            borderRadius: BorderRadius.circular(4),
-                          )
-                        : null,
-                    child: Image(
-                      image: planningCard.image,
+        child: Column(
+          children: [
+            if (widget.tags.length > 1) ...[
+              TabBar(
+                controller: _tabController,
+                tabs: widget.tags.map((tag) => Tab(text: tag)).toList(),
+                indicatorColor: primaryColor,
+                isScrollable: true,
+              ),
+              const SizedBox(height: 10),
+            ],
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              direction: Axis.horizontal,
+              alignment: WrapAlignment.center,
+              children: widget.planningCards
+                  .map(
+                    (planningCard) => GestureDetector(
+                      onTap: () => _didTapCard(planningCard),
+                      child: Container(
+                        constraints: const BoxConstraints(maxWidth: 75),
+                        decoration: widget.selectedCard == planningCard
+                            ? BoxDecoration(
+                                border: Border.all(
+                                  width: 2,
+                                  color: primaryColor,
+                                ),
+                                borderRadius: BorderRadius.circular(4),
+                              )
+                            : null,
+                        child: Image(
+                          image: planningCard.image,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              )
-              .toList(),
+                  )
+                  .toList(),
+            ),
+          ],
         ),
       ),
     );

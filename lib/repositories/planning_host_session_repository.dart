@@ -67,10 +67,12 @@ class PlanningHostSessionRepository {
     required UuidValue uuid,
     required String title,
     String? description,
+    required Set<String> selectedTags,
   }) {
     var message = PlanningTicketMessage(
       title: title,
       description: description,
+      selectedTags: selectedTags,
     );
     var planningCommand = PlanningHostSendCommand(
       uuid: uuid,
@@ -151,10 +153,12 @@ class PlanningHostSessionRepository {
     required UuidValue uuid,
     required String title,
     String? description,
+    required Set<String> selectedTags,
   }) {
     var message = PlanningTicketMessage(
       title: title,
       description: description,
+      selectedTags: selectedTags,
     );
     var planningCommand = PlanningHostSendCommand(
       uuid: uuid,

@@ -9,8 +9,12 @@ class JoinSendJoinSession extends JoinLandingSessionEvent {}
 
 class JoinSendVote extends JoinLandingSessionEvent {
   final PlanningCard selectedCard;
+  final String? tag;
 
-  JoinSendVote({required this.selectedCard});
+  JoinSendVote({
+    required this.selectedCard,
+    this.tag,
+  });
 }
 
 class JoinSendLeaveSession extends JoinLandingSessionEvent {}

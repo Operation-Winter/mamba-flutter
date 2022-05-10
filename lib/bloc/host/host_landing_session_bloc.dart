@@ -5,7 +5,6 @@ import 'package:mamba/models/commands/host/planning_host_receive_command_type.da
 import 'package:mamba/models/messages/planning_invalid_command_message.dart';
 import 'package:mamba/models/messages/planning_session_state_message.dart';
 import 'package:mamba/models/planning_card.dart';
-import 'package:mamba/models/planning_participant.dart';
 import 'package:mamba/models/planning_participant_dto.dart';
 import 'package:mamba/models/planning_ticket.dart';
 import 'package:mamba/repositories/local_storage_repository.dart';
@@ -64,6 +63,7 @@ class HostLandingSessionBloc
         _sendAddTicketCommand(
           title: event.title,
           description: event.description,
+          selectedTags: event.selectedTags,
         );
       } else if (event is HostSendSkipVote) {
         _sendSkipVoteCommand(participantId: event.participantId);
@@ -83,6 +83,7 @@ class HostLandingSessionBloc
         _sendEditTicketCommand(
           title: event.title,
           description: event.description,
+          selectedTags: event.selectedTags,
         );
       } else if (event is HostSendAddTimer) {
         _sendAddTimerCommand(timeInterval: event.timeInterval);
@@ -257,11 +258,16 @@ class HostLandingSessionBloc
     );
   }
 
-  _sendAddTicketCommand({required String title, String? description}) async =>
+  _sendAddTicketCommand({
+    required String title,
+    String? description,
+    required Set<String> selectedTags,
+  }) async =>
       _hostSessionRepository.sendAddTicketCommand(
         uuid: await _uuid,
         title: title,
         description: description,
+        selectedTags: selectedTags,
       );
 
   _sendSkipVoteCommand({required UuidValue participantId}) async =>
@@ -295,11 +301,16 @@ class HostLandingSessionBloc
     }
   }
 
-  _sendEditTicketCommand({required String title, String? description}) async =>
+  _sendEditTicketCommand({
+    required String title,
+    String? description,
+    required Set<String> selectedTags,
+  }) async =>
       _hostSessionRepository.sendEditTicketCommand(
         uuid: await _uuid,
         title: title,
         description: description,
+        selectedTags: selectedTags,
       );
 
   _sendAddTimerCommand({required int timeInterval}) async =>

@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
+import 'package:mamba/widgets/chips/chip_wrap.dart';
+import 'package:mamba/widgets/chips/styled_chip.dart';
 import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
@@ -9,6 +11,7 @@ import 'package:universal_io/io.dart';
 
 class HostTicketDetailsScreen extends StatefulWidget {
   final Set<String> tags;
+  final Set<String> selectedTags;
   final Function(String, String?, Set<String> tags) onAddTicket;
   final String? title;
   final String? description;
@@ -16,6 +19,7 @@ class HostTicketDetailsScreen extends StatefulWidget {
   const HostTicketDetailsScreen({
     Key? key,
     required this.tags,
+    required this.selectedTags,
     required this.onAddTicket,
     this.title,
     this.description,
@@ -29,6 +33,7 @@ class HostTicketDetailsScreen extends StatefulWidget {
 class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  late Set<String> _selectedTags;
 
   get shouldEnableAddButton => _titleController.text.isNotEmpty;
   get editMode => widget.title != null || widget.description != null;
@@ -39,6 +44,27 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
     super.initState();
     _titleController.text = widget.title ?? '';
     _descriptionController.text = widget.description ?? '';
+    _selectedTags = widget.selectedTags;
+  }
+
+  List<Widget> chipList() {
+    List<Widget> styledChipList = widget.tags
+        .map(
+          (tag) => GestureDetector(
+            onTap: () => setState(() {
+              _selectedTags.contains(tag)
+                  ? _selectedTags.remove(tag)
+                  : _selectedTags.add(tag);
+            }),
+            child: StyledChip(
+              text: tag,
+              selected: _selectedTags.contains(tag),
+            ),
+          ),
+        )
+        .cast<Widget>()
+        .toList();
+    return styledChipList;
   }
 
   @override
@@ -91,7 +117,9 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
                       placeholder: 'Description',
                       controller: _descriptionController,
                     ),
-                    //TODO: Tag selection
+                    ChipWrap(
+                      children: chipList(),
+                    ),
                     RoundedButton(
                       title: editMode ? 'Edit ticket' : 'Add ticket',
                       enabled: shouldEnableAddButton,
@@ -99,7 +127,7 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
                         widget.onAddTicket(
                           _titleController.text,
                           _descriptionController.text,
-                          {},
+                          _selectedTags,
                         );
                       },
                     ),

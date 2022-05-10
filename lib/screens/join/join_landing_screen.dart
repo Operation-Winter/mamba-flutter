@@ -103,8 +103,11 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
     );
   }
 
-  _didSelectCard(PlanningCard selectedCard) =>
-      widget.session.add(JoinSendVote(selectedCard: selectedCard));
+  _didSelectCard(PlanningCard selectedCard, String? tag) =>
+      widget.session.add(JoinSendVote(
+        selectedCard: selectedCard,
+        tag: tag,
+      ));
 
   @override
   Widget build(BuildContext context) {
@@ -232,6 +235,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
       ],
       ticketTitle: state.ticket.title,
       ticketDescription: state.ticket.description,
+      selectedTags: state.ticket.selectedTags,
       availableCards: state.availableCards,
       selectedCard: state.selectedCard,
       onSelectCard: _didSelectCard,
@@ -270,6 +274,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
       participantCommands: const [],
       ticketTitle: state.ticket.title,
       ticketDescription: state.ticket.description,
+      selectedTags: state.ticket.selectedTags,
       ticketCommands: const [],
       votes: state.votes,
     );

@@ -17,6 +17,7 @@ class PlanningVotingFinishedState extends StatelessWidget {
   final List<PlanningParticipantDto> participants;
   final String ticketTitle;
   final String? ticketDescription;
+  final Set<String> selectedTags;
   final List<PlanningCard> votes;
 
   const PlanningVotingFinishedState({
@@ -29,6 +30,7 @@ class PlanningVotingFinishedState extends StatelessWidget {
     required this.spectatorCount,
     required this.ticketTitle,
     this.ticketDescription,
+    required this.selectedTags,
     required this.ticketCommands,
     required this.votes,
   }) : super(key: key);
@@ -48,6 +50,7 @@ class PlanningVotingFinishedState extends StatelessWidget {
             PlanningSessionTicketCard(
               ticketTitle: ticketTitle,
               ticketDescription: ticketDescription,
+              selectedTags: selectedTags,
               commands: ticketCommands,
             ),
             PlanningSessionVotesGraph(votes: votes),

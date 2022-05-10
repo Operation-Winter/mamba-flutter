@@ -9,9 +9,14 @@ class PlanningTicket {
   String title;
   String? description;
   List<PlanningTicketVote> ticketVotes;
+  Set<String> selectedTags;
 
-  PlanningTicket(
-      {required this.title, this.description, this.ticketVotes = const []});
+  PlanningTicket({
+    required this.title,
+    this.description,
+    this.ticketVotes = const [],
+    required this.selectedTags,
+  });
 
   void removeVotes(UuidValue participantId) {
     ticketVotes

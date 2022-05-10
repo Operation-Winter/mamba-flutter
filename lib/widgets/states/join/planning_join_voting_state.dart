@@ -17,7 +17,8 @@ class PlanningJoinVotingState extends StatelessWidget {
   final String? ticketDescription;
   final List<PlanningCard> availableCards;
   final PlanningCard? selectedCard;
-  final Function(PlanningCard) onSelectCard;
+  final Set<String> selectedTags;
+  final Function(PlanningCard, String?) onSelectCard;
 
   const PlanningJoinVotingState({
     Key? key,
@@ -28,6 +29,7 @@ class PlanningJoinVotingState extends StatelessWidget {
     required this.spectatorCount,
     required this.ticketTitle,
     this.ticketDescription,
+    required this.selectedTags,
     required this.availableCards,
     this.selectedCard,
     required this.onSelectCard,
@@ -48,12 +50,14 @@ class PlanningJoinVotingState extends StatelessWidget {
             PlanningSessionTicketCard(
               ticketTitle: ticketTitle,
               ticketDescription: ticketDescription,
+              selectedTags: {},
               commands: const [],
             ),
             PlanningSessionVotingCard(
               planningCards: availableCards,
               selectedCard: selectedCard,
               onSelectCard: onSelectCard,
+              tags: selectedTags,
             ),
             PlanningSessionParticipantsCard(
               participants: participants,

@@ -78,11 +78,15 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
       context: context,
       builder: (context) => HostTicketDetailsScreen(
         tags: widget.session.tags,
+        selectedTags: {},
         onAddTicket: (title, description, tags) {
-          widget.session.add(HostSendAddTicket(
-            title: title,
-            description: description,
-          ));
+          widget.session.add(
+            HostSendAddTicket(
+              title: title,
+              description: description,
+              selectedTags: tags,
+            ),
+          );
           Navigator.pop(context);
         },
       ),
@@ -96,11 +100,15 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
         title: widget.session.ticket?.title,
         description: widget.session.ticket?.description,
         tags: widget.session.tags,
+        selectedTags: widget.session.ticket?.selectedTags ?? {},
         onAddTicket: (title, description, tags) {
-          widget.session.add(HostSendEditTicket(
-            title: title,
-            description: description,
-          ));
+          widget.session.add(
+            HostSendEditTicket(
+              title: title,
+              description: description,
+              selectedTags: tags,
+            ),
+          );
           Navigator.pop(context);
         },
       ),
@@ -288,6 +296,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
       ],
       ticketTitle: state.ticket.title,
       ticketDescription: state.ticket.description,
+      selectedTags: state.ticket.selectedTags,
       ticketCommands: [
         PlanningCommandButton(
           icon: Icons.timer,
@@ -350,6 +359,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
       ],
       ticketTitle: state.ticket.title,
       ticketDescription: state.ticket.description,
+      selectedTags: state.ticket.selectedTags,
       ticketCommands: [
         PlanningCommandButton(
           icon: Icons.download,

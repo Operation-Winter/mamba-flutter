@@ -15,6 +15,9 @@ PlanningTicket _$PlanningTicketFromJson(Map<String, dynamic> json) =>
                   (e) => PlanningTicketVote.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      selectedTags: (json['selectedTags'] as List<dynamic>)
+          .map((e) => e as String)
+          .toSet(),
     );
 
 Map<String, dynamic> _$PlanningTicketToJson(PlanningTicket instance) =>
@@ -22,4 +25,5 @@ Map<String, dynamic> _$PlanningTicketToJson(PlanningTicket instance) =>
       'title': instance.title,
       'description': instance.description,
       'ticketVotes': instance.ticketVotes.map((e) => e.toJson()).toList(),
+      'selectedTags': instance.selectedTags.toList(),
     };

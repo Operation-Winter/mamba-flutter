@@ -58,7 +58,10 @@ class JoinLandingSessionBloc
       if (event is JoinSendJoinSession) {
         _sendJoinCommand();
       } else if (event is JoinSendVote) {
-        _sendVoteCommand(selectedCard: event.selectedCard);
+        _sendVoteCommand(
+          selectedCard: event.selectedCard,
+          tag: event.tag,
+        );
       } else if (event is JoinSendLeaveSession) {
         _sendLeaveSessionCommand();
         emit(JoinLandingLeftSession(sessionName: _sessionName));
@@ -273,9 +276,12 @@ class JoinLandingSessionBloc
         uuid: await _uuid, name: username);
   }
 
-  _sendVoteCommand({required PlanningCard selectedCard}) async =>
+  _sendVoteCommand({required PlanningCard selectedCard, String? tag}) async =>
       _joinSessionRepository.sendVoteCommand(
-          uuid: await _uuid, selectedCard: selectedCard);
+        uuid: await _uuid,
+        selectedCard: selectedCard,
+        tag: tag,
+      );
 
   _sendLeaveSessionCommand() async {
     _sessionEnded = true;

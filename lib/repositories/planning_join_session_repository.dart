@@ -59,9 +59,11 @@ class PlanningJoinSessionRepository {
   void sendVoteCommand({
     required UuidValue uuid,
     required PlanningCard selectedCard,
+    String? tag,
   }) {
     var message = PlanningVoteMessage(
       selectedCard: selectedCard,
+      tag: tag,
     );
     var planningCommand = PlanningJoinSendCommand(
       uuid: uuid,

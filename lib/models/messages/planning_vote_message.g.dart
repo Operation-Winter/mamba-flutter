@@ -9,12 +9,14 @@ part of 'planning_vote_message.dart';
 PlanningVoteMessage _$PlanningVoteMessageFromJson(Map<String, dynamic> json) =>
     PlanningVoteMessage(
       selectedCard: $enumDecode(_$PlanningCardEnumMap, json['selectedCard']),
+      tag: json['tag'] as String?,
     );
 
 Map<String, dynamic> _$PlanningVoteMessageToJson(
         PlanningVoteMessage instance) =>
     <String, dynamic>{
       'selectedCard': _$PlanningCardEnumMap[instance.selectedCard],
+      'tag': instance.tag,
     };
 
 const _$PlanningCardEnumMap = {

@@ -8,7 +8,10 @@ class AddChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: const Chip(label: Icon(Icons.add)),
+      child: const Chip(
+        label: Icon(Icons.add),
+        labelPadding: EdgeInsets.all(3),
+      ),
       onTap: onTap,
     );
   }

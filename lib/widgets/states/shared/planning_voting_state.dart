@@ -15,6 +15,7 @@ class PlanningVotingState extends StatelessWidget {
   final List<PlanningParticipantDto> participants;
   final String ticketTitle;
   final String? ticketDescription;
+  final Set<String> selectedTags;
 
   const PlanningVotingState({
     Key? key,
@@ -26,6 +27,7 @@ class PlanningVotingState extends StatelessWidget {
     required this.spectatorCount,
     required this.ticketTitle,
     this.ticketDescription,
+    required this.selectedTags,
     required this.ticketCommands,
   }) : super(key: key);
 
@@ -44,6 +46,7 @@ class PlanningVotingState extends StatelessWidget {
             PlanningSessionTicketCard(
               ticketTitle: ticketTitle,
               ticketDescription: ticketDescription,
+              selectedTags: selectedTags,
               commands: ticketCommands,
             ),
             PlanningSessionParticipantsCard(
