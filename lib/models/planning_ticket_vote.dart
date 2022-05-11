@@ -8,8 +8,13 @@ class PlanningTicketVote {
   @JsonKey(fromJson: _idFromString, toJson: _stringFromId)
   UuidValue participantId;
   PlanningCard? selectedCard;
+  String? tag;
 
-  PlanningTicketVote({required this.participantId, this.selectedCard});
+  PlanningTicketVote({
+    required this.participantId,
+    this.selectedCard,
+    this.tag,
+  });
 
   static String _stringFromId(UuidValue uuid) {
     return uuid.uuid;

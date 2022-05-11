@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:mamba/models/commands/host/planning_host_receive_command.dart';
 import 'package:mamba/models/commands/host/planning_host_send_command.dart';
@@ -21,7 +22,7 @@ class PlanningHostSessionRepository {
     try {
       await _webSocket.connect(url: URLCenter.planningHostPath.toString());
     } catch (error) {
-      print(error.toString());
+      log(error.toString());
       rethrow;
     }
   }
@@ -30,7 +31,7 @@ class PlanningHostSessionRepository {
       {Function? onError, void Function()? onDone, bool? cancelOnError}) {
     return _webSocket.listen(
       (event) {
-        print(utf8.decode(event));
+        log(utf8.decode(event));
         PlanningHostReceiveCommand planningCommand =
             PlanningHostReceiveCommand.fromJson(jsonDecode(utf8.decode(event)));
         onData?.call(planningCommand);

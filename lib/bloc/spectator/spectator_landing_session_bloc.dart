@@ -5,7 +5,8 @@ import 'package:mamba/models/commands/spectator/planning_spectator_receive_comma
 import 'package:mamba/models/messages/planning_invalid_command_message.dart';
 import 'package:mamba/models/messages/planning_session_state_message.dart';
 import 'package:mamba/models/planning_card.dart';
-import 'package:mamba/models/planning_participant_dto.dart';
+import 'package:mamba/models/planning_card_group.dart';
+import 'package:mamba/models/planning_participant_group_dto.dart';
 import 'package:mamba/models/planning_ticket.dart';
 import 'package:mamba/repositories/local_storage_repository.dart';
 import 'package:mamba/repositories/planning_spectator_session_repository.dart';
@@ -155,7 +156,7 @@ class SpectatorLandingSessionBloc
       {required PlanningSessionStateMessage message}) async {
     _handleStateEvent(message: message);
     var participantDtos =
-        makeParticipantDtos(participants: message.participants);
+        makeParticipantGroupDtos(participants: message.participants);
 
     emit(SpectatorLandingSessionNone(
       sessionName: _sessionName,
@@ -171,7 +172,7 @@ class SpectatorLandingSessionBloc
     var ticket = message.ticket;
     if (ticket == null) return;
 
-    var participantDtos = makeParticipantDtos(
+    var participantDtos = makeParticipantGroupDtos(
       participants: message.participants,
       votes: message.ticket?.ticketVotes,
     );
@@ -192,15 +193,12 @@ class SpectatorLandingSessionBloc
     var ticket = message.ticket;
     if (ticket == null) return;
 
-    var participantDtos = makeParticipantDtos(
+    var participantDtos = makeParticipantGroupDtos(
       participants: message.participants,
       votes: message.ticket?.ticketVotes,
     );
 
-    var votes = ticket.ticketVotes
-        .map((vote) => vote.selectedCard)
-        .whereNotNull()
-        .toList();
+    var voteGroups = makeGroupedCards(votes: message.ticket?.ticketVotes);
 
     emit(SpectatorLandingSessionVotingFinished(
       sessionName: _sessionName,
@@ -208,7 +206,7 @@ class SpectatorLandingSessionBloc
       coffeeVoteCount: message.coffeeRequestCount,
       spectatorCount: message.spectatorCount,
       ticket: ticket,
-      votes: votes,
+      voteGroups: voteGroups,
     ));
   }
 

@@ -12,12 +12,14 @@ PlanningTicketVote _$PlanningTicketVoteFromJson(Map<String, dynamic> json) =>
           PlanningTicketVote._idFromString(json['participantId'] as String),
       selectedCard:
           $enumDecodeNullable(_$PlanningCardEnumMap, json['selectedCard']),
+      tag: json['tag'] as String?,
     );
 
 Map<String, dynamic> _$PlanningTicketVoteToJson(PlanningTicketVote instance) =>
     <String, dynamic>{
       'participantId': PlanningTicketVote._stringFromId(instance.participantId),
       'selectedCard': _$PlanningCardEnumMap[instance.selectedCard],
+      'tag': instance.tag,
     };
 
 const _$PlanningCardEnumMap = {

@@ -274,9 +274,8 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
       participantCommands: const [],
       ticketTitle: state.ticket.title,
       ticketDescription: state.ticket.description,
-      selectedTags: state.ticket.selectedTags,
       ticketCommands: const [],
-      votes: state.votes,
+      voteGroups: state.voteGroups,
     );
   }
 

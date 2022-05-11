@@ -296,7 +296,6 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
       ],
       ticketTitle: state.ticket.title,
       ticketDescription: state.ticket.description,
-      selectedTags: state.ticket.selectedTags,
       ticketCommands: [
         PlanningCommandButton(
           icon: Icons.timer,
@@ -359,7 +358,6 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
       ],
       ticketTitle: state.ticket.title,
       ticketDescription: state.ticket.description,
-      selectedTags: state.ticket.selectedTags,
       ticketCommands: [
         PlanningCommandButton(
           icon: Icons.download,
@@ -372,7 +370,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
           onPressed: _didTapRevote,
         ),
       ],
-      votes: state.votes,
+      voteGroups: state.voteGroups,
     );
   }
 

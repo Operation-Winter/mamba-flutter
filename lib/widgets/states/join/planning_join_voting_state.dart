@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mamba/models/planning_card.dart';
-import 'package:mamba/models/planning_participant_dto.dart';
+import 'package:mamba/models/planning_participant_group_dto.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
 import 'package:mamba/widgets/cards/planning_session_ticket_card.dart';
@@ -12,7 +12,7 @@ class PlanningJoinVotingState extends StatelessWidget {
   final int coffeeVoteCount;
   final int spectatorCount;
   final List<PlanningCommandButton> commands;
-  final List<PlanningParticipantDto> participants;
+  final List<PlanningParticipantGroupDto> participants;
   final String ticketTitle;
   final String? ticketDescription;
   final List<PlanningCard> availableCards;
@@ -50,7 +50,6 @@ class PlanningJoinVotingState extends StatelessWidget {
             PlanningSessionTicketCard(
               ticketTitle: ticketTitle,
               ticketDescription: ticketDescription,
-              selectedTags: {},
               commands: const [],
             ),
             PlanningSessionVotingCard(

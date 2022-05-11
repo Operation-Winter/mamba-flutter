@@ -7,7 +7,7 @@ class SpectatorLandingSessionLoading extends SpectatorLandingSessionState {}
 
 class SpectatorLandingSessionNone extends SpectatorLandingSessionState {
   final String sessionName;
-  final List<PlanningParticipantDto> participants;
+  final List<PlanningParticipantGroupDto> participants;
   final int coffeeVoteCount;
   final int spectatorCount;
 
@@ -21,7 +21,7 @@ class SpectatorLandingSessionNone extends SpectatorLandingSessionState {
 
 class SpectatorLandingSessionVoting extends SpectatorLandingSessionState {
   final String sessionName;
-  final List<PlanningParticipantDto> participants;
+  final List<PlanningParticipantGroupDto> participants;
   final int coffeeVoteCount;
   final int spectatorCount;
   final PlanningTicket ticket;
@@ -39,11 +39,11 @@ class SpectatorLandingSessionVoting extends SpectatorLandingSessionState {
 class SpectatorLandingSessionVotingFinished
     extends SpectatorLandingSessionState {
   final String sessionName;
-  final List<PlanningParticipantDto> participants;
+  final List<PlanningParticipantGroupDto> participants;
   final int coffeeVoteCount;
   final int spectatorCount;
   final PlanningTicket ticket;
-  final List<PlanningCard> votes;
+  final List<PlanningCardGroup> voteGroups;
 
   SpectatorLandingSessionVotingFinished({
     required this.sessionName,
@@ -51,7 +51,7 @@ class SpectatorLandingSessionVotingFinished
     required this.coffeeVoteCount,
     required this.spectatorCount,
     required this.ticket,
-    required this.votes,
+    required this.voteGroups,
   });
 }
 

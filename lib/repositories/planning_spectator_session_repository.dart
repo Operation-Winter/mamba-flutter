@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:mamba/models/commands/spectator/planning_spectator_receive_command.dart';
 import 'package:mamba/models/commands/spectator/planning_spectator_send_command.dart';
@@ -27,7 +28,7 @@ class PlanningSpectatorSessionRepository {
       bool? cancelOnError}) {
     return _webSocket.listen(
       (event) {
-        print(utf8.decode(event));
+        log(utf8.decode(event));
         PlanningSpectatorReceiveCommand planningCommand =
             PlanningSpectatorReceiveCommand.fromJson(
                 jsonDecode(utf8.decode(event)));

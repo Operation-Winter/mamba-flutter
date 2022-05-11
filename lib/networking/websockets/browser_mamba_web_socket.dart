@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:mamba/models/planning_command.dart';
 import 'package:mamba/networking/websockets/mamba_web_socket.dart';
@@ -20,7 +21,7 @@ class BrowserMambaWebSocket implements MambaWebSocket {
   @override
   void send({required PlanningCommand planningCommand}) {
     var parsedCommand = jsonEncode(planningCommand);
-    print(parsedCommand.toString());
+    log(parsedCommand.toString());
 
     List<int> data = utf8.encode(parsedCommand.toString());
     _channel?.sink.add(data);

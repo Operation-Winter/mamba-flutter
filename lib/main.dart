@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:mamba/screens/planning_share_screen.dart';
 import 'package:universal_io/io.dart';
@@ -58,13 +59,13 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     // Check initial link if app was in cold state (terminated)
     final appLink = await _appLinks.getInitialAppLink();
     if (appLink != null) {
-      print('getInitialAppLink: $appLink');
+      log('getInitialAppLink: $appLink');
       openAppLink(appLink);
     }
 
     // Handle link when app is in warm state (front or background)
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
-      print('onAppLink: $uri');
+      log('onAppLink: $uri');
       openAppLink(uri);
     });
   }

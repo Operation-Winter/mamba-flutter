@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:mamba/models/commands/join/planning_join_receive_command.dart';
 import 'package:mamba/models/commands/join/planning_join_send_command.dart';
@@ -27,7 +28,7 @@ class PlanningJoinSessionRepository {
       {Function? onError, void Function()? onDone, bool? cancelOnError}) {
     return _webSocket.listen(
       (event) {
-        print(utf8.decode(event));
+        log(utf8.decode(event));
         PlanningJoinReceiveCommand planningCommand =
             PlanningJoinReceiveCommand.fromJson(jsonDecode(utf8.decode(event)));
         onData?.call(planningCommand);
