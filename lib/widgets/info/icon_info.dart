@@ -13,7 +13,7 @@ class IconInfo extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        color: Colors.white,
+        color: isDarkMode(context) ? Colors.white : lightGrayColor,
       ),
       constraints: const BoxConstraints(
         maxWidth: 58,

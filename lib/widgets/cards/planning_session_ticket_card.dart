@@ -39,7 +39,7 @@ class PlanningSessionTicketCard extends StatelessWidget {
               if (commands.isNotEmpty) const SizedBox(height: 10),
               if (commands.isNotEmpty)
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     if (commands.isNotEmpty)
                       Wrap(

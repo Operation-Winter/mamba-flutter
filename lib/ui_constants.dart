@@ -5,7 +5,8 @@ const darkPurple = Color(0xFF38023B);
 const accentColor = Color(0xFFCEFDFF);
 const disabledColor = Color.fromARGB(255, 116, 116, 116);
 const inputBackgroundColor = Color.fromARGB(20, 0, 0, 0);
-const maxWidth = 1000.0;
+const lightGrayColor = Color.fromARGB(255, 230, 230, 230);
+const maxWidth = 1100.0;
 
 const titleTextStyle = TextStyle(
   color: primaryColor,
