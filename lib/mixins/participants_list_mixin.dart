@@ -90,6 +90,7 @@ mixin ParticipantsListMixin {
           );
         })
         .whereNotNull()
+        .sortedBy((element) => element.name)
         .toList();
   }
 
@@ -122,6 +123,7 @@ mixin ParticipantsListMixin {
           );
         })
         .whereNotNull()
+        .sortedBy((element) => element.name)
         .toList();
   }
 
