@@ -45,7 +45,7 @@ jobs:
 
       - name: Build xArchive
         run: |
-          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive clean archive
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -allowProvisioningUpdates -configuration Release -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive clean archive
 
       - name: Export ipa
         run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/ExportOptions.plist
@@ -90,7 +90,7 @@ jobs:
       - run: flutter test
       - run: flutter build apk
       - run: flutter build appbundle
-      
+
   web:
     runs-on: ubuntu-latest
     steps:
