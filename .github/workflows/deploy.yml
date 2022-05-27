@@ -9,10 +9,6 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v3
 
-      - name: Set environment variables from project settings
-        run: |
-          exec .github/scripts/set-env-from-xcodeproj.sh
-
       - name: Install Apple Certificate
         uses: apple-actions/import-codesign-certs@v1
         with:
@@ -74,12 +70,6 @@ jobs:
         run: |
           xcrun altool --upload-app -t ios -f "$PRODUCT_NAME.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
 
-      - name: Clean up keychain and provisioning profile
-        if: ${{ always() }}
-        run: |
-          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
-          rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
-
   android:
     runs-on: ubuntu-latest
     steps:
@@ -100,6 +90,7 @@ jobs:
       - run: flutter test
       - run: flutter build apk
       - run: flutter build appbundle
+      
   web:
     runs-on: ubuntu-latest
     steps:
