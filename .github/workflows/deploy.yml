@@ -38,7 +38,7 @@ jobs:
       - run: flutter pub get
       
       - name: Build Flutter
-        run: flutter build ios --release --no-codesign
+        run: flutter build ios --release
       
       - name: Build resolve Swift dependencies
         run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release
@@ -48,7 +48,7 @@ jobs:
           xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -allowProvisioningUpdates -configuration Release -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive clean archive
 
       - name: Export ipa
-        run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/ExportOptions.plist
+        run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
