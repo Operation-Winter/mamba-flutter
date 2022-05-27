@@ -73,13 +73,12 @@ mixin ParticipantsListMixin {
 
           if (ticketGroups != null && participantVotes.isNotEmpty == true) {
             var votesTotal = ticketGroups[participantVotes.last]?.length ?? 0;
-            var smallestGroupLength = ticketGroups.entries
+            var largestGroupLength = ticketGroups.entries
                 .reduce((current, next) =>
-                    current.value.length < next.value.length ? current : next)
+                    current.value.length > next.value.length ? current : next)
                 .value
                 .length;
-            highligted =
-                votesTotal <= smallestGroupLength && ticketGroups.length > 1;
+            highligted = votesTotal < largestGroupLength;
           }
 
           return PlanningParticipantDto(

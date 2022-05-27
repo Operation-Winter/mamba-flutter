@@ -26,7 +26,7 @@ class LandingImageButton extends StatelessWidget {
             ),
           ],
         ),
-        constraints: const BoxConstraints.expand(height: 80),
+        constraints: const BoxConstraints.tightFor(height: 80),
         child: InkWell(
           onTap: onPressed,
           child: Row(
@@ -46,7 +46,7 @@ class LandingImageButton extends StatelessWidget {
               ),
               const SizedBox(width: 16),
               Expanded(
-                flex: 4,
+                flex: 2,
                 child: Text(
                   title,
                   style: isDarkMode(context)

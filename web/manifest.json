@@ -4,7 +4,7 @@
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FFA288E3",
-    "theme_color": "#FF38023B",
+    "theme_color": "#FFA288E3",
     "description": "An app that allows for teams to size tickets using Story Point cards. This is intended for the SCRUM Agile methodology.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
