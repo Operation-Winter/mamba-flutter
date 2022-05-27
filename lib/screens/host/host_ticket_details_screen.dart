@@ -146,6 +146,11 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
                       placeholder: 'Description',
                       controller: _descriptionController,
                     ),
+                    const SizedBox(height: 10),
+                    const DescriptionText(
+                      text: 'Tags',
+                      textAlign: TextAlign.center,
+                    ),
                     ChipWrap(
                       children: chipList(),
                     ),
