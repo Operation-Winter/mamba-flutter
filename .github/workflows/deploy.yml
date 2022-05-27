@@ -13,18 +13,22 @@ jobs:
         run: |
           exec .github/scripts/set-env-from-xcodeproj.sh
 
-      - name: Import signing certificate
-        env:
-          SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.SIGNING_CERTIFICATE_P12_DATA }}
-          SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
-        run: |
-          exec .github/scripts/import-certificate.sh
+      - name: Install Apple Certificate
+        uses: apple-actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.SIGNING_CERTIFICATE_P12_DATA }}
+          p12-password: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
 
-      - name: Import provisioning profile
+      - name: Install the provisioning profile
         env:
-          PROVISIONING_PROFILE_DATA: ${{ secrets.PROVISIONING_PROFILE_DATA }}
+          PROVISIONING_CERTIFICATE_BASE64: ${{ secrets.PROVISIONING_PROFILE_DATA }}
         run: |
-          exec .github/scripts/import-profile.sh
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+
+          echo -n "$PROVISIONING_CERTIFICATE_BASE64" | base64 --decode --output $PP_PATH
+
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
@@ -37,9 +41,19 @@ jobs:
       - run: flutter --version
       - run: flutter pub get
       
-      - name: Building IPA
-        run: flutter build ipa --release --export-options-plist=ios/Runner/ExportOptions.plist
+      - name: Build Flutter
+        run: flutter build ios --release --no-codesign
       
+      - name: Build resolve Swift dependencies
+        run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release
+
+      - name: Build xArchive
+        run: |
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive clean archive
+
+      - name: Export ipa
+        run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/ExportOptions.plist
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -49,7 +63,7 @@ jobs:
       - name: Upload ipa file
         uses: actions/upload-artifact@v2
         with:
-         name: release-ipa
+         name: release-ios
          path: build/ios/ipa/*.ipa
 
       - name: Upload app to App Store Connect
