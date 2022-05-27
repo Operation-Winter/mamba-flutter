@@ -2,8 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
+import 'package:mamba/widgets/chips/add_chip.dart';
 import 'package:mamba/widgets/chips/chip_wrap.dart';
 import 'package:mamba/widgets/chips/styled_chip.dart';
+import 'package:mamba/widgets/dialog/text_field_dialog.dart';
 import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
@@ -12,7 +14,8 @@ import 'package:universal_io/io.dart';
 class HostTicketDetailsScreen extends StatefulWidget {
   final Set<String> tags;
   final Set<String> selectedTags;
-  final Function(String, String?, Set<String> tags) onAddTicket;
+  final Function(String, String?, Set<String> tags, Set<String> selectedTags)
+      onAddTicket;
   final String? title;
   final String? description;
 
@@ -33,7 +36,9 @@ class HostTicketDetailsScreen extends StatefulWidget {
 class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
-  late Set<String> _selectedTags;
+  Set<String> tags = {};
+  Set<String> _selectedTags = {};
+  final _textController = TextEditingController();
 
   get shouldEnableAddButton => _titleController.text.isNotEmpty;
   get editMode => widget.title != null || widget.description != null;
@@ -44,11 +49,18 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
     super.initState();
     _titleController.text = widget.title ?? '';
     _descriptionController.text = widget.description ?? '';
-    _selectedTags = widget.selectedTags;
+    tags.addAll(widget.tags);
+    _selectedTags.addAll(widget.selectedTags);
+  }
+
+  void _addChip(String tag) {
+    setState(() {
+      tags.add(tag);
+    });
   }
 
   List<Widget> chipList() {
-    List<Widget> styledChipList = widget.tags
+    List<Widget> styledChipList = tags
         .map(
           (tag) => GestureDetector(
             onTap: () => setState(() {
@@ -59,11 +71,28 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
             child: StyledChip(
               text: tag,
               selected: _selectedTags.contains(tag),
+              onDeleted: () => setState(() {
+                tags.remove(tag);
+                _selectedTags.remove(tag);
+              }),
             ),
           ),
         )
         .cast<Widget>()
         .toList();
+
+    styledChipList.add(
+      AddChip(
+        onTap: () => TextFieldAlertDialog.show(
+          title: 'Add voting tag',
+          placeholder: 'Enter tag name',
+          primaryActionTitle: 'Add',
+          context: context,
+          controller: _textController,
+          textFieldInput: _addChip,
+        ),
+      ),
+    );
     return styledChipList;
   }
 
@@ -120,6 +149,7 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
                     ChipWrap(
                       children: chipList(),
                     ),
+                    const SizedBox(height: 20),
                     RoundedButton(
                       title: editMode ? 'Edit ticket' : 'Add ticket',
                       enabled: shouldEnableAddButton,
@@ -127,6 +157,7 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
                         widget.onAddTicket(
                           _titleController.text,
                           _descriptionController.text,
+                          tags,
                           _selectedTags,
                         );
                       },

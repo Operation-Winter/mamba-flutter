@@ -41,38 +41,42 @@ class ParticipantRow extends StatelessWidget {
             ? Border.all(color: primaryColor, width: 2)
             : null,
       ),
-      child: PopupMenuButton(
-        itemBuilder: (context) => participantCommands
-            .map((command) => PopupMenuItem(
-                  onTap: () => command.onTap?.call(participantId),
-                  child: Text(
-                    command.title,
-                  ),
-                ))
-            .toList(),
-        offset: const Offset(0, 43),
-        enabled: participantCommands.isNotEmpty,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              if (participantCommands.isNotEmpty) ...[
-                const Icon(
-                  Icons.arrow_drop_down,
-                  color: disabledColor,
-                )
+      child: TooltipVisibility(
+        visible: participantCommands.isNotEmpty,
+        child: PopupMenuButton(
+          itemBuilder: (context) => participantCommands
+              .map((command) => PopupMenuItem(
+                    onTap: () => command.onTap?.call(participantId),
+                    child: Text(
+                      command.title,
+                    ),
+                  ))
+              .toList(),
+          offset: const Offset(0, 43),
+          enabled: participantCommands.isNotEmpty,
+          tooltip: "Commands menu",
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (participantCommands.isNotEmpty) ...[
+                  const Icon(
+                    Icons.arrow_drop_down,
+                    color: disabledColor,
+                  )
+                ],
+                Icon(
+                  Icons.account_circle,
+                  color: connected ? Colors.green : Colors.red,
+                ),
+                const SizedBox(width: 10),
+                Text(name),
+                const Spacer(),
+                ..._voteWidget(),
               ],
-              Icon(
-                Icons.account_circle,
-                color: connected ? Colors.green : Colors.red,
-              ),
-              const SizedBox(width: 10),
-              Text(name),
-              const Spacer(),
-              ..._voteWidget(),
-            ],
+            ),
           ),
         ),
       ),

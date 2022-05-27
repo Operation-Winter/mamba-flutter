@@ -10,11 +10,11 @@ part 'planning_session_state_message.g.dart';
 class PlanningSessionStateMessage implements PlanningMessage {
   final String sessionCode;
   final String sessionName;
+  final String? password;
   final List<PlanningCard> availableCards;
   final List<PlanningParticipant> participants;
   final PlanningTicket? ticket;
   final int? timeLeft;
-  final Set<String> tags;
   final int spectatorCount;
   final int coffeeRequestCount;
   final List<PlanningCoffeeVote>? coffeeVotes;
@@ -22,11 +22,11 @@ class PlanningSessionStateMessage implements PlanningMessage {
   PlanningSessionStateMessage({
     required this.sessionCode,
     required this.sessionName,
+    this.password,
     required this.availableCards,
     required this.participants,
     this.ticket,
     this.timeLeft,
-    required this.tags,
     required this.spectatorCount,
     required this.coffeeRequestCount,
     required this.coffeeVotes,

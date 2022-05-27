@@ -55,9 +55,7 @@ class PlanningSessionParticipantsCard extends StatelessWidget {
         child: Column(
           children: [
             const TitleText(text: 'Participants'),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             participants.isEmpty
                 ? const DescriptionText(
                     text: 'No participants have joined the session yet',

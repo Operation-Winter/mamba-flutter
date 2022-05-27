@@ -10,11 +10,13 @@ class HostSendStartSession extends HostLandingSessionEvent {}
 class HostSendAddTicket extends HostLandingSessionEvent {
   final String title;
   final String? description;
+  final Set<String> tags;
   final Set<String> selectedTags;
 
   HostSendAddTicket({
     required this.title,
     this.description,
+    required this.tags,
     required this.selectedTags,
   });
 }
@@ -42,11 +44,13 @@ class HostSendReconnect extends HostLandingSessionEvent {}
 class HostSendEditTicket extends HostLandingSessionEvent {
   final String title;
   final String? description;
+  final Set<String> tags;
   final Set<String> selectedTags;
 
   HostSendEditTicket({
     required this.title,
     this.description,
+    required this.tags,
     required this.selectedTags,
   });
 }

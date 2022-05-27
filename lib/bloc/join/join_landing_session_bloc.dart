@@ -6,7 +6,6 @@ import 'package:mamba/models/messages/planning_invalid_command_message.dart';
 import 'package:mamba/models/messages/planning_session_state_message.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/models/planning_card_group.dart';
-import 'package:mamba/models/planning_participant_dto.dart';
 import 'package:mamba/models/planning_participant_group_dto.dart';
 import 'package:mamba/models/planning_ticket.dart';
 import 'package:mamba/repositories/local_storage_repository.dart';
@@ -27,7 +26,7 @@ class JoinLandingSessionBloc
       LocalStorageRepository();
 
   final String sessionCode;
-  final String? password;
+  String? password;
   String username;
 
   String _sessionName = '';
@@ -164,6 +163,7 @@ class JoinLandingSessionBloc
     _sessionName = message.sessionName;
     availableCards = message.availableCards;
     ticket = message.ticket;
+    password = message.password;
 
     _sessionJoined = true;
     _timeLeft = message.timeLeft;

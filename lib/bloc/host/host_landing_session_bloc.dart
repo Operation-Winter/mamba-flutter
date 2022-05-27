@@ -10,7 +10,6 @@ import 'package:mamba/models/planning_participant_group_dto.dart';
 import 'package:mamba/models/planning_ticket.dart';
 import 'package:mamba/repositories/local_storage_repository.dart';
 import 'package:mamba/repositories/planning_host_session_repository.dart';
-import "package:collection/collection.dart";
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
@@ -32,7 +31,7 @@ class HostLandingSessionBloc
   String? password;
   bool automaticallyCompleteVoting;
   List<PlanningCard> availableCards = [];
-  Set<String> tags;
+  Set<String> tags = {};
   PlanningTicket? ticket;
 
   Future<UuidValue> get _uuid async {
@@ -54,13 +53,13 @@ class HostLandingSessionBloc
     this.password,
     required this.availableCards,
     required this.automaticallyCompleteVoting,
-    required this.tags,
   }) : super(HostLandingSessionLoading()) {
     on<HostLandingSessionEvent>((event, emit) {
       // Send commands
       if (event is HostSendStartSession) {
         _sendStartCommand();
       } else if (event is HostSendAddTicket) {
+        tags = event.tags;
         _sendAddTicketCommand(
           title: event.title,
           description: event.description,
@@ -81,6 +80,7 @@ class HostLandingSessionBloc
       } else if (event is HostSendReconnect) {
         _sendReconnectCommand();
       } else if (event is HostSendEditTicket) {
+        tags = event.tags;
         _sendEditTicketCommand(
           title: event.title,
           description: event.description,
@@ -252,7 +252,6 @@ class HostLandingSessionBloc
       automaticallyCompleteVoting: automaticallyCompleteVoting,
       availableCards: availableCards,
       password: password,
-      tags: tags,
     );
   }
 

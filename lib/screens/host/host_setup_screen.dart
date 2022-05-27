@@ -3,10 +3,6 @@ import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/screens/host/host_landing_screen.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';
 import 'package:mamba/widgets/cards/planning_card_selectable.dart';
-import 'package:mamba/widgets/chips/add_chip.dart';
-import 'package:mamba/widgets/chips/chip_wrap.dart';
-import 'package:mamba/widgets/chips/styled_chip.dart';
-import 'package:mamba/widgets/dialog/text_field_dialog.dart';
 import 'package:mamba/widgets/inputs/styled_switch.dart';
 import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/widgets/text/description_text.dart';
@@ -26,9 +22,7 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
   bool validationPassed = false;
   String? sessionName;
   String? password;
-  Set<String> tags = {};
   List<PlanningCard> availableCards = PlanningCard.values.toList();
-  final _textController = TextEditingController();
 
   bool get formIsValid {
     return sessionName?.isEmpty == false && availableCards.isNotEmpty;
@@ -56,15 +50,8 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
         automaticallyCompleteVoting: automaticallyCompleteVoting,
         availableCards: availableCards,
         password: password,
-        tags: tags,
       ),
     );
-  }
-
-  void _addChip(String tag) {
-    setState(() {
-      tags.add(tag);
-    });
   }
 
   void _didTapCard(PlanningCard planningCard) {
@@ -73,32 +60,6 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
           ? availableCards.remove(planningCard)
           : availableCards.add(planningCard);
     });
-  }
-
-  List<Widget> _chipList() {
-    List<Widget> styledChipList = tags
-        .map((tag) => StyledChip(
-              text: tag,
-              onDeleted: () => setState(() {
-                tags.remove(tag);
-              }),
-            ))
-        .cast<Widget>()
-        .toList();
-
-    styledChipList.add(
-      AddChip(
-        onTap: () => TextFieldAlertDialog.show(
-          title: 'Add voting tag',
-          placeholder: 'Enter tag name',
-          primaryActionTitle: 'Add',
-          context: context,
-          controller: _textController,
-          textFieldInput: _addChip,
-        ),
-      ),
-    );
-    return styledChipList;
   }
 
   @override
@@ -162,14 +123,6 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                               'Automatically finish voting when all participants have voted',
                           value: automaticallyCompleteVoting,
                           onChanged: automaticallyCompleteVotingChanged,
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Tags',
-                          style: descriptionColoredTextStyle,
-                        ),
-                        ChipWrap(
-                          children: _chipList(),
                         ),
                         const SizedBox(height: 10),
                         const Text(

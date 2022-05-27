@@ -25,14 +25,12 @@ class HostLandingScreenArguments {
   final String? password;
   final List<PlanningCard> availableCards;
   final bool automaticallyCompleteVoting;
-  final Set<String> tags;
 
   HostLandingScreenArguments({
     required this.sessionName,
     this.password,
     this.availableCards = const [],
     this.automaticallyCompleteVoting = false,
-    this.tags = const {},
   });
 }
 
@@ -46,14 +44,12 @@ class HostLandingScreen extends StatefulWidget {
     String? password,
     List<PlanningCard> availableCards = const [],
     bool automaticallyCompleteVoting = false,
-    Set<String> tags = const {},
   }) : super(key: key) {
     session = HostLandingSessionBloc(
       sessionName: sessionName,
       password: password,
       availableCards: availableCards,
       automaticallyCompleteVoting: automaticallyCompleteVoting,
-      tags: tags,
     );
   }
 
@@ -78,13 +74,14 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
       context: context,
       builder: (context) => HostTicketDetailsScreen(
         tags: widget.session.tags,
-        selectedTags: {},
-        onAddTicket: (title, description, tags) {
+        selectedTags: const {},
+        onAddTicket: (title, description, tags, selectedTags) {
           widget.session.add(
             HostSendAddTicket(
               title: title,
               description: description,
-              selectedTags: tags,
+              tags: tags,
+              selectedTags: selectedTags,
             ),
           );
           Navigator.pop(context);
@@ -101,12 +98,13 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
         description: widget.session.ticket?.description,
         tags: widget.session.tags,
         selectedTags: widget.session.ticket?.selectedTags ?? {},
-        onAddTicket: (title, description, tags) {
+        onAddTicket: (title, description, tags, selectedTags) {
           widget.session.add(
             HostSendEditTicket(
               title: title,
               description: description,
-              selectedTags: tags,
+              tags: tags,
+              selectedTags: selectedTags,
             ),
           );
           Navigator.pop(context);

@@ -101,7 +101,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           automaticallyCompleteVoting: arguments.automaticallyCompleteVoting,
           availableCards: arguments.availableCards,
           password: arguments.password,
-          tags: arguments.tags,
         ),
       );
     } else if (settings.name == JoinLandingScreen.route) {
@@ -169,7 +168,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
 
   Widget _iosApp(BuildContext context) {
     final Brightness platformBrightness =
-        WidgetsBinding.instance!.window.platformBrightness;
+        WidgetsBinding.instance.window.platformBrightness;
     return Theme(
       data: ThemeData(
         brightness: platformBrightness,

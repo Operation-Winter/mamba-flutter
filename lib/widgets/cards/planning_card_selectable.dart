@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mamba/models/planning_card.dart';
+import 'package:mamba/widgets/planning_card_icon.dart';
 
 import '../../ui_constants.dart';
 
@@ -18,12 +19,11 @@ class PlanningCardSelectable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: onTap,
       child: Stack(
         alignment: Alignment.topRight,
         children: [
-          Image(
-            image: planningCard.image,
-          ),
+          PlanningCardIcon(planningCard: planningCard),
           Padding(
             padding: const EdgeInsets.all(4),
             child: selected
@@ -38,7 +38,6 @@ class PlanningCardSelectable extends StatelessWidget {
           ),
         ],
       ),
-      onTap: onTap,
     );
   }
 }

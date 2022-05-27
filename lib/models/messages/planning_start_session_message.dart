@@ -10,14 +10,12 @@ class PlanningStartSessionMessage implements PlanningMessage {
   final bool autoCompleteVoting;
   final List<PlanningCard> availableCards;
   final String? password;
-  final Set<String> tags;
 
   PlanningStartSessionMessage({
     required this.sessionName,
     required this.autoCompleteVoting,
     required this.availableCards,
     this.password,
-    required this.tags,
   });
 
   factory PlanningStartSessionMessage.fromJson(Map<String, dynamic> data) =>

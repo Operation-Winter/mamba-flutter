@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/ui_constants.dart';
+import 'package:mamba/widgets/planning_card_icon.dart';
 
 class PlanningSessionVotingCard extends StatefulWidget {
   final List<PlanningCard> planningCards;
@@ -74,10 +75,20 @@ class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            if (widget.tags.length > 1) ...[
+            if (widget.tags.isNotEmpty) ...[
               TabBar(
                 controller: _tabController,
-                tabs: widget.tags.map((tag) => Tab(text: tag)).toList(),
+                tabs: widget.tags
+                    .map((tag) => Tab(
+                          child: Text(
+                            tag,
+                            style: TextStyle(
+                                color: isDarkMode(context)
+                                    ? Colors.white
+                                    : Colors.black),
+                          ),
+                        ))
+                    .toList(),
                 indicatorColor: primaryColor,
                 isScrollable: true,
               ),
@@ -100,12 +111,10 @@ class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
                                   width: 2,
                                   color: primaryColor,
                                 ),
-                                borderRadius: BorderRadius.circular(4),
+                                borderRadius: BorderRadius.circular(11),
                               )
                             : null,
-                        child: Image(
-                          image: planningCard.image,
-                        ),
+                        child: PlanningCardIcon(planningCard: planningCard),
                       ),
                     ),
                   )

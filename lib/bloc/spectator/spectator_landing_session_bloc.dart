@@ -11,7 +11,6 @@ import 'package:mamba/models/planning_ticket.dart';
 import 'package:mamba/repositories/local_storage_repository.dart';
 import 'package:mamba/repositories/planning_spectator_session_repository.dart';
 import 'package:meta/meta.dart';
-import 'package:collection/collection.dart';
 import 'package:uuid/uuid.dart';
 
 part 'spectator_landing_session_event.dart';
@@ -26,7 +25,7 @@ class SpectatorLandingSessionBloc
       LocalStorageRepository();
 
   final String sessionCode;
-  final String? password;
+  String? password;
 
   String _sessionName = '';
   List<PlanningCard> availableCards = [];
@@ -147,6 +146,7 @@ class SpectatorLandingSessionBloc
     _sessionName = message.sessionName;
     availableCards = message.availableCards;
     ticket = message.ticket;
+    password = message.password;
 
     _sessionJoined = true;
     _timeLeft = message.timeLeft;

@@ -11,6 +11,7 @@ PlanningSessionStateMessage _$PlanningSessionStateMessageFromJson(
     PlanningSessionStateMessage(
       sessionCode: json['sessionCode'] as String,
       sessionName: json['sessionName'] as String,
+      password: json['password'] as String?,
       availableCards: (json['availableCards'] as List<dynamic>)
           .map((e) => $enumDecode(_$PlanningCardEnumMap, e))
           .toList(),
@@ -21,7 +22,6 @@ PlanningSessionStateMessage _$PlanningSessionStateMessageFromJson(
           ? null
           : PlanningTicket.fromJson(json['ticket'] as Map<String, dynamic>),
       timeLeft: json['timeLeft'] as int?,
-      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toSet(),
       spectatorCount: json['spectatorCount'] as int,
       coffeeRequestCount: json['coffeeRequestCount'] as int,
       coffeeVotes: (json['coffeeVotes'] as List<dynamic>?)
@@ -34,12 +34,12 @@ Map<String, dynamic> _$PlanningSessionStateMessageToJson(
     <String, dynamic>{
       'sessionCode': instance.sessionCode,
       'sessionName': instance.sessionName,
+      'password': instance.password,
       'availableCards':
           instance.availableCards.map((e) => _$PlanningCardEnumMap[e]).toList(),
       'participants': instance.participants.map((e) => e.toJson()).toList(),
       'ticket': instance.ticket?.toJson(),
       'timeLeft': instance.timeLeft,
-      'tags': instance.tags.toList(),
       'spectatorCount': instance.spectatorCount,
       'coffeeRequestCount': instance.coffeeRequestCount,
       'coffeeVotes': instance.coffeeVotes?.map((e) => e.toJson()).toList(),
