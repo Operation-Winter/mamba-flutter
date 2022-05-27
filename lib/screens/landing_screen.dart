@@ -58,9 +58,7 @@ class _LandingScreenState extends State<LandingScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 16,
-                        ),
+                        const SizedBox(height: 16),
                         LandingImageButton(
                           title: 'Host a planning session',
                           imageName: 'images/planning_host.png',

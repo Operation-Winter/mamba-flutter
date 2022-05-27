@@ -26,12 +26,13 @@ class LandingImageButton extends StatelessWidget {
             ),
           ],
         ),
+        constraints: const BoxConstraints.expand(height: 80),
         child: InkWell(
           onTap: onPressed,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Expanded(
+              Flexible(
                 flex: 1,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(
@@ -43,9 +44,7 @@ class LandingImageButton extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(
-                width: 16,
-              ),
+              const SizedBox(width: 16),
               Expanded(
                 flex: 4,
                 child: Text(
