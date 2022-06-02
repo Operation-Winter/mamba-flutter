@@ -93,7 +93,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
 
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     if (settings.name == HostLandingScreen.route) {
-      final arguments = settings.arguments as HostLandingScreenArguments;
+      final arguments = settings.arguments as HostLandingScreenArguments?;
+      if (arguments == null) return null;
       return MaterialPageRoute(
         settings: RouteSettings(name: HostLandingScreen.route),
         builder: (_) => HostLandingScreen(
@@ -104,7 +105,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         ),
       );
     } else if (settings.name == JoinLandingScreen.route) {
-      final arguments = settings.arguments as JoinLandingScreenArguments;
+      final arguments = settings.arguments as JoinLandingScreenArguments?;
+      if (arguments == null) return null;
       return MaterialPageRoute(
         settings: RouteSettings(name: JoinLandingScreen.route),
         builder: (_) => JoinLandingScreen(
@@ -114,7 +116,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         ),
       );
     } else if (settings.name == SpectatorLandingScreen.route) {
-      final arguments = settings.arguments as SpectatorLandingScreenArguments;
+      final arguments = settings.arguments as SpectatorLandingScreenArguments?;
+      if (arguments == null) return null;
       return MaterialPageRoute(
         settings: RouteSettings(name: SpectatorLandingScreen.route),
         builder: (_) => SpectatorLandingScreen(
@@ -123,7 +126,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         ),
       );
     } else if (settings.name == PlanningShareScreen.route) {
-      final arguments = settings.arguments as PlanningShareScreenArguments;
+      final arguments = settings.arguments as PlanningShareScreenArguments?;
+      if (arguments == null) return null;
       return MaterialPageRoute(
         settings: RouteSettings(name: PlanningShareScreen.route),
         builder: (_) => PlanningShareScreen(
