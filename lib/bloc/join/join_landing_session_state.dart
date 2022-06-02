@@ -27,6 +27,7 @@ class JoinLandingSessionVoting extends JoinLandingSessionState {
   final PlanningTicket ticket;
   final List<PlanningCard> availableCards;
   final PlanningCard? selectedCard;
+  final String? selectedTag;
 
   JoinLandingSessionVoting({
     required this.sessionName,
@@ -36,6 +37,7 @@ class JoinLandingSessionVoting extends JoinLandingSessionState {
     required this.ticket,
     required this.availableCards,
     this.selectedCard,
+    this.selectedTag,
   });
 }
 

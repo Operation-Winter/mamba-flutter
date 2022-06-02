@@ -36,6 +36,7 @@ class JoinLandingSessionBloc
   int? _timeLeft;
   bool _sessionJoined = false;
   bool _sessionEnded = false;
+  String? _selectedTag;
 
   Future<UuidValue> get _uuid async {
     var localUuid = await _localStorageRepository.getUuid();
@@ -94,6 +95,11 @@ class JoinLandingSessionBloc
           errorCode: event.code,
           errorDescription: event.description,
         ));
+      }
+
+      // UI Events
+      else if (event is JoinDidSelectTag) {
+        _selectedTag = event.tag;
       }
     });
   }
@@ -207,6 +213,7 @@ class JoinLandingSessionBloc
       ticket: ticket,
       availableCards: message.availableCards,
       selectedCard: selectedCard,
+      selectedTag: _selectedTag,
     ));
   }
 

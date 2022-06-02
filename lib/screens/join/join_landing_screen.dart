@@ -109,6 +109,8 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
         tag: tag,
       ));
 
+  _didSelectTag(String? tag) => widget.session.add(JoinDidSelectTag(tag: tag));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -236,9 +238,11 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
       ticketTitle: state.ticket.title,
       ticketDescription: state.ticket.description,
       selectedTags: state.ticket.selectedTags,
+      selectedTag: state.selectedTag,
       availableCards: state.availableCards,
       selectedCard: state.selectedCard,
       onSelectCard: _didSelectCard,
+      onSelectTag: _didSelectTag,
     );
   }
 

@@ -67,3 +67,11 @@ class JoinLandingError extends JoinLandingSessionEvent {
     required this.description,
   });
 }
+
+class JoinDidSelectTag extends JoinLandingSessionEvent {
+  final String? tag;
+
+  JoinDidSelectTag({
+    this.tag,
+  });
+}

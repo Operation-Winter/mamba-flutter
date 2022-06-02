@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/planning_card_icon.dart';
+import 'dart:core';
 
 class PlanningSessionVotingCard extends StatefulWidget {
   final List<PlanningCard> planningCards;
   final PlanningCard? selectedCard;
+  final String? selectedTag;
   final Set<String> tags;
   final Function(PlanningCard, String?) onSelectCard;
+  final Function(String) onSelectTag;
 
   const PlanningSessionVotingCard({
     Key? key,
     required this.planningCards,
     required this.tags,
     this.selectedCard,
+    this.selectedTag,
     required this.onSelectCard,
+    required this.onSelectTag,
   }) : super(key: key);
 
   @override
@@ -40,7 +45,14 @@ class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
   }
 
   _configureTabController() {
-    if (_initialIndex >= widget.tags.length) _initialIndex = 0;
+    var selectedTag = widget.selectedTag;
+    if (selectedTag != null) {
+      var index = widget.tags.toList().indexOf(selectedTag);
+      _initialIndex = index == -1 ? 0 : index;
+    } else {
+      _initialIndex = 0;
+    }
+
     _tabController = TabController(
       initialIndex: _initialIndex,
       length: widget.tags.length,
@@ -49,6 +61,7 @@ class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
     _tabController.addListener(() {
       if (!_tabController.indexIsChanging) {
         _didTapCard(null);
+        widget.onSelectTag(widget.tags.elementAt(_tabController.index));
       }
     });
   }

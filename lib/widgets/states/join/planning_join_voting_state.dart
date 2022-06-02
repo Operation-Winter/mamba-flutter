@@ -18,7 +18,9 @@ class PlanningJoinVotingState extends StatelessWidget {
   final List<PlanningCard> availableCards;
   final PlanningCard? selectedCard;
   final Set<String> selectedTags;
+  final String? selectedTag;
   final Function(PlanningCard, String?) onSelectCard;
+  final Function(String) onSelectTag;
 
   const PlanningJoinVotingState({
     Key? key,
@@ -30,9 +32,11 @@ class PlanningJoinVotingState extends StatelessWidget {
     required this.ticketTitle,
     this.ticketDescription,
     required this.selectedTags,
+    this.selectedTag,
     required this.availableCards,
     this.selectedCard,
     required this.onSelectCard,
+    required this.onSelectTag,
   }) : super(key: key);
 
   @override
@@ -56,7 +60,9 @@ class PlanningJoinVotingState extends StatelessWidget {
               planningCards: availableCards,
               selectedCard: selectedCard,
               onSelectCard: onSelectCard,
+              onSelectTag: onSelectTag,
               tags: selectedTags,
+              selectedTag: selectedTag,
             ),
             PlanningSessionParticipantsCard(
               participants: participants,
