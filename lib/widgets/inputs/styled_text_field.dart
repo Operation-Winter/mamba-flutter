@@ -8,6 +8,7 @@ class StyledTextField extends StatefulWidget {
   final Function(String?)? onChanged;
   final EdgeInsets? padding;
   final bool? autofocus;
+  final bool enabled;
 
   const StyledTextField({
     Key? key,
@@ -17,6 +18,7 @@ class StyledTextField extends StatefulWidget {
     this.onChanged,
     this.padding,
     this.autofocus,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
@@ -64,6 +66,7 @@ class _StyledTextFieldState extends State<StyledTextField> {
         onChanged: onChanged,
         cursorColor: primaryColor,
         autofocus: widget.autofocus ?? false,
+        enabled: widget.enabled,
       ),
     );
   }

@@ -116,6 +116,7 @@ class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {
                           input: sessionCode,
                           onChanged: sessionCodeChanged,
                           autofocus: true,
+                          enabled: widget.sessionCode == null,
                         ),
                         StyledTextField(
                           placeholder: 'Password (Optional)',
@@ -123,6 +124,7 @@ class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {
                           onChanged: (password) {
                             this.password = password;
                           },
+                          enabled: widget.password == null,
                         ),
                         const SizedBox(height: 10),
                         RoundedButton(

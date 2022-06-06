@@ -140,7 +140,8 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
                           placeholder: 'Session code *',
                           input: sessionCode,
                           onChanged: sessionCodeChanged,
-                          autofocus: true,
+                          autofocus: widget.sessionCode == null,
+                          enabled: widget.sessionCode == null,
                         ),
                         StyledTextField(
                           placeholder: 'Password (Optional)',
@@ -148,11 +149,13 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
                           onChanged: (password) {
                             this.password = password;
                           },
+                          enabled: widget.password == null,
                         ),
                         StyledTextField(
                           placeholder: 'Your name *',
                           onChanged: userNameChanged,
                           controller: _usernameController,
+                          autofocus: widget.sessionCode != null,
                         ),
                         const SizedBox(height: 10),
                         RoundedButton(
