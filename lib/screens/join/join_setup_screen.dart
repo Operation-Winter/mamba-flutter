@@ -66,6 +66,10 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
     setState(() {
       validationPassed = formIsValid;
     });
+
+    if (widget.sessionCode != null && username != null) {
+      didTapJoinSession();
+    }
   }
 
   void sessionCodeChanged(String? newValue) {

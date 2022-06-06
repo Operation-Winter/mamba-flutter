@@ -47,6 +47,11 @@ class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {
     sessionCode = widget.sessionCode;
     password = widget.password;
     validationPassed = formIsValid;
+
+    if (widget.sessionCode != null) {
+      Future.delayed(const Duration(milliseconds: 100))
+          .then((onValue) => didTapSpectateSession());
+    }
   }
 
   void sessionCodeChanged(String? newValue) {
