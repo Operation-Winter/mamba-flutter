@@ -25,6 +25,11 @@ class TextFieldAlertDialog {
             color: isDarkMode(context) ? Colors.white : Colors.black,
           ),
           autofocus: true,
+          onSubmitted: (_) {
+            textFieldInput(controller.text);
+            controller.clear();
+            Navigator.of(context).pop();
+          },
         ),
       ),
       actions: [
@@ -68,6 +73,11 @@ class TextFieldAlertDialog {
         controller: controller,
         padding: EdgeInsets.zero,
         autofocus: true,
+        onFieldSubmitted: () {
+          textFieldInput(controller.text);
+          controller.clear();
+          Navigator.of(context).pop();
+        },
       ),
       actions: [
         ElevatedButton(
@@ -75,8 +85,8 @@ class TextFieldAlertDialog {
             controller.clear();
             Navigator.of(context).pop();
           },
-          child: const Text('Cancel'),
           style: ElevatedButton.styleFrom(primary: primaryColor),
+          child: const Text('Cancel'),
         ),
         ElevatedButton(
           onPressed: () {
@@ -84,8 +94,8 @@ class TextFieldAlertDialog {
             controller.clear();
             Navigator.of(context).pop();
           },
-          child: Text(primaryActionTitle),
           style: ElevatedButton.styleFrom(primary: primaryColor),
+          child: Text(primaryActionTitle),
         ),
       ],
     );
