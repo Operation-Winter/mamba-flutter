@@ -57,16 +57,16 @@ class ConfirmationAlertDialog {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Cancel'),
           style: ElevatedButton.styleFrom(primary: primaryColor),
+          child: const Text('Cancel'),
         ),
         ElevatedButton(
           onPressed: () {
             onConfirmation();
             Navigator.of(context).pop();
           },
-          child: const Text('Confirm'),
           style: ElevatedButton.styleFrom(primary: primaryColor),
+          child: const Text('Confirm'),
         ),
       ],
     );

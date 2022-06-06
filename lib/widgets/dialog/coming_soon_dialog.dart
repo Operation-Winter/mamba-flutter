@@ -30,8 +30,8 @@ class ComingSoonDialog {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Ok'),
           style: ElevatedButton.styleFrom(primary: primaryColor),
+          child: const Text('Ok'),
         ),
       ],
     );

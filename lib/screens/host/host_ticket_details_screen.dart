@@ -37,6 +37,7 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   Set<String> tags = {};
+  // ignore: prefer_final_fields
   Set<String> _selectedTags = {};
   final _textController = TextEditingController();
 

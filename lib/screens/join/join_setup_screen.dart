@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mamba/models/screen_arguments/join_landing_screen_arguments.dart';
 import 'package:mamba/repositories/local_storage_repository.dart';
 import 'package:mamba/screens/join/join_landing_screen.dart';
 import 'package:mamba/ui_constants.dart';

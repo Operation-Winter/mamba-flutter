@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mamba/models/screen_arguments/spectator_landing_screen_arguments.dart';
 import 'package:mamba/screens/spectator/spectator_landing_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/buttons/rounded_button.dart';

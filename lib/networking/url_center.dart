@@ -11,23 +11,23 @@ class URLCenter {
   }
 
   static Uri get planningHostPath {
-    return Uri.parse(currentEnvironment.baseWebsocketURL + '/planning/host');
+    return Uri.parse('${currentEnvironment.baseWebsocketURL}/planning/host');
   }
 
   static Uri get planningJoinPath {
-    return Uri.parse(currentEnvironment.baseWebsocketURL + '/planning/join');
+    return Uri.parse('${currentEnvironment.baseWebsocketURL}/planning/join');
   }
 
   static Uri get planningSpectatorPath {
     return Uri.parse(
-        currentEnvironment.baseWebsocketURL + '/planning/spectator');
+        '${currentEnvironment.baseWebsocketURL}/planning/spectator');
   }
 
   static Uri sharePath({required String sessionCode, String? password}) {
     var urlPath =
-        currentEnvironment.baseURL + '/planning/share?sessionCode=$sessionCode';
+        '${currentEnvironment.baseURL}/planning/share?sessionCode=$sessionCode';
     if (password != null) {
-      urlPath + '&password=$password';
+      '$urlPath&password=$password';
     }
     return Uri.parse(urlPath);
   }

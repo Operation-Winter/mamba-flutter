@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/mixins/participants_list_mixin.dart';
 import 'package:mamba/models/commands/join/planning_join_receive_command.dart';
 import 'package:mamba/models/commands/join/planning_join_receive_command_type.dart';

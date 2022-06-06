@@ -20,20 +20,6 @@ import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/widgets/states/shared/planning_error_state.dart';
 import 'package:uuid/uuid.dart';
 
-class HostLandingScreenArguments {
-  final String sessionName;
-  final String? password;
-  final List<PlanningCard> availableCards;
-  final bool automaticallyCompleteVoting;
-
-  HostLandingScreenArguments({
-    required this.sessionName,
-    this.password,
-    this.availableCards = const [],
-    this.automaticallyCompleteVoting = false,
-  });
-}
-
 class HostLandingScreen extends StatefulWidget {
   static String route = '/host/landing';
   late final HostLandingSessionBloc session;

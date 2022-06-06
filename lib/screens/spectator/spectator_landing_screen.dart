@@ -15,16 +15,6 @@ import 'package:mamba/widgets/states/shared/planning_none_state.dart';
 import 'package:mamba/widgets/states/shared/planning_voting_finished_state.dart';
 import 'package:mamba/widgets/states/shared/planning_voting_state.dart';
 
-class SpectatorLandingScreenArguments {
-  final String sessionCode;
-  final String? password;
-
-  SpectatorLandingScreenArguments({
-    required this.sessionCode,
-    this.password,
-  });
-}
-
 class SpectatorLandingScreen extends StatefulWidget {
   static String route = '/spectator/landing';
   late final SpectatorLandingSessionBloc session;

@@ -17,13 +17,13 @@ class RoundedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
-      child: Text(
-        title,
-        style: roundedButtonTextStyle,
-      ),
       style: TextButton.styleFrom(
         backgroundColor: enabled ? primaryColor : disabledColor,
         minimumSize: const Size.fromHeight(40),
+      ),
+      child: Text(
+        title,
+        style: roundedButtonTextStyle,
       ),
     );
   }

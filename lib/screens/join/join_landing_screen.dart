@@ -18,18 +18,6 @@ import 'package:mamba/widgets/states/shared/planning_end_session_state.dart';
 import 'package:mamba/widgets/states/shared/planning_error_state.dart';
 import 'package:mamba/widgets/states/shared/planning_loading_state.dart';
 
-class JoinLandingScreenArguments {
-  final String sessionCode;
-  final String? password;
-  final String username;
-
-  JoinLandingScreenArguments({
-    required this.sessionCode,
-    this.password,
-    required this.username,
-  });
-}
-
 class JoinLandingScreen extends StatefulWidget {
   static String route = '/join/landing';
   late final JoinLandingSessionBloc session;
