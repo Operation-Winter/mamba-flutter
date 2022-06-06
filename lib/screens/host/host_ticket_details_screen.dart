@@ -141,6 +141,7 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
                       placeholder: 'Title *',
                       controller: _titleController,
                       onChanged: (_) => setState(() {}),
+                      autofocus: true,
                     ),
                     StyledTextField(
                       placeholder: 'Description',
