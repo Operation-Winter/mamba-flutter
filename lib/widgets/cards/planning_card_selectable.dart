@@ -18,25 +18,28 @@ class PlanningCardSelectable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Stack(
-        alignment: Alignment.topRight,
-        children: [
-          PlanningCardIcon(planningCard: planningCard),
-          Padding(
-            padding: const EdgeInsets.all(4),
-            child: selected
-                ? const Icon(
-                    Icons.check_circle,
-                    color: accentColor,
-                  )
-                : const Icon(
-                    Icons.circle_rounded,
-                    color: accentColor,
-                  ),
-          ),
-        ],
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            PlanningCardIcon(planningCard: planningCard),
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: selected
+                  ? const Icon(
+                      Icons.check_circle,
+                      color: accentColor,
+                    )
+                  : const Icon(
+                      Icons.circle_rounded,
+                      color: accentColor,
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }
