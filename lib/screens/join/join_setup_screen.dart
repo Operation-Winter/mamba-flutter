@@ -82,7 +82,7 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
   }
 
   void didTapJoinSession() {
-    if (sessionCode == null || username == null) return;
+    if (!validationPassed) return;
 
     Navigator.pushNamed(
       context,

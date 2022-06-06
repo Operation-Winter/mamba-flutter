@@ -6,6 +6,7 @@ class StyledTextField extends StatefulWidget {
   final String placeholder;
   final TextEditingController? controller;
   final Function(String?)? onChanged;
+  final VoidCallback? onFieldSubmitted;
   final EdgeInsets? padding;
   final bool? autofocus;
   final bool enabled;
@@ -16,6 +17,7 @@ class StyledTextField extends StatefulWidget {
     required this.placeholder,
     this.controller,
     this.onChanged,
+    this.onFieldSubmitted,
     this.padding,
     this.autofocus,
     this.enabled = true,
@@ -67,6 +69,7 @@ class _StyledTextFieldState extends State<StyledTextField> {
         cursorColor: primaryColor,
         autofocus: widget.autofocus ?? false,
         enabled: widget.enabled,
+        onFieldSubmitted: (_) => widget.onFieldSubmitted?.call(),
       ),
     );
   }

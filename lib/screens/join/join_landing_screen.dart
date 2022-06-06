@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/bloc/join/join_landing_session_bloc.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/screens/join/join_edit_name_screen.dart';
-import 'package:mamba/screens/planning_session_sharing_screen.dart';
+import 'package:mamba/screens/shared/planning_session_sharing_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/dialog/coming_soon_dialog.dart';

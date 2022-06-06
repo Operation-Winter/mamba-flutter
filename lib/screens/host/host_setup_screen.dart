@@ -40,7 +40,7 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
   }
 
   void didTapStartSession() {
-    if (sessionName == null) return;
+    if (!validationPassed) return;
 
     Navigator.pushNamed(
       context,

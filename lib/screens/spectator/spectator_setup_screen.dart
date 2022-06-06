@@ -56,6 +56,7 @@ class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {
   }
 
   void didTapSpectateSession() {
+    if (!validationPassed) return;
     Navigator.pushNamed(
       context,
       SpectatorLandingScreen.route,

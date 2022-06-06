@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:mamba/screens/planning_share_screen.dart';
+import 'package:mamba/screens/shared/planning_share_screen.dart';
 import 'package:universal_io/io.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
