@@ -13,6 +13,11 @@ const titleTextStyle = TextStyle(
   fontSize: 20,
 );
 
+const subTitleTextStyle = TextStyle(
+  color: primaryColor,
+  fontSize: 17,
+);
+
 const descriptionColoredTextStyle = TextStyle(
   color: primaryColor,
   fontSize: 14,

@@ -8,6 +8,7 @@ import 'package:mamba/widgets/chips/styled_chip.dart';
 import 'package:mamba/widgets/dialog/text_field_dialog.dart';
 import 'package:mamba/widgets/inputs/styled_text_field.dart';
 import 'package:mamba/widgets/text/description_text.dart';
+import 'package:mamba/widgets/text/sub_title_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
 import 'package:universal_io/io.dart';
 
@@ -57,6 +58,7 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
   void _addChip(String tag) {
     setState(() {
       tags.add(tag);
+      _selectedTags.add(tag);
     });
   }
 
@@ -138,6 +140,7 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
                       ],
                     ),
                     const DescriptionText(text: 'Ticket details'),
+                    const SizedBox(height: 10),
                     StyledTextField(
                       placeholder: 'Title *',
                       controller: _titleController,
@@ -149,10 +152,13 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
                       controller: _descriptionController,
                     ),
                     const SizedBox(height: 10),
+                    const SubTitleText(text: 'Tags'),
                     const DescriptionText(
-                      text: 'Tags',
+                      text:
+                          'Add tags that allow participants to vote for a specific tag, for example a specific platform or technology',
                       textAlign: TextAlign.center,
                     ),
+                    const SizedBox(height: 10),
                     ChipWrap(
                       children: chipList(),
                     ),
@@ -160,14 +166,16 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
                     RoundedButton(
                       title: editMode ? 'Edit ticket' : 'Add ticket',
                       enabled: shouldEnableAddButton,
-                      onPressed: () {
-                        widget.onAddTicket(
-                          _titleController.text,
-                          _descriptionController.text,
-                          tags,
-                          _selectedTags,
-                        );
-                      },
+                      onPressed: !shouldEnableAddButton
+                          ? null
+                          : () {
+                              widget.onAddTicket(
+                                _titleController.text,
+                                _descriptionController.text,
+                                tags,
+                                _selectedTags,
+                              );
+                            },
                     ),
                   ],
                 ),

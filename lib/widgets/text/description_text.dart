@@ -15,10 +15,13 @@ class DescriptionText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: medium ? mediumDescriptionTextStyle : descriptionTextStyle,
-      textAlign: textAlign,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Text(
+        text,
+        style: medium ? mediumDescriptionTextStyle : descriptionTextStyle,
+        textAlign: textAlign,
+      ),
     );
   }
 }
