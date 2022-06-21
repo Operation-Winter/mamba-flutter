@@ -45,13 +45,15 @@ platform :ios do
     )
 
     increment_build_number(
-      build_number: app_store_build_number(api_key: api_key, 
-                                           initial_build_number: 0, 
-                                           live: false) + 1
+      build_number: app_store_build_number(
+        api_key: api_key,           
+        initial_build_number: 0, 
+        live: false
+        ) + 1
     )
 
     match(
-      type: 'development',
+      type: 'appstore',
       app_identifier: "za.co.armandkamffer.mamba",
       git_url: SIGNING_GIT_URL,
       git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
@@ -64,15 +66,18 @@ platform :ios do
 
     disable_automatic_code_signing
 
-    build_app(workspace: "Runner.xcworkspace",
-              scheme: "Runner",
-              export_method: "app-store",
-              export_options: {
-                provisioningProfiles: {
-                  "za.co.armandkamffer.mamba" => "match AppStore za.co.armandkamffer.mamba",
-                }
-              }
-            )
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      skip_build_archive: true,
+      archive_path: "../build/ios/archive/Runner.xcarchive",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "za.co.armandkamffer.mamba" => "match AppStore za.co.armandkamffer.mamba",
+        }
+      }
+    )
     
     enable_automatic_code_signing
 
