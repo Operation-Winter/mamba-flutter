@@ -51,7 +51,7 @@ platform :ios do
     )
 
     match(
-      type: 'appstore',
+      type: 'development',
       app_identifier: "za.co.armandkamffer.mamba",
       git_url: SIGNING_GIT_URL,
       git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
@@ -66,9 +66,7 @@ platform :ios do
     disable_automatic_code_signing
 
     build_app(workspace: "Runner.xcworkspace",
-              scheme: "Runner",
-              include_bitcode: true,
-              xcargs: "-allowProvisioningUpdates")
+              scheme: "Runner")
     
     enable_automatic_code_signing
 
