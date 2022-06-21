@@ -5,8 +5,6 @@ APPLE_KEY_ID = ENV["APPLE_KEY_ID"]
 APPLE_KEY_CONTENT = ENV["APPLE_KEY_CONTENT"]
 TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"]
 TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
-SIGNING_CERTIFICATE_PASSWORD = ENV["SIGNING_CERTIFICATE_PASSWORD"]
-SIGNING_CERTIFICATE_PATH = ENV["SIGNING_CERTIFICATE_PATH"]
 PROVISIONING_PROFILE_SPECIFIER = ENV["PROVISIONING_PROFILE_SPECIFIER"]
 GIT_AUTHORIZATION = ENV["GIT_AUTHORIZATION"]
 SIGNING_GIT_URL = ENV["SIGNING_GIT_URL"]
@@ -50,13 +48,6 @@ platform :ios do
       build_number: app_store_build_number(api_key: api_key, 
                                            initial_build_number: 0, 
                                            live: false) + 1
-    )
-
-    import_certificate(
-      keychain_name: TEMP_KEYCHAIN_USER,
-      keychain_password: TEMP_KEYCHAIN_PASSWORD,
-      certificate_path: SIGNING_CERTIFICATE_PATH,
-      certificate_password: SIGNING_CERTIFICATE_PASSWORD
     )
 
     match(
