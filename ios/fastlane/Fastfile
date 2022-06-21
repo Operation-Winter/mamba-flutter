@@ -38,6 +38,6 @@ platform :ios do
               scheme: "Runner",
               include_bitcode: true)
     
-              upload_to_testflight
+    upload_to_testflight
   end
 end
