@@ -9,23 +9,6 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v3
 
-      - name: Install Apple Certificate
-        uses: apple-actions/import-codesign-certs@v1
-        with:
-          p12-file-base64: ${{ secrets.SIGNING_CERTIFICATE_P12_DATA }}
-          p12-password: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
-
-      - name: Install the provisioning profile
-        env:
-          PROVISIONING_CERTIFICATE_BASE64: ${{ secrets.PROVISIONING_PROFILE_DATA }}
-        run: |
-          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-
-          echo -n "$PROVISIONING_CERTIFICATE_BASE64" | base64 --decode --output $PP_PATH
-
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -36,39 +19,14 @@ jobs:
           architecture: x64 # optional, x64 or arm64
       - run: flutter --version
       - run: flutter pub get
-      
-      - name: Build Flutter
-        run: flutter build ios --release
-      
-      - name: Build resolve Swift dependencies
-        run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release
 
-      - name: Build xArchive
-        run: |
-          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -allowProvisioningUpdates -configuration Release -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive clean archive
-
-      - name: Export ipa
-        run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v2
+      - name: Deploy iOS to TestFlight via Fastlane
+        uses: maierj/fastlane-action@v1.4.0
         with:
-          name: build.log
-          path: ~/Library/Logs/gym/*.log
-
-      - name: Upload ipa file
-        uses: actions/upload-artifact@v2
-        with:
-         name: release-ios
-         path: build/ios/ipa/*.ipa
-
-      - name: Upload app to App Store Connect
-        if: startsWith(github.ref, 'refs/tags/v')
+          lane: deploy_to_appstore
         env:
           APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
           APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
-        run: |
-          xcrun altool --upload-app -t ios -f "$PRODUCT_NAME.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
 
   android:
     runs-on: ubuntu-latest
