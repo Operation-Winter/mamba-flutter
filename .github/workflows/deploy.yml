@@ -24,24 +24,6 @@ jobs:
         with:
           ruby-version: '2.7.2'
 
-      - name: Install the Apple Certificate
-        env:
-          SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.SIGNING_CERTIFICATE_P12_DATA }}
-        run: |
-          PP_PATH=$RUNNER_TEMP/Certificates.p12
-          echo -n "$SIGNING_CERTIFICATE_P12_DATA" | base64 --decode --output $PP_PATH
-
-      - name: Install the provisioning profile
-        env:
-          PROVISIONING_CERTIFICATE_BASE64: ${{ secrets.PROVISIONING_PROFILE_DATA }}
-        run: |
-          PP_PATH=$RUNNER_TEMP/App_Store.mobileprovision
-
-          echo -n "$PROVISIONING_CERTIFICATE_BASE64" | base64 --decode --output $PP_PATH
-
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-
       - name: Deploy iOS to TestFlight via Fastlane
         uses: maierj/fastlane-action@v2.2.1
         with:
@@ -59,6 +41,7 @@ jobs:
           PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}'
           SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
           SIGNING_CERTIFICATE_PATH: ${{ runner.temp }}/Certificates.p12
+          SIGNING_GIT_URL: ${{ secrets.SIGNING_GIT_URL }}
 
   android:
     runs-on: ubuntu-latest

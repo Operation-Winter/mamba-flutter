@@ -8,6 +8,8 @@ TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
 SIGNING_CERTIFICATE_PASSWORD = ENV["SIGNING_CERTIFICATE_PASSWORD"]
 SIGNING_CERTIFICATE_PATH = ENV["SIGNING_CERTIFICATE_PATH"]
 PROVISIONING_PROFILE_SPECIFIER = ENV["PROVISIONING_PROFILE_SPECIFIER"]
+GIT_AUTHORIZATION = ENV["GIT_AUTHORIZATION"]
+SIGNING_GIT_URL = ENV["SIGNING_GIT_URL"]
 
 def delete_temp_keychain(name)
   delete_keychain(
@@ -57,10 +59,25 @@ platform :ios do
       certificate_password: SIGNING_CERTIFICATE_PASSWORD
     )
 
+    match(
+      type: 'appstore',
+      app_identifier: "za.co.armandkamffer.mamba",
+      git_url: SIGNING_GIT_URL,
+      git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
+      readonly: true,
+      keychain_name: keychain_name,
+      keychain_password: keychain_password,
+      api_key: api_key
+    )
+
+    disable_automatic_code_signing
+
     build_app(workspace: "Runner.xcworkspace",
               scheme: "Runner",
               include_bitcode: true,
               xcargs: "-allowProvisioningUpdates")
+    
+    enable_automatic_code_signing
 
     upload_to_testflight(api_key: api_key)
     
