@@ -6,6 +6,7 @@ APPLE_KEY_CONTENT = ENV["APPLE_KEY_CONTENT"]
 TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"]
 TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
 SIGNING_CERTIFICATE_PASSWORD = ENV["SIGNING_CERTIFICATE_PASSWORD"]
+SIGNING_CERTIFICATE_PATH = ENV["SIGNING_CERTIFICATE_PATH"]
 
 def delete_temp_keychain(name)
   delete_keychain(
@@ -51,7 +52,7 @@ platform :ios do
     import_certificate(
       keychain_name: TEMP_KEYCHAIN_USER,
       keychain_password: TEMP_KEYCHAIN_PASSWORD,
-      certificate_path: 'Certificates.p12',
+      certificate_path: SIGNING_CERTIFICATE_PATH,
       certificate_password: SIGNING_CERTIFICATE_PASSWORD
     )
 
