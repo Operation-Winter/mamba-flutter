@@ -24,11 +24,12 @@ jobs:
         with:
           ruby-version: '2.7.2'
 
-      - name: Install Apple Certificate
-        uses: apple-actions/import-codesign-certs@v1
-        with:
-          p12-file-base64: ${{ secrets.SIGNING_CERTIFICATE_P12_DATA }}
-          p12-password: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
+      - name: Install the Apple Certificate
+        env:
+          SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.SIGNING_CERTIFICATE_P12_DATA }}
+        run: |
+          PP_PATH=$RUNNER_TEMP/Certificates.p12
+          echo -n "$SIGNING_CERTIFICATE_P12_DATA" | base64 --decode --output $PP_PATH
 
       - name: Install the provisioning profile
         env:
