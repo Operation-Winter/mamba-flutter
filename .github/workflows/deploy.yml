@@ -39,6 +39,7 @@ jobs:
           TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
           TEMP_KEYCHAIN_PASSWORD: '${{ secrets.TEMP_KEYCHAIN_PASSWORD }}'
           PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}'
+          GIT_AUTHORIZATION: ${{ secrets.GIT_AUTHORIZATION }}
           SIGNING_GIT_URL: ${{ secrets.SIGNING_GIT_URL }}
 
   android:
