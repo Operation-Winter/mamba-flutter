@@ -1,0 +1,5 @@
+app_identifier("za.co.armandkamffer.mamba")
+apple_id(ENV["APP_STORE_CONNECT_USERNAME"])
+
+itc_team_id(ENV["APP_STORE_CONNECT_TEAM_ID"])
+team_id(ENV["APPLE_DEVELOPER_PORTAL_TEAM_ID"])

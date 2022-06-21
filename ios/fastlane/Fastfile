@@ -1,17 +1,43 @@
 default_platform(:ios)
 
+def delete_temp_keychain(name)
+  delete_keychain(
+    name: name
+  ) if File.exist? File.expand_path("~/Library/Keychains/#{name}-db")
+end
+
+def create_temp_keychain(name, password)
+  create_keychain(
+    name: name,
+    password: password,
+    unlock: false,
+    timeout: 0
+  )
+end
+
+def ensure_temp_keychain(name, password)
+  delete_temp_keychain(name)
+  create_temp_keychain(name, password)
+end
+
 platform :ios do
   desc "Push a new build to AppStoreConntect"
   lane :deploy_to_appstore do
+
+
     increment_build_number(
       build_number: app_store_build_number + 1,
       xcodeproj: "Runner.xcodeproj"
     )
+    
     get_certificates
+    
     get_provisioning_profile
+    
     build_app(workspace: "Runner.xcworkspace",
               scheme: "Runner",
               include_bitcode: true)
-    upload_to_testflight
+    
+              upload_to_testflight
   end
 end
