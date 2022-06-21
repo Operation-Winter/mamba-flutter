@@ -58,7 +58,7 @@ jobs:
           TEMP_KEYCHAIN_PASSWORD: '${{ secrets.TEMP_KEYCHAIN_PASSWORD }}'
           PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}'
           SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
-          SIGNING_CERTIFICATE_PATH: $RUNNER_TEMP/Certificates.p12
+          SIGNING_CERTIFICATE_PATH: ${{ runner.temp }}/Certificates.p12
 
   android:
     runs-on: ubuntu-latest
