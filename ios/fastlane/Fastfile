@@ -3,6 +3,8 @@ default_platform(:ios)
 APPLE_ISSUER_ID = ENV["APPLE_ISSUER_ID"]
 APPLE_KEY_ID = ENV["APPLE_KEY_ID"]
 APPLE_KEY_CONTENT = ENV["APPLE_KEY_CONTENT"]
+TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"]
+TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
 
 def delete_temp_keychain(name)
   delete_keychain(
@@ -27,6 +29,9 @@ end
 platform :ios do
   desc "Push a new build to AppStoreConntect"
   lane :deploy_to_appstore do
+    keychain_name = TEMP_KEYCHAIN_USER
+    keychain_password = TEMP_KEYCHAIN_PASSWORD
+    ensure_temp_keychain(keychain_name, keychain_password)
 
     api_key = app_store_connect_api_key(
       key_id: APPLE_KEY_ID,
@@ -51,5 +56,7 @@ platform :ios do
               include_bitcode: true)
     
     upload_to_testflight(api_key: api_key)
+
+    delete_temp_keychain(keychain_name)
   end
 end
