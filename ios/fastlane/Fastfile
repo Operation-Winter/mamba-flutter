@@ -37,9 +37,9 @@ platform :ios do
     )
 
     increment_build_number(
-      api_key: api_key,
-      build_number: app_store_build_number(api_key: api_key, initial_build_number: 0, live: false) + 1,
-      xcodeproj: "Runner.xcodeproj"
+      build_number: app_store_build_number(api_key: api_key, 
+                                           initial_build_number: 0, 
+                                           live: false) + 1
     )
     
     get_certificates
