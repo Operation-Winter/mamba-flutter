@@ -65,7 +65,14 @@ platform :ios do
     disable_automatic_code_signing
 
     build_app(workspace: "Runner.xcworkspace",
-              scheme: "Runner")
+              scheme: "Runner",
+              method: "app-store",
+              export_options: {
+                provisioningProfiles: {
+                  "za.co.armandkamffer.mamba" => "match AppStore za.co.armandkamffer.mamba",
+                }
+              }
+            )
     
     enable_automatic_code_signing
 
