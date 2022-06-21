@@ -41,6 +41,7 @@ jobs:
           PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}'
           GIT_AUTHORIZATION: ${{ secrets.GIT_AUTHORIZATION }}
           SIGNING_GIT_URL: ${{ secrets.SIGNING_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
   android:
     runs-on: ubuntu-latest
