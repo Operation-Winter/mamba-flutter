@@ -17,8 +17,16 @@ jobs:
           cache-key: flutter # optional, change this to force refresh cache
           cache-path: ${{ runner.tool_cache }}/flutter # optional, change this to specify the cache path
           architecture: x64 # optional, x64 or arm64
-      - run: flutter --version
-      - run: flutter pub get
+
+      - name: Flutter version
+        run: flutter --version
+
+      - name: Flutter install packages
+        run: flutter pub get
+
+      - name: Build release Flutter archive
+        run: |
+          flutter build ipa --release
 
       - uses: ruby/setup-ruby@v1
         with:
