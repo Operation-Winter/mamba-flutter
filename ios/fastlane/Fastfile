@@ -57,14 +57,10 @@ platform :ios do
       certificate_password: SIGNING_CERTIFICATE_PASSWORD
     )
 
-    disable_automatic_code_signing(path: "Runner.xcodeproj")
-
     build_app(workspace: "Runner.xcworkspace",
               scheme: "Runner",
               include_bitcode: true,
-              xcargs: "-allowProvisioningUpdates"))
-    
-    enable_automatic_code_signing(path: "Runner.xcodeproj")
+              xcargs: "-allowProvisioningUpdates")
 
     upload_to_testflight(api_key: api_key)
     
