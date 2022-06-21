@@ -55,15 +55,9 @@ platform :ios do
       certificate_path: SIGNING_CERTIFICATE_PATH,
       certificate_password: SIGNING_CERTIFICATE_PASSWORD
     )
-
-    sync_code_signing
-    disable_automatic_code_signing(path: "Runner.xcodeproj")
-
     build_app(workspace: "Runner.xcworkspace",
               scheme: "Runner",
               include_bitcode: true)
-    
-    enable_automatic_code_signing(path: "Runner.xcodeproj")
 
     upload_to_testflight(api_key: api_key)
     
