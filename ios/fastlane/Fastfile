@@ -5,6 +5,7 @@ APPLE_KEY_ID = ENV["APPLE_KEY_ID"]
 APPLE_KEY_CONTENT = ENV["APPLE_KEY_CONTENT"]
 TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"]
 TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
+SIGNING_CERTIFICATE_PASSWORD = ENV["SIGNING_CERTIFICATE_PASSWORD"]
 
 def delete_temp_keychain(name)
   delete_keychain(
@@ -46,17 +47,25 @@ platform :ios do
                                            initial_build_number: 0, 
                                            live: false) + 1
     )
-    
-    get_certificates
-    
-    get_provisioning_profile
-    
+
+    import_certificate(
+      keychain_name: TEMP_KEYCHAIN_USER,
+      keychain_password: TEMP_KEYCHAIN_PASSWORD,
+      certificate_path: 'Certificates.p12',
+      certificate_password: SIGNING_CERTIFICATE_PASSWORD
+    )
+
+    sync_code_signing
+    disable_automatic_code_signing(path: "Runner.xcodeproj")
+
     build_app(workspace: "Runner.xcworkspace",
               scheme: "Runner",
               include_bitcode: true)
     
-    upload_to_testflight(api_key: api_key)
+    enable_automatic_code_signing(path: "Runner.xcodeproj")
 
+    upload_to_testflight(api_key: api_key)
+    
     delete_temp_keychain(keychain_name)
   end
 end
