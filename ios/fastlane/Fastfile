@@ -1,5 +1,4 @@
 default_platform(:ios)
-xcversion(version: "13.4")
 
 APPLE_ISSUER_ID = ENV["APPLE_ISSUER_ID"]
 APPLE_KEY_ID = ENV["APPLE_KEY_ID"]
