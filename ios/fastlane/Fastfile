@@ -7,6 +7,7 @@ TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"]
 TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
 SIGNING_CERTIFICATE_PASSWORD = ENV["SIGNING_CERTIFICATE_PASSWORD"]
 SIGNING_CERTIFICATE_PATH = ENV["SIGNING_CERTIFICATE_PATH"]
+PROVISIONING_PROFILE_SPECIFIER = ENV["PROVISIONING_PROFILE_SPECIFIER"]
 
 def delete_temp_keychain(name)
   delete_keychain(
@@ -55,9 +56,15 @@ platform :ios do
       certificate_path: SIGNING_CERTIFICATE_PATH,
       certificate_password: SIGNING_CERTIFICATE_PASSWORD
     )
+
+    disable_automatic_code_signing(path: "Runner.xcodeproj")
+
     build_app(workspace: "Runner.xcworkspace",
               scheme: "Runner",
-              include_bitcode: true)
+              include_bitcode: true,
+              xcargs: "-allowProvisioningUpdates"))
+    
+    enable_automatic_code_signing(path: "Runner.xcodeproj")
 
     upload_to_testflight(api_key: api_key)
     
