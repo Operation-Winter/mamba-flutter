@@ -20,10 +20,14 @@ jobs:
       - run: flutter --version
       - run: flutter pub get
 
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7.2'
       - name: Deploy iOS to TestFlight via Fastlane
-        uses: maierj/fastlane-action@v1.4.0
+        uses: maierj/fastlane-action@v2.2.1
         with:
           lane: deploy_to_appstore
+          subdirectory: ios
         env:
           APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
           APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
