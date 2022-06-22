@@ -64,6 +64,8 @@ platform :ios do
       api_key: api_key
     )
 
+    cocoapods
+
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
