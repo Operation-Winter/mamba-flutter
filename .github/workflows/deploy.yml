@@ -26,7 +26,7 @@ jobs:
 
       - name: Build release Flutter archive
         run: |
-          flutter build ipa --release
+          flutter build ipa --release --no-codesign
 
       - uses: ruby/setup-ruby@v1
         with:
