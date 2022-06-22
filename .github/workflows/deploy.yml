@@ -24,10 +24,6 @@ jobs:
       - name: Flutter install packages
         run: flutter pub get
 
-      - name: Build release Flutter archive
-        run: |
-          flutter build ipa --release --no-codesign
-
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7.2'

@@ -69,8 +69,6 @@ platform :ios do
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
-      skip_build_archive: true,
-      archive_path: "../build/ios/archive/Runner.xcarchive",
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
