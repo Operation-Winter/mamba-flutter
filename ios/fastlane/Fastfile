@@ -66,8 +66,6 @@ platform :ios do
 
     update_code_signing_settings(
       use_automatic_signing: false,
-      bundle_identifier: "za.co.armandkamffer.mamba",
-      profile_name: "match AppStore za.co.armandkamffer.mamba",
       entitlements_file_path: "Runner/Runner.entitlements"
     )
 
