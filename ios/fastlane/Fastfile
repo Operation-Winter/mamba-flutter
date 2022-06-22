@@ -74,7 +74,12 @@ platform :ios do
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
-      export_method: "app-store"
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "za.co.armandkamffer.mamba" => "match AppStore za.co.armandkamffer.mamba",
+        }
+      }
     )
 
     upload_to_testflight(api_key: api_key)
