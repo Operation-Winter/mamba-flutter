@@ -13,6 +13,8 @@ class PlanningCardIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
+      preferBelow: true,
+      verticalOffset: 60,
       message: 'Card ${planningCard.title}',
       child: AspectRatio(
         aspectRatio: 570 / 890,

@@ -72,8 +72,14 @@ class ParticipantRow extends StatelessWidget {
                   color: connected ? Colors.green : Colors.red,
                 ),
                 const SizedBox(width: 10),
-                Text(name),
-                const Spacer(),
+                Expanded(
+                  child: Text(
+                    name,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                  ),
+                ),
+                const SizedBox(width: 10),
                 ..._voteWidget(),
               ],
             ),

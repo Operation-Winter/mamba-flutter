@@ -3,7 +3,7 @@ description: A small side project to allow for teams to size tickets using Story
 
 publish_to: 'none'
 
-version: 2.4.0+1
+version: 2.4.1+1
 
 environment:
   sdk: ">=2.16.1 <3.0.0"

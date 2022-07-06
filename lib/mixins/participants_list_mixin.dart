@@ -30,6 +30,8 @@ mixin ParticipantsListMixin {
         }
       },
     );
+    planningParticipantGroupDto =
+        planningParticipantGroupDto.sortedBy((element) => element.tag ?? "");
 
     var skippedParticipants = _makeSkippedParticipantDtos(
       participants: participants,
@@ -146,6 +148,8 @@ mixin ParticipantsListMixin {
       }
     });
 
+    planningCardGroups =
+        planningCardGroups.sortedBy((element) => element.tag ?? "");
     return planningCardGroups;
   }
 }

@@ -30,24 +30,32 @@ class PlanningSessionVotingCard extends StatefulWidget {
 class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  late List<String> tags;
   int _initialIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    _configureTags();
     _configureTabController();
   }
 
   @override
   void didUpdateWidget(covariant PlanningSessionVotingCard oldWidget) {
+    _configureTags();
     _configureTabController();
     super.didUpdateWidget(oldWidget);
+  }
+
+  _configureTags() {
+    tags = widget.tags.toList();
+    tags.sort();
   }
 
   _configureTabController() {
     var selectedTag = widget.selectedTag;
     if (selectedTag != null) {
-      var index = widget.tags.toList().indexOf(selectedTag);
+      var index = tags.indexOf(selectedTag);
       _initialIndex = index == -1 ? 0 : index;
     } else {
       _initialIndex = 0;
@@ -55,13 +63,13 @@ class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
 
     _tabController = TabController(
       initialIndex: _initialIndex,
-      length: widget.tags.length,
+      length: tags.length,
       vsync: this,
     );
     _tabController.addListener(() {
       if (!_tabController.indexIsChanging) {
         _didTapCard(null);
-        widget.onSelectTag(widget.tags.elementAt(_tabController.index));
+        widget.onSelectTag(tags.elementAt(_tabController.index));
       }
     });
   }
@@ -70,10 +78,11 @@ class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
     var selectedCard = planningCard ?? widget.selectedCard;
     if (selectedCard == null) return;
     _initialIndex = _tabController.index;
-    var selectedTag = widget.tags.elementAt(_tabController.index);
+    var selectedTag =
+        tags.isEmpty ? null : tags.elementAt(_tabController.index);
     widget.onSelectCard(
       selectedCard,
-      selectedTag.isNotEmpty ? selectedTag : null,
+      selectedTag,
     );
   }
 
@@ -88,10 +97,10 @@ class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            if (widget.tags.isNotEmpty) ...[
+            if (tags.isNotEmpty) ...[
               TabBar(
                 controller: _tabController,
-                tabs: widget.tags
+                tabs: tags
                     .map((tag) => Tab(
                           child: Text(
                             tag,
