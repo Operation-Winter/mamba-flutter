@@ -57,7 +57,10 @@ class ConfirmationAlertDialog {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryColor,
+            foregroundColor: lightGrayColor,
+          ),
           child: const Text('Cancel'),
         ),
         ElevatedButton(
@@ -65,7 +68,10 @@ class ConfirmationAlertDialog {
             onConfirmation();
             Navigator.of(context).pop();
           },
-          style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryColor,
+            foregroundColor: lightGrayColor,
+          ),
           child: const Text('Confirm'),
         ),
       ],

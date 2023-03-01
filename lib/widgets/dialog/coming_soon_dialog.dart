@@ -6,7 +6,8 @@ import 'package:mamba/ui_constants.dart';
 class ComingSoonDialog {
   static CupertinoAlertDialog _iOSDialog(BuildContext context) {
     return CupertinoAlertDialog(
-      title: const Text('This functionality is coming soon'),
+      title:
+          const Text('This functionality is not yet implemented. Coming soon!'),
       actions: [
         CupertinoButton(
           child: const Text(
@@ -23,14 +24,17 @@ class ComingSoonDialog {
 
   static AlertDialog _androidDialog(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-          'This functionality is not yet implemented. Keep your eyes open as it is coming soon!'),
+      title:
+          const Text('This functionality is not yet implemented. Coming soon!'),
       actions: [
         ElevatedButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryColor,
+            foregroundColor: lightGrayColor,
+          ),
           child: const Text('Ok'),
         ),
       ],

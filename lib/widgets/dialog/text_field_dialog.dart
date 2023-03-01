@@ -85,7 +85,10 @@ class TextFieldAlertDialog {
             controller.clear();
             Navigator.of(context).pop();
           },
-          style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryColor,
+            foregroundColor: lightGrayColor,
+          ),
           child: const Text('Cancel'),
         ),
         ElevatedButton(
@@ -94,7 +97,10 @@ class TextFieldAlertDialog {
             controller.clear();
             Navigator.of(context).pop();
           },
-          style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryColor,
+            foregroundColor: lightGrayColor,
+          ),
           child: Text(primaryActionTitle),
         ),
       ],
