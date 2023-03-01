@@ -15,7 +15,7 @@ PlanningVoteMessage _$PlanningVoteMessageFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$PlanningVoteMessageToJson(
         PlanningVoteMessage instance) =>
     <String, dynamic>{
-      'selectedCard': _$PlanningCardEnumMap[instance.selectedCard],
+      'selectedCard': _$PlanningCardEnumMap[instance.selectedCard]!,
       'tag': instance.tag,
     };
 

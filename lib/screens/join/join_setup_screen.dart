@@ -30,7 +30,7 @@ class JoinSetupScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _JoinSetupScreenState createState() => _JoinSetupScreenState();
+  State<JoinSetupScreen> createState() => _JoinSetupScreenState();
 }
 
 class _JoinSetupScreenState extends State<JoinSetupScreen> {

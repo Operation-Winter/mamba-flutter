@@ -54,6 +54,8 @@ class HostLandingSessionBloc
     required this.availableCards,
     required this.automaticallyCompleteVoting,
   }) : super(HostLandingSessionLoading()) {
+    on<HostSendRequestCoffeeBreak>(_handleSendRequestCoffeeBreakCommand);
+
     on<HostLandingSessionEvent>((event, emit) {
       // Send commands
       if (event is HostSendStartSession) {
@@ -321,4 +323,10 @@ class HostLandingSessionBloc
 
   _sendPreviousTicketsCommand() async =>
       _hostSessionRepository.sendPreviousTicketsCommand(uuid: await _uuid);
+
+  _handleSendRequestCoffeeBreakCommand(
+    HostSendRequestCoffeeBreak event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
+      _hostSessionRepository.sendRequestCoffeeBreak(uuid: await _uuid);
 }

@@ -55,54 +55,32 @@ class JoinLandingSessionBloc
     this.password,
     required this.username,
   }) : super(JoinLandingSessionLoading()) {
-    on<JoinLandingSessionEvent>((event, emit) async {
-      // Send commands
-      if (event is JoinSendJoinSession) {
-        _sendJoinCommand();
-      } else if (event is JoinSendVote) {
-        _sendVoteCommand(
-          selectedCard: event.selectedCard,
-          tag: event.tag,
-        );
-      } else if (event is JoinSendLeaveSession) {
-        _sendLeaveSessionCommand();
-        emit(JoinLandingLeftSession(sessionName: _sessionName));
-      } else if (event is JoinSendReconnect) {
-        _sendReconnectCommand();
-      } else if (event is JoinSendChangeName) {
-        username = event.newUsername;
-        _sendChangeNameCommand();
-      }
+    // #region Send commands
+    on<JoinSendJoinSession>(_handleSendJoinCommand);
+    on<JoinSendLeaveSession>(_handleSendLeaveSessionCommand);
+    on<JoinSendReconnect>(_handleSendReconnectCommand);
+    on<JoinSendRequestCoffeeBreak>(_handleSendRequestCoffeeBreakCommand);
+    on<JoinSendChangeName>(_handleSendChangeNameCommand);
+    on<JoinSendVote>(_handleSendVoteCommand);
+    // #endregion
 
-      // Receive commands
-      else if (event is JoinReceiveNoneState) {
-        _handleNoneStateEvent(emit, message: event.message);
-      } else if (event is JoinReceiveVotingState) {
-        await _handleVotingStateEvent(emit, message: event.message);
-      } else if (event is JoinReceiveVotingFinishedState) {
-        _handleVotingFinishedStateEvent(emit, message: event.message);
-      } else if (event is JoinReceiveInvalidCommand) {
-        _handleInvalidCommand(emit, message: event.message);
-      } else if (event is JoinReceiveInvalidSession) {
-        _handleInvalidSessionCommand(emit);
-      } else if (event is JoinReceiveRemoveParticipant) {
-        _handleRemoveParticipantCommand(emit);
-      } else if (event is JoinReceiveEndSession) {
-        _handleEndSessionCommand(emit);
-      } else if (event is JoinLandingError) {
-        emit(JoinLandingSessionError(
-          sessionName: _sessionName,
-          errorCode: event.code,
-          errorDescription: event.description,
-        ));
-      }
+    // #region Receive commands
+    on<JoinReceiveNoneState>(_handleNoneStateEvent);
+    on<JoinReceiveVotingState>(_handleVotingStateEvent);
+    on<JoinReceiveVotingFinishedState>(_handleVotingFinishedStateEvent);
+    on<JoinReceiveInvalidCommand>(_handleInvalidCommand);
+    on<JoinReceiveInvalidSession>(_handleInvalidSessionCommand);
+    on<JoinReceiveRemoveParticipant>(_handleRemoveParticipantCommand);
+    on<JoinReceiveEndSession>(_handleEndSessionCommand);
+    // #endregion
 
-      // UI Events
-      else if (event is JoinDidSelectTag) {
-        _selectedTag = event.tag;
-      }
-    });
+    // #region UI Events
+    on<JoinLandingError>(_handleLandingError);
+    on<JoinDidSelectTag>(_handleDidSelectTag);
+    // #endregion
   }
+
+  // #region Base handling functions
 
   connect() async {
     await _joinSessionRepository.connect().catchError((error) {
@@ -175,24 +153,32 @@ class JoinLandingSessionBloc
     _timeLeft = message.timeLeft;
   }
 
-  _handleNoneStateEvent(Emitter<JoinLandingSessionState> emit,
-      {required PlanningSessionStateMessage message}) async {
-    _handleStateEvent(message: message);
+  // #endregion
+
+  // #region Receive commands
+
+  _handleNoneStateEvent(
+    JoinReceiveNoneState event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
     var participantDtos =
-        makeParticipantGroupDtos(participants: message.participants);
+        makeParticipantGroupDtos(participants: event.message.participants);
 
     emit(JoinLandingSessionNone(
       sessionName: _sessionName,
       participants: participantDtos,
-      coffeeVoteCount: message.coffeeRequestCount,
-      spectatorCount: message.spectatorCount,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
     ));
   }
 
-  _handleVotingStateEvent(Emitter<JoinLandingSessionState> emit,
-      {required PlanningSessionStateMessage message}) async {
-    _handleStateEvent(message: message);
-    var ticket = message.ticket;
+  _handleVotingStateEvent(
+    JoinReceiveVotingState event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
+    var ticket = event.message.ticket;
     if (ticket == null) return;
 
     var uuid = await _uuid;
@@ -201,69 +187,109 @@ class JoinLandingSessionBloc
         ?.selectedCard;
 
     var participantDtos = makeParticipantGroupDtos(
-      participants: message.participants,
-      votes: message.ticket?.ticketVotes,
+      participants: event.message.participants,
+      votes: event.message.ticket?.ticketVotes,
     );
 
     emit(JoinLandingSessionVoting(
       sessionName: _sessionName,
       participants: participantDtos,
-      coffeeVoteCount: message.coffeeRequestCount,
-      spectatorCount: message.spectatorCount,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
       ticket: ticket,
-      availableCards: message.availableCards,
+      availableCards: event.message.availableCards,
       selectedCard: selectedCard,
       selectedTag: _selectedTag,
     ));
   }
 
-  _handleVotingFinishedStateEvent(Emitter<JoinLandingSessionState> emit,
-      {required PlanningSessionStateMessage message}) async {
-    _handleStateEvent(message: message);
-    var ticket = message.ticket;
+  _handleVotingFinishedStateEvent(
+    JoinReceiveVotingFinishedState event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
+    var ticket = event.message.ticket;
     if (ticket == null) return;
 
     var participantDtos = makeParticipantGroupDtos(
-      participants: message.participants,
-      votes: message.ticket?.ticketVotes,
+      participants: event.message.participants,
+      votes: event.message.ticket?.ticketVotes,
     );
 
-    var voteGroups = makeGroupedCards(votes: message.ticket?.ticketVotes);
+    var voteGroups = makeGroupedCards(votes: event.message.ticket?.ticketVotes);
 
     emit(JoinLandingSessionVotingFinished(
       sessionName: _sessionName,
       participants: participantDtos,
-      coffeeVoteCount: message.coffeeRequestCount,
-      spectatorCount: message.spectatorCount,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
       ticket: ticket,
       voteGroups: voteGroups,
     ));
   }
 
-  _handleInvalidCommand(Emitter<JoinLandingSessionState> emit,
-      {required PlanningInvalidCommandMessage message}) {
-    emit(JoinLandingSessionError(
-      sessionName: _sessionName,
-      errorCode: message.code,
-      errorDescription: message.description,
-    ));
-  }
+  _handleInvalidCommand(
+    JoinReceiveInvalidCommand event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async =>
+      emit(JoinLandingSessionError(
+        sessionName: _sessionName,
+        errorCode: event.message.code,
+        errorDescription: event.message.description,
+      ));
 
-  _handleInvalidSessionCommand(Emitter<JoinLandingSessionState> emit) {
-    emit(JoinLandingSessionError(
-      sessionName: _sessionName,
-      errorCode: '0001',
-      errorDescription:
-          'The specified session code doesn\'t exist or is no longer available.',
-    ));
-  }
+  _handleInvalidSessionCommand(
+    JoinReceiveInvalidSession event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async =>
+      emit(JoinLandingSessionError(
+        sessionName: _sessionName,
+        errorCode: '0001',
+        errorDescription:
+            'The specified session code doesn\'t exist or is no longer available.',
+      ));
 
-  _handleRemoveParticipantCommand(Emitter<JoinLandingSessionState> emit) {
-    emit(JoinLandingRemovedFromSession(sessionName: _sessionName));
-  }
+  _handleRemoveParticipantCommand(
+    JoinReceiveRemoveParticipant event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async =>
+      emit(JoinLandingRemovedFromSession(sessionName: _sessionName));
 
-  _handleEndSessionCommand(Emitter<JoinLandingSessionState> emit) =>
+  _handleEndSessionCommand(
+    JoinReceiveEndSession event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async =>
       emit(JoinLandingSessionEnded(sessionName: _sessionName));
+
+  // #endregion
+
+  // #region UI Events
+
+  _handleLandingError(
+    JoinLandingError event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async =>
+      emit(JoinLandingSessionError(
+        sessionName: _sessionName,
+        errorCode: event.code,
+        errorDescription: event.description,
+      ));
+
+  _handleDidSelectTag(
+    JoinDidSelectTag event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async =>
+      _selectedTag = event.tag;
+
+  // #endregion
+
+  // #region Send commands
+
+  _handleSendJoinCommand(
+    JoinSendJoinSession event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async =>
+      _sendJoinCommand();
 
   _sendJoinCommand() async {
     await _localStorageRepository.removeUuid();
@@ -276,25 +302,39 @@ class JoinLandingSessionBloc
     );
   }
 
-  _sendChangeNameCommand() async {
+  _handleSendChangeNameCommand(
+    JoinSendChangeName event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async {
+    username = event.newUsername;
     await _localStorageRepository.username(username);
     _joinSessionRepository.sendChangeNameCommand(
         uuid: await _uuid, name: username);
   }
 
-  _sendVoteCommand({required PlanningCard selectedCard, String? tag}) async =>
+  _handleSendVoteCommand(
+    JoinSendVote event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async =>
       _joinSessionRepository.sendVoteCommand(
         uuid: await _uuid,
-        selectedCard: selectedCard,
-        tag: tag,
+        selectedCard: event.selectedCard,
+        tag: event.tag,
       );
 
-  _sendLeaveSessionCommand() async {
+  _handleSendLeaveSessionCommand(
+    JoinSendLeaveSession event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async {
     _sessionEnded = true;
     _joinSessionRepository.sendLeaveSessionCommand(uuid: await _uuid);
+    emit(JoinLandingLeftSession(sessionName: _sessionName));
   }
 
-  _sendReconnectCommand() async {
+  _handleSendReconnectCommand(
+    JoinSendReconnect event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async {
     await connect();
     if (!_sessionJoined) {
       _sendJoinCommand();
@@ -302,4 +342,12 @@ class JoinLandingSessionBloc
       _joinSessionRepository.sendReconnectCommand(uuid: await _uuid);
     }
   }
+
+  _handleSendRequestCoffeeBreakCommand(
+    JoinSendRequestCoffeeBreak event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async =>
+      _joinSessionRepository.sendRequestCoffeeBreak(uuid: await _uuid);
+
+  // #endregion
 }

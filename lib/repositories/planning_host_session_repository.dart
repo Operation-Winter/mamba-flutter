@@ -197,4 +197,12 @@ class PlanningHostSessionRepository {
     );
     _webSocket.send(planningCommand: planningCommand);
   }
+
+  void sendRequestCoffeeBreak({required UuidValue uuid}) {
+    var planningCommand = PlanningHostSendCommand(
+      uuid: uuid,
+      type: PlanningHostSendCommandType.REQUEST_COFFEE_BREAK,
+    );
+    _webSocket.send(planningCommand: planningCommand);
+  }
 }

@@ -40,7 +40,7 @@ class HostLandingScreen extends StatefulWidget {
   }
 
   @override
-  _HostLandingScreenState createState() => _HostLandingScreenState();
+  State<HostLandingScreen> createState() => _HostLandingScreenState();
 }
 
 class _HostLandingScreenState extends State<HostLandingScreen> {
@@ -99,7 +99,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     );
   }
 
-  _didTapRequestCoffee() => ComingSoonDialog.show(context);
+  _didTapRequestCoffee() => widget.session.add(HostSendRequestCoffeeBreak());
 
   _didTapShare() {
     var sessionCode = widget.session.sessionCode;

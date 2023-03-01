@@ -35,8 +35,9 @@ Map<String, dynamic> _$PlanningSessionStateMessageToJson(
       'sessionCode': instance.sessionCode,
       'sessionName': instance.sessionName,
       'password': instance.password,
-      'availableCards':
-          instance.availableCards.map((e) => _$PlanningCardEnumMap[e]).toList(),
+      'availableCards': instance.availableCards
+          .map((e) => _$PlanningCardEnumMap[e]!)
+          .toList(),
       'participants': instance.participants.map((e) => e.toJson()).toList(),
       'ticket': instance.ticket?.toJson(),
       'timeLeft': instance.timeLeft,

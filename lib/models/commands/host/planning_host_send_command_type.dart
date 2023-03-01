@@ -13,4 +13,5 @@ enum PlanningHostSendCommandType {
   ADD_TIMER,
   CANCEL_TIMER,
   PREVIOUS_TICKETS,
+  REQUEST_COFFEE_BREAK,
 }

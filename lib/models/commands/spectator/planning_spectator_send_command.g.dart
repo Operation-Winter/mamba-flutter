@@ -21,7 +21,7 @@ Map<String, dynamic> _$PlanningSpectatorSendCommandToJson(
         PlanningSpectatorSendCommand instance) =>
     <String, dynamic>{
       'uuid': PlanningCommand.stringFromId(instance.uuid),
-      'type': _$PlanningSpectatorSendCommandTypeEnumMap[instance.type],
+      'type': _$PlanningSpectatorSendCommandTypeEnumMap[instance.type]!,
       'message': instance.message?.toJson(),
     };
 

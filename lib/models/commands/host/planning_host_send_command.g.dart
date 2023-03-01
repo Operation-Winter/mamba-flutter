@@ -20,7 +20,7 @@ Map<String, dynamic> _$PlanningHostSendCommandToJson(
         PlanningHostSendCommand instance) =>
     <String, dynamic>{
       'uuid': PlanningCommand.stringFromId(instance.uuid),
-      'type': _$PlanningHostSendCommandTypeEnumMap[instance.type],
+      'type': _$PlanningHostSendCommandTypeEnumMap[instance.type]!,
       'message': instance.message?.toJson(),
     };
 
@@ -37,4 +37,5 @@ const _$PlanningHostSendCommandTypeEnumMap = {
   PlanningHostSendCommandType.ADD_TIMER: 'ADD_TIMER',
   PlanningHostSendCommandType.CANCEL_TIMER: 'CANCEL_TIMER',
   PlanningHostSendCommandType.PREVIOUS_TICKETS: 'PREVIOUS_TICKETS',
+  PlanningHostSendCommandType.REQUEST_COFFEE_BREAK: 'REQUEST_COFFEE_BREAK',
 };

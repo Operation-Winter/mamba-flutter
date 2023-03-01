@@ -29,7 +29,7 @@ class SpectatorSetupScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SpectatorSetupScreenState createState() => _SpectatorSetupScreenState();
+  State<SpectatorSetupScreen> createState() => _SpectatorSetupScreenState();
 }
 
 class _SpectatorSetupScreenState extends State<SpectatorSetupScreen> {

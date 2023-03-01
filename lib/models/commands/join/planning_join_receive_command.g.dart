@@ -20,7 +20,7 @@ Map<String, dynamic> _$PlanningJoinReceiveCommandToJson(
         PlanningJoinReceiveCommand instance) =>
     <String, dynamic>{
       'uuid': PlanningCommand.stringFromId(instance.uuid),
-      'type': _$PlanningJoinReceiveCommandTypeEnumMap[instance.type],
+      'type': _$PlanningJoinReceiveCommandTypeEnumMap[instance.type]!,
       'message': instance.message?.toJson(),
     };
 

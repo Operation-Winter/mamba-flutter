@@ -24,8 +24,9 @@ Map<String, dynamic> _$HostLandingScreenArgumentsToJson(
     <String, dynamic>{
       'sessionName': instance.sessionName,
       'password': instance.password,
-      'availableCards':
-          instance.availableCards.map((e) => _$PlanningCardEnumMap[e]).toList(),
+      'availableCards': instance.availableCards
+          .map((e) => _$PlanningCardEnumMap[e]!)
+          .toList(),
       'automaticallyCompleteVoting': instance.automaticallyCompleteVoting,
     };
 

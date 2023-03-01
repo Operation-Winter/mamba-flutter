@@ -22,8 +22,9 @@ Map<String, dynamic> _$PlanningStartSessionMessageToJson(
     <String, dynamic>{
       'sessionName': instance.sessionName,
       'autoCompleteVoting': instance.autoCompleteVoting,
-      'availableCards':
-          instance.availableCards.map((e) => _$PlanningCardEnumMap[e]).toList(),
+      'availableCards': instance.availableCards
+          .map((e) => _$PlanningCardEnumMap[e]!)
+          .toList(),
       'password': instance.password,
     };
 

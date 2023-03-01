@@ -20,7 +20,7 @@ Map<String, dynamic> _$PlanningJoinSendCommandToJson(
         PlanningJoinSendCommand instance) =>
     <String, dynamic>{
       'uuid': PlanningCommand.stringFromId(instance.uuid),
-      'type': _$PlanningJoinSendCommandTypeEnumMap[instance.type],
+      'type': _$PlanningJoinSendCommandTypeEnumMap[instance.type]!,
       'message': instance.message?.toJson(),
     };
 
@@ -30,4 +30,5 @@ const _$PlanningJoinSendCommandTypeEnumMap = {
   PlanningJoinSendCommandType.LEAVE_SESSION: 'LEAVE_SESSION',
   PlanningJoinSendCommandType.RECONNECT: 'RECONNECT',
   PlanningJoinSendCommandType.CHANGE_NAME: 'CHANGE_NAME',
+  PlanningJoinSendCommandType.REQUEST_COFFEE_BREAK: 'REQUEST_COFFEE_BREAK',
 };

@@ -106,4 +106,12 @@ class PlanningJoinSessionRepository {
     );
     _webSocket.send(planningCommand: planningCommand);
   }
+
+  void sendRequestCoffeeBreak({required UuidValue uuid}) {
+    var planningCommand = PlanningJoinSendCommand(
+      uuid: uuid,
+      type: PlanningJoinSendCommandType.REQUEST_COFFEE_BREAK,
+    );
+    _webSocket.send(planningCommand: planningCommand);
+  }
 }

@@ -164,8 +164,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     return MaterialApp(
       navigatorKey: _navigatorKey,
       title: 'Mamba',
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData.light().copyWith(useMaterial3: true),
+      darkTheme: ThemeData.dark().copyWith(useMaterial3: true),
       themeMode: ThemeMode.system,
       initialRoute: _initialRoute,
       routes: _routes,

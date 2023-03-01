@@ -15,7 +15,7 @@ class HostSetupScreen extends StatefulWidget {
   static String route = '/host/setup';
 
   @override
-  _HostSetupScreenState createState() => _HostSetupScreenState();
+  State<HostSetupScreen> createState() => _HostSetupScreenState();
 }
 
 class _HostSetupScreenState extends State<HostSetupScreen> {

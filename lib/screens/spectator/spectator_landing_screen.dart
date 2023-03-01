@@ -31,7 +31,7 @@ class SpectatorLandingScreen extends StatefulWidget {
   }
 
   @override
-  _SpectatorLandingScreenState createState() => _SpectatorLandingScreenState();
+  State<SpectatorLandingScreen> createState() => _SpectatorLandingScreenState();
 }
 
 class _SpectatorLandingScreenState extends State<SpectatorLandingScreen> {

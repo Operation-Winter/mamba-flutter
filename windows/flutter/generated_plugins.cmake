@@ -3,7 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  app_links_windows
+  app_links
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

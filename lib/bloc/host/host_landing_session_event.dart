@@ -101,3 +101,5 @@ class HostLandingError extends HostLandingSessionEvent {
     required this.description,
   });
 }
+
+class HostSendRequestCoffeeBreak extends HostLandingSessionEvent {}

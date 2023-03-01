@@ -27,6 +27,8 @@ class JoinSendChangeName extends JoinLandingSessionEvent {
   JoinSendChangeName({required this.newUsername});
 }
 
+class JoinSendRequestCoffeeBreak extends JoinLandingSessionEvent {}
+
 // Receive commands
 class JoinReceiveNoneState extends JoinLandingSessionEvent {
   final PlanningSessionStateMessage message;

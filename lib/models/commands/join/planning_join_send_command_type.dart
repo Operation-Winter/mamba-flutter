@@ -6,4 +6,5 @@ enum PlanningJoinSendCommandType {
   LEAVE_SESSION,
   RECONNECT,
   CHANGE_NAME,
+  REQUEST_COFFEE_BREAK,
 }

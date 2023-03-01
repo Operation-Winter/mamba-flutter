@@ -12,7 +12,7 @@ class LandingScreen extends StatefulWidget {
   static String route = '/';
 
   @override
-  _LandingScreenState createState() => _LandingScreenState();
+  State<LandingScreen> createState() => _LandingScreenState();
 }
 
 class _LandingScreenState extends State<LandingScreen> {
