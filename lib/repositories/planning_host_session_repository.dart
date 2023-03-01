@@ -6,11 +6,13 @@ import 'package:mamba/models/commands/host/planning_host_receive_command.dart';
 import 'package:mamba/models/commands/host/planning_host_send_command.dart';
 import 'package:mamba/models/commands/host/planning_host_send_command_type.dart';
 import 'package:mamba/models/messages/planning_add_timer_message.dart';
+import 'package:mamba/models/messages/planning_coffee_vote_message.dart';
 import 'package:mamba/models/messages/planning_remove_participant_message.dart';
 import 'package:mamba/models/messages/planning_skip_vote_message.dart';
 import 'package:mamba/models/messages/planning_start_session_message.dart';
 import 'package:mamba/models/messages/planning_ticket_message.dart';
 import 'package:mamba/models/planning_card.dart';
+import 'package:mamba/models/planning_coffee_vote.dart';
 import 'package:mamba/networking/url_center.dart';
 import 'package:mamba/networking/web_socket_networking.dart';
 import 'package:uuid/uuid.dart';
@@ -202,6 +204,40 @@ class PlanningHostSessionRepository {
     var planningCommand = PlanningHostSendCommand(
       uuid: uuid,
       type: PlanningHostSendCommandType.REQUEST_COFFEE_BREAK,
+    );
+    _webSocket.send(planningCommand: planningCommand);
+  }
+
+  void sendStartCoffeeBreakVote({required UuidValue uuid}) {
+    var planningCommand = PlanningHostSendCommand(
+      uuid: uuid,
+      type: PlanningHostSendCommandType.START_COFFEE_BREAK_VOTE,
+    );
+    _webSocket.send(planningCommand: planningCommand);
+  }
+
+  void sendFinishCoffeeBreakVote({required UuidValue uuid}) {
+    var planningCommand = PlanningHostSendCommand(
+      uuid: uuid,
+      type: PlanningHostSendCommandType.FINISH_COFFEE_BREAK_VOTE,
+    );
+    _webSocket.send(planningCommand: planningCommand);
+  }
+
+  void sendEndCoffeeBreakVote({required UuidValue uuid}) {
+    var planningCommand = PlanningHostSendCommand(
+      uuid: uuid,
+      type: PlanningHostSendCommandType.END_COFFEE_BREAK_VOTE,
+    );
+    _webSocket.send(planningCommand: planningCommand);
+  }
+
+  void sendCoffeeBreakVote({required UuidValue uuid, required bool vote}) {
+    var message = PlanningCoffeeVoteMessage(vote: vote);
+    var planningCommand = PlanningHostSendCommand(
+      uuid: uuid,
+      type: PlanningHostSendCommandType.COFFEE_BREAK_VOTE,
+      message: message,
     );
     _webSocket.send(planningCommand: planningCommand);
   }

@@ -47,3 +47,16 @@ class SpectatorLandingError extends SpectatorLandingSessionEvent {
     required this.description,
   });
 }
+
+class SpectatorReceiveCoffeeVotingState extends SpectatorLandingSessionEvent {
+  final PlanningSessionStateMessage message;
+
+  SpectatorReceiveCoffeeVotingState({required this.message});
+}
+
+class SpectatorReceiveCoffeeVotingFinishedState
+    extends SpectatorLandingSessionEvent {
+  final PlanningSessionStateMessage message;
+
+  SpectatorReceiveCoffeeVotingFinishedState({required this.message});
+}

@@ -38,4 +38,10 @@ const _$PlanningHostSendCommandTypeEnumMap = {
   PlanningHostSendCommandType.CANCEL_TIMER: 'CANCEL_TIMER',
   PlanningHostSendCommandType.PREVIOUS_TICKETS: 'PREVIOUS_TICKETS',
   PlanningHostSendCommandType.REQUEST_COFFEE_BREAK: 'REQUEST_COFFEE_BREAK',
+  PlanningHostSendCommandType.START_COFFEE_BREAK_VOTE:
+      'START_COFFEE_BREAK_VOTE',
+  PlanningHostSendCommandType.FINISH_COFFEE_BREAK_VOTE:
+      'FINISH_COFFEE_BREAK_VOTE',
+  PlanningHostSendCommandType.END_COFFEE_BREAK_VOTE: 'END_COFFEE_BREAK_VOTE',
+  PlanningHostSendCommandType.COFFEE_BREAK_VOTE: 'COFFEE_BREAK_VOTE',
 };

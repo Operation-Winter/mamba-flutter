@@ -34,4 +34,7 @@ const _$PlanningSpectatorReceiveCommandTypeEnumMap = {
   PlanningSpectatorReceiveCommandType.END_SESSION: 'END_SESSION',
   PlanningSpectatorReceiveCommandType.SESSION_IDLE_TIMEOUT:
       'SESSION_IDLE_TIMEOUT',
+  PlanningSpectatorReceiveCommandType.COFFEE_VOTING: 'COFFEE_VOTING',
+  PlanningSpectatorReceiveCommandType.COFFEE_VOTING_FINISHED:
+      'COFFEE_VOTING_FINISHED',
 };

@@ -77,3 +77,15 @@ class JoinDidSelectTag extends JoinLandingSessionEvent {
     this.tag,
   });
 }
+
+class JoinReceiveCoffeeVotingState extends JoinLandingSessionEvent {
+  final PlanningSessionStateMessage message;
+
+  JoinReceiveCoffeeVotingState({required this.message});
+}
+
+class JoinReceiveCoffeeVotingFinishedState extends JoinLandingSessionEvent {
+  final PlanningSessionStateMessage message;
+
+  JoinReceiveCoffeeVotingFinishedState({required this.message});
+}

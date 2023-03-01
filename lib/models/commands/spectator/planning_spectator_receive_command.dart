@@ -37,6 +37,8 @@ class PlanningSpectatorReceiveCommand extends PlanningCommand {
       case PlanningSpectatorReceiveCommandType.NONE_STATE:
       case PlanningSpectatorReceiveCommandType.VOTING_STATE:
       case PlanningSpectatorReceiveCommandType.FINISHED_STATE:
+      case PlanningSpectatorReceiveCommandType.COFFEE_VOTING:
+      case PlanningSpectatorReceiveCommandType.COFFEE_VOTING_FINISHED:
         if (data == null) return null;
         return PlanningSessionStateMessage.fromJson(data);
       case PlanningSpectatorReceiveCommandType.INVALID_COMMAND:

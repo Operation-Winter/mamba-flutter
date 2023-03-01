@@ -54,67 +54,40 @@ class HostLandingSessionBloc
     required this.availableCards,
     required this.automaticallyCompleteVoting,
   }) : super(HostLandingSessionLoading()) {
+    // #region Receive commands
+
+    on<HostReceiveNoneState>(_handleNoneStateEvent);
+    on<HostReceiveVotingState>(_handleVotingStateEvent);
+    on<HostReceiveVotingFinishedState>(_handleVotingFinishedStateEvent);
+    on<HostReceiveInvalidCommand>(_handleInvalidCommand);
+    on<HostReceivePreviousTickets>(_handleReceivePreviousTicketsEvent);
+    on<HostLandingError>(_handleReceiveLandingError);
+    on<HostReceiveCoffeeVotingState>(_handleCoffeeVotingStateEvent);
+    on<HostReceiveCoffeeVotingFinishedState>(
+        _handleCoffeeVotingFinishedStateEvent);
+    // #endregion
+
+    // #region Send commands
+
+    on<HostSendStartSession>(_handleSendStartCommand);
+    on<HostSendAddTicket>(_handleSendAddTicketCommand);
+    on<HostSendSkipVote>(_handleSendSkipVoteCommand);
+    on<HostSendRemoveParticipant>(_handleSendRemoveParticipantCommand);
+    on<HostSendEndSession>(_handleSendEndSessionCommand);
+    on<HostSendFinishVoting>(_handleSendFinishVotingCommand);
+    on<HostSendRevote>(_handleSendRevoteCommand);
+    on<HostSendReconnect>(_handleSendReconnectCommand);
+    on<HostSendEditTicket>(_handleSendEditTicketCommand);
+    on<HostSendAddTimer>(_handleSendAddTimerCommand);
+    on<HostSendCancelTimer>(_handleSendCancelTimerCommand);
+    on<HostSendPreviousTickets>(_handleSendPreviousTicketsCommand);
     on<HostSendRequestCoffeeBreak>(_handleSendRequestCoffeeBreakCommand);
+    on<HostSendCoffeeVote>(_handleSendCoffeeVoteCommand);
+    on<HostSendFinishCoffeeVote>(_handleSendFinishCoffeeVoteCommand);
+    on<HostSendEndCoffeeVote>(_handleSendEndCoffeeVoteCommand);
+    on<HostSendStartCoffeeVote>(_handleSendStartCoffeeVoteCommand);
 
-    on<HostLandingSessionEvent>((event, emit) {
-      // Send commands
-      if (event is HostSendStartSession) {
-        _sendStartCommand();
-      } else if (event is HostSendAddTicket) {
-        tags = event.tags;
-        _sendAddTicketCommand(
-          title: event.title,
-          description: event.description,
-          selectedTags: event.selectedTags,
-        );
-      } else if (event is HostSendSkipVote) {
-        _sendSkipVoteCommand(participantId: event.participantId);
-      } else if (event is HostSendRemoveParticipant) {
-        _sendRemoveParticipantCommand(participantId: event.participantId);
-      } else if (event is HostSendEndSession) {
-        _sendEndSessionCommand();
-        _sessionEnded = true;
-        emit(HostLandingSessionEnded(sessionName: sessionName));
-      } else if (event is HostSendFinishVoting) {
-        _sendFinishVotingCommand();
-      } else if (event is HostSendRevote) {
-        _sendRevoteCommand();
-      } else if (event is HostSendReconnect) {
-        _sendReconnectCommand();
-      } else if (event is HostSendEditTicket) {
-        tags = event.tags;
-        _sendEditTicketCommand(
-          title: event.title,
-          description: event.description,
-          selectedTags: event.selectedTags,
-        );
-      } else if (event is HostSendAddTimer) {
-        _sendAddTimerCommand(timeInterval: event.timeInterval);
-      } else if (event is HostSendCancelTimer) {
-        _sendCancelTimerCommand();
-      } else if (event is HostSendPreviousTickets) {
-        _sendPreviousTicketsCommand();
-      }
-
-      // Receive commands
-      else if (event is HostReceiveNoneState) {
-        _handleNoneStateEvent(emit, message: event.message);
-      } else if (event is HostReceiveVotingState) {
-        _handleVotingStateEvent(emit, message: event.message);
-      } else if (event is HostReceiveVotingFinishedState) {
-        _handleVotingFinishedStateEvent(emit, message: event.message);
-      } else if (event is HostReceiveInvalidCommand) {
-        _handleInvalidCommand(emit, message: event.message);
-      } else if (event is HostReceivePreviousTickets) {
-        emit(HostLandingSessionPreviousTickets());
-      } else if (event is HostLandingError) {
-        emit(HostLandingSessionError(
-          sessionName: sessionName,
-          errorCode: event.code,
-          errorDescription: event.description,
-        ));
-      }
-    });
+    // #endregion
   }
 
   connect() async {
@@ -167,8 +140,18 @@ class HostLandingSessionBloc
               'The session has been idle for too long and has been terminated.',
         ));
         break;
+      case PlanningHostReceiveCommandType.COFFEE_VOTING:
+        add(HostReceiveCoffeeVotingState(
+            message: command.message as PlanningSessionStateMessage));
+        break;
+      case PlanningHostReceiveCommandType.COFFEE_VOTING_FINISHED:
+        add(HostReceiveCoffeeVotingFinishedState(
+            message: command.message as PlanningSessionStateMessage));
+        break;
     }
   }
+
+  // #region Handle incoming events
 
   _handleStateEvent({required PlanningSessionStateMessage message}) {
     sessionName = message.sessionName;
@@ -180,71 +163,130 @@ class HostLandingSessionBloc
     _timeLeft = message.timeLeft;
   }
 
-  _handleNoneStateEvent(Emitter<HostLandingSessionState> emit,
-      {required PlanningSessionStateMessage message}) async {
-    _handleStateEvent(message: message);
+  _handleNoneStateEvent(
+    HostReceiveNoneState event,
+    Emitter<HostLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
     var participantDtos =
-        makeParticipantGroupDtos(participants: message.participants);
+        makeParticipantGroupDtos(participants: event.message.participants);
 
     emit(HostLandingSessionNone(
       sessionName: sessionName,
       participants: participantDtos,
-      coffeeVoteCount: message.coffeeRequestCount,
-      spectatorCount: message.spectatorCount,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
     ));
   }
 
-  _handleVotingStateEvent(Emitter<HostLandingSessionState> emit,
-      {required PlanningSessionStateMessage message}) async {
-    _handleStateEvent(message: message);
-    var ticket = message.ticket;
+  _handleVotingStateEvent(
+    HostReceiveVotingState event,
+    Emitter<HostLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
+    var ticket = event.message.ticket;
     if (ticket == null) return;
 
     var participantDtos = makeParticipantGroupDtos(
-      participants: message.participants,
-      votes: message.ticket?.ticketVotes,
+      participants: event.message.participants,
+      votes: event.message.ticket?.ticketVotes,
     );
 
     emit(HostLandingSessionVoting(
       sessionName: sessionName,
       participants: participantDtos,
-      coffeeVoteCount: message.coffeeRequestCount,
-      spectatorCount: message.spectatorCount,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
       ticket: ticket,
     ));
   }
 
-  _handleVotingFinishedStateEvent(Emitter<HostLandingSessionState> emit,
-      {required PlanningSessionStateMessage message}) async {
-    _handleStateEvent(message: message);
-    var ticket = message.ticket;
+  _handleVotingFinishedStateEvent(
+    HostReceiveVotingFinishedState event,
+    Emitter<HostLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
+    var ticket = event.message.ticket;
     if (ticket == null) return;
 
     var participantDtos = makeParticipantGroupDtos(
-      participants: message.participants,
-      votes: message.ticket?.ticketVotes,
+      participants: event.message.participants,
+      votes: event.message.ticket?.ticketVotes,
     );
 
-    var voteGroups = makeGroupedCards(votes: message.ticket?.ticketVotes);
+    var voteGroups = makeGroupedCards(votes: event.message.ticket?.ticketVotes);
 
     emit(HostLandingSessionVotingFinished(
       sessionName: sessionName,
       participants: participantDtos,
-      coffeeVoteCount: message.coffeeRequestCount,
-      spectatorCount: message.spectatorCount,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
       ticket: ticket,
       voteGroups: voteGroups,
     ));
   }
 
-  _handleInvalidCommand(Emitter<HostLandingSessionState> emit,
-      {required PlanningInvalidCommandMessage message}) {
-    emit(HostLandingSessionError(
+  _handleCoffeeVotingStateEvent(
+    HostReceiveCoffeeVotingState event,
+    Emitter<HostLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
+
+    emit(HostLandingSessionCoffeeVoting(
       sessionName: sessionName,
-      errorCode: message.code,
-      errorDescription: message.description,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
     ));
   }
+
+  _handleCoffeeVotingFinishedStateEvent(
+    HostReceiveCoffeeVotingFinishedState event,
+    Emitter<HostLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
+
+    emit(HostLandingSessionCoffeeVotingFinished(
+      sessionName: sessionName,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
+    ));
+  }
+
+  _handleInvalidCommand(
+    HostReceiveInvalidCommand event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
+      emit(HostLandingSessionError(
+        sessionName: sessionName,
+        errorCode: event.message.code,
+        errorDescription: event.message.description,
+      ));
+
+  _handleReceivePreviousTicketsEvent(
+    HostReceivePreviousTickets event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
+      emit(HostLandingSessionPreviousTickets());
+
+  _handleReceiveLandingError(
+    HostLandingError event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
+      emit(HostLandingSessionError(
+        sessionName: sessionName,
+        errorCode: event.code,
+        errorDescription: event.description,
+      ));
+
+  // #endregion
+
+  // #region Send commands
+
+  _handleSendStartCommand(
+    HostSendStartSession event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
+      await _sendStartCommand();
 
   _sendStartCommand() async {
     await _localStorageRepository.removeUuid();
@@ -257,71 +299,102 @@ class HostLandingSessionBloc
     );
   }
 
-  _sendAddTicketCommand({
-    required String title,
-    String? description,
-    required Set<String> selectedTags,
-  }) async =>
-      _hostSessionRepository.sendAddTicketCommand(
-        uuid: await _uuid,
-        title: title,
-        description: description,
-        selectedTags: selectedTags,
-      );
-
-  _sendSkipVoteCommand({required UuidValue participantId}) async =>
-      _hostSessionRepository.sendSkipVoteCommand(
-        uuid: await _uuid,
-        participantId: participantId,
-      );
-
-  _sendRemoveParticipantCommand({required UuidValue participantId}) async =>
-      _hostSessionRepository.sendRemoveParticipantCommand(
-        uuid: await _uuid,
-        participantId: participantId,
-      );
-
-  _sendEndSessionCommand() async {
-    _hostSessionRepository.sendEndSessionCommand(uuid: await _uuid);
+  _handleSendAddTicketCommand(
+    HostSendAddTicket event,
+    Emitter<HostLandingSessionState> emit,
+  ) async {
+    tags = event.tags;
+    _hostSessionRepository.sendAddTicketCommand(
+      uuid: await _uuid,
+      title: event.title,
+      description: event.description,
+      selectedTags: event.selectedTags,
+    );
   }
 
-  _sendFinishVotingCommand() async =>
+  _handleSendSkipVoteCommand(
+    HostSendSkipVote event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
+      _hostSessionRepository.sendSkipVoteCommand(
+        uuid: await _uuid,
+        participantId: event.participantId,
+      );
+
+  _handleSendRemoveParticipantCommand(
+    HostSendRemoveParticipant event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
+      _hostSessionRepository.sendRemoveParticipantCommand(
+        uuid: await _uuid,
+        participantId: event.participantId,
+      );
+
+  _handleSendEndSessionCommand(
+    HostSendEndSession event,
+    Emitter<HostLandingSessionState> emit,
+  ) async {
+    _hostSessionRepository.sendEndSessionCommand(uuid: await _uuid);
+    _sessionEnded = true;
+    emit(HostLandingSessionEnded(sessionName: sessionName));
+  }
+
+  _handleSendFinishVotingCommand(
+    HostSendFinishVoting event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
       _hostSessionRepository.sendFinishVotingCommand(uuid: await _uuid);
 
-  _sendRevoteCommand() async =>
+  _handleSendRevoteCommand(
+    HostSendRevote event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
       _hostSessionRepository.sendRevoteCommand(uuid: await _uuid);
 
-  _sendReconnectCommand() async {
+  _handleSendReconnectCommand(
+    HostSendReconnect event,
+    Emitter<HostLandingSessionState> emit,
+  ) async {
     await connect();
     if (!_sessionHasStarted) {
-      _sendStartCommand();
+      await _sendStartCommand();
     } else {
       _hostSessionRepository.sendReconnectCommand(uuid: await _uuid);
     }
   }
 
-  _sendEditTicketCommand({
-    required String title,
-    String? description,
-    required Set<String> selectedTags,
-  }) async =>
-      _hostSessionRepository.sendEditTicketCommand(
-        uuid: await _uuid,
-        title: title,
-        description: description,
-        selectedTags: selectedTags,
-      );
+  _handleSendEditTicketCommand(
+    HostSendEditTicket event,
+    Emitter<HostLandingSessionState> emit,
+  ) async {
+    tags = event.tags;
+    _hostSessionRepository.sendEditTicketCommand(
+      uuid: await _uuid,
+      title: event.title,
+      description: event.description,
+      selectedTags: event.selectedTags,
+    );
+  }
 
-  _sendAddTimerCommand({required int timeInterval}) async =>
+  _handleSendAddTimerCommand(
+    HostSendAddTimer event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
       _hostSessionRepository.sendAddTimerCommand(
         uuid: await _uuid,
-        timeInterval: timeInterval,
+        timeInterval: event.timeInterval,
       );
 
-  _sendCancelTimerCommand() async =>
+  _handleSendCancelTimerCommand(
+    HostSendCancelTimer event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
       _hostSessionRepository.sendCancelTimerCommand(uuid: await _uuid);
 
-  _sendPreviousTicketsCommand() async =>
+  _handleSendPreviousTicketsCommand(
+    HostSendPreviousTickets event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
       _hostSessionRepository.sendPreviousTicketsCommand(uuid: await _uuid);
 
   _handleSendRequestCoffeeBreakCommand(
@@ -329,4 +402,33 @@ class HostLandingSessionBloc
     Emitter<HostLandingSessionState> emit,
   ) async =>
       _hostSessionRepository.sendRequestCoffeeBreak(uuid: await _uuid);
+
+  _handleSendStartCoffeeVoteCommand(
+    HostSendStartCoffeeVote event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
+      _hostSessionRepository.sendStartCoffeeBreakVote(uuid: await _uuid);
+
+  _handleSendFinishCoffeeVoteCommand(
+    HostSendFinishCoffeeVote event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
+      _hostSessionRepository.sendFinishCoffeeBreakVote(uuid: await _uuid);
+
+  _handleSendEndCoffeeVoteCommand(
+    HostSendEndCoffeeVote event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
+      _hostSessionRepository.sendEndCoffeeBreakVote(uuid: await _uuid);
+
+  _handleSendCoffeeVoteCommand(
+    HostSendCoffeeVote event,
+    Emitter<HostLandingSessionState> emit,
+  ) async =>
+      _hostSessionRepository.sendCoffeeBreakVote(
+        uuid: await _uuid,
+        vote: event.vote,
+      );
+
+  // #endregion
 }

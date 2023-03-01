@@ -101,6 +101,24 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
 
   _didTapRequestCoffee() => widget.session.add(HostSendRequestCoffeeBreak());
 
+  _didTapStartCoffeeVote() => ConfirmationAlertDialog.show(
+        context,
+        title: 'Start coffee break vote',
+        description: 'Are you sure you want to start a coffee break vote?',
+        onConfirmation: () {
+          widget.session.add(HostSendStartCoffeeVote());
+        },
+      );
+
+  _didTapFinishCoffeeVote() => ConfirmationAlertDialog.show(
+        context,
+        title: 'Finish coffee break vote',
+        description: 'Are you sure you want to finish the coffee break vote?',
+        onConfirmation: () {
+          widget.session.add(HostSendFinishCoffeeVote());
+        },
+      );
+
   _didTapShare() {
     var sessionCode = widget.session.sessionCode;
     if (sessionCode == null) return;
@@ -167,10 +185,10 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
                     } else if (state is HostLandingSessionVotingFinished) {
                       return _votingFinishedState(context, state: state);
                     } else if (state is HostLandingSessionCoffeeVoting) {
-                      return _coffeeVotingState(context);
+                      return _coffeeVotingState(context, state: state);
                     } else if (state
                         is HostLandingSessionCoffeeVotingFinished) {
-                      return _coffeeVotingFinishedState(context);
+                      return _coffeeVotingFinishedState(context, state: state);
                     } else if (state is HostLandingSessionError) {
                       return _errorState(context, state: state);
                     } else if (state is HostLandingSessionEnded) {
@@ -215,6 +233,11 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
           onPressed: _didTapRequestCoffee,
         ),
         PlanningCommandButton(
+          icon: Icons.coffee,
+          tooltip: 'Start coffee break vote',
+          onPressed: _didTapStartCoffeeVote,
+        ),
+        PlanningCommandButton(
           icon: Icons.add,
           tooltip: 'Add ticket',
           onPressed: _didTapAddTicket,
@@ -249,8 +272,13 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
       commands: [
         PlanningCommandButton(
           icon: Icons.coffee,
-          tooltip: 'Request coffee vote',
+          tooltip: 'Request coffee break vote',
           onPressed: _didTapRequestCoffee,
+        ),
+        PlanningCommandButton(
+          icon: Icons.coffee,
+          tooltip: 'Start coffee break vote',
+          onPressed: _didTapStartCoffeeVote,
         ),
         PlanningCommandButton(
           icon: Icons.add,
@@ -319,6 +347,11 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
           onPressed: _didTapRequestCoffee,
         ),
         PlanningCommandButton(
+          icon: Icons.coffee,
+          tooltip: 'Start coffee break vote',
+          onPressed: _didTapStartCoffeeVote,
+        ),
+        PlanningCommandButton(
           icon: Icons.add,
           tooltip: 'Add ticket',
           onPressed: _didTapAddTicket,
@@ -358,12 +391,51 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     );
   }
 
-  Widget _coffeeVotingState(BuildContext context) {
-    return const PlanningCoffeeVotingState();
+  Widget _coffeeVotingState(BuildContext context,
+      {required HostLandingSessionCoffeeVoting state}) {
+    return PlanningCoffeeVotingState(
+      sessionName: state.sessionName,
+      coffeeVoteCount: state.coffeeVoteCount,
+      spectatorCount: state.spectatorCount,
+      commands: [
+        PlanningCommandButton(
+          icon: Icons.coffee,
+          tooltip: 'Finish coffee break vote',
+          onPressed: _didTapFinishCoffeeVote,
+        ),
+        PlanningCommandButton(
+          icon: Icons.share,
+          tooltip: 'Share session',
+          onPressed: _didTapShare,
+        ),
+        PlanningCommandButton(
+          icon: Icons.close,
+          tooltip: 'End session',
+          onPressed: _didTapEndSession,
+        ),
+      ],
+    );
   }
 
-  Widget _coffeeVotingFinishedState(BuildContext context) {
-    return const PlanningCoffeeVotingFinishedState();
+  Widget _coffeeVotingFinishedState(BuildContext context,
+      {required HostLandingSessionCoffeeVotingFinished state}) {
+    return PlanningCoffeeVotingFinishedState(
+      sessionName: state.sessionName,
+      coffeeVoteCount: state.coffeeVoteCount,
+      spectatorCount: state.spectatorCount,
+      commands: [
+        PlanningCommandButton(
+          icon: Icons.share,
+          tooltip: 'Share session',
+          onPressed: _didTapShare,
+        ),
+        PlanningCommandButton(
+          icon: Icons.close,
+          tooltip: 'End session',
+          onPressed: _didTapEndSession,
+        ),
+      ],
+    );
   }
 
   Widget _endSessionState(BuildContext context,

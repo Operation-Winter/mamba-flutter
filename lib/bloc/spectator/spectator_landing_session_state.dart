@@ -56,10 +56,29 @@ class SpectatorLandingSessionVotingFinished
 }
 
 class SpectatorLandingSessionCoffeeVoting extends SpectatorLandingSessionState {
+  final String sessionName;
+  final int coffeeVoteCount;
+  final int spectatorCount;
+
+  SpectatorLandingSessionCoffeeVoting({
+    required this.sessionName,
+    required this.coffeeVoteCount,
+    required this.spectatorCount,
+  });
 }
 
 class SpectatorLandingSessionCoffeeVotingFinished
-    extends SpectatorLandingSessionState {}
+    extends SpectatorLandingSessionState {
+  final String sessionName;
+  final int coffeeVoteCount;
+  final int spectatorCount;
+
+  SpectatorLandingSessionCoffeeVotingFinished({
+    required this.sessionName,
+    required this.coffeeVoteCount,
+    required this.spectatorCount,
+  });
+}
 
 class SpectatorLandingSessionError extends SpectatorLandingSessionState {
   final String sessionName;

@@ -103,3 +103,29 @@ class HostLandingError extends HostLandingSessionEvent {
 }
 
 class HostSendRequestCoffeeBreak extends HostLandingSessionEvent {}
+
+class HostSendCoffeeVote extends HostLandingSessionEvent {
+  final bool vote;
+
+  HostSendCoffeeVote({
+    required this.vote,
+  });
+}
+
+class HostSendStartCoffeeVote extends HostLandingSessionEvent {}
+
+class HostSendFinishCoffeeVote extends HostLandingSessionEvent {}
+
+class HostSendEndCoffeeVote extends HostLandingSessionEvent {}
+
+class HostReceiveCoffeeVotingState extends HostLandingSessionEvent {
+  final PlanningSessionStateMessage message;
+
+  HostReceiveCoffeeVotingState({required this.message});
+}
+
+class HostReceiveCoffeeVotingFinishedState extends HostLandingSessionEvent {
+  final PlanningSessionStateMessage message;
+
+  HostReceiveCoffeeVotingFinishedState({required this.message});
+}

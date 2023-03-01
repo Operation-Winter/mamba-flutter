@@ -38,6 +38,8 @@ class PlanningHostReceiveCommand extends PlanningCommand {
       case PlanningHostReceiveCommandType.NONE_STATE:
       case PlanningHostReceiveCommandType.VOTING_STATE:
       case PlanningHostReceiveCommandType.FINISHED_STATE:
+      case PlanningHostReceiveCommandType.COFFEE_VOTING:
+      case PlanningHostReceiveCommandType.COFFEE_VOTING_FINISHED:
         return PlanningSessionStateMessage.fromJson(data);
       case PlanningHostReceiveCommandType.INVALID_COMMAND:
         return PlanningInvalidCommandMessage.fromJson(data);

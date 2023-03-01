@@ -59,9 +59,29 @@ class JoinLandingSessionVotingFinished extends JoinLandingSessionState {
   });
 }
 
-class JoinLandingSessionCoffeeVoting extends JoinLandingSessionState {}
+class JoinLandingSessionCoffeeVoting extends JoinLandingSessionState {
+  final String sessionName;
+  final int coffeeVoteCount;
+  final int spectatorCount;
 
-class JoinLandingSessionCoffeeVotingFinished extends JoinLandingSessionState {}
+  JoinLandingSessionCoffeeVoting({
+    required this.sessionName,
+    required this.coffeeVoteCount,
+    required this.spectatorCount,
+  });
+}
+
+class JoinLandingSessionCoffeeVotingFinished extends JoinLandingSessionState {
+  final String sessionName;
+  final int coffeeVoteCount;
+  final int spectatorCount;
+
+  JoinLandingSessionCoffeeVotingFinished({
+    required this.sessionName,
+    required this.coffeeVoteCount,
+    required this.spectatorCount,
+  });
+}
 
 class JoinLandingSessionError extends JoinLandingSessionState {
   final String sessionName;

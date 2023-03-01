@@ -139,6 +139,14 @@ class SpectatorLandingSessionBloc
               'The session has been idle for too long and has been terminated.',
         ));
         break;
+      case PlanningSpectatorReceiveCommandType.COFFEE_VOTING:
+        add(SpectatorReceiveCoffeeVotingState(
+            message: command.message as PlanningSessionStateMessage));
+        break;
+      case PlanningSpectatorReceiveCommandType.COFFEE_VOTING_FINISHED:
+        add(SpectatorReceiveCoffeeVotingFinishedState(
+            message: command.message as PlanningSessionStateMessage));
+        break;
     }
   }
 

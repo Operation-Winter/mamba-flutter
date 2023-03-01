@@ -122,10 +122,10 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
                     } else if (state is JoinLandingSessionVotingFinished) {
                       return _votingFinishedState(context, state: state);
                     } else if (state is JoinLandingSessionCoffeeVoting) {
-                      return _coffeeVotingState(context);
+                      return _coffeeVotingState(context, state: state);
                     } else if (state
                         is JoinLandingSessionCoffeeVotingFinished) {
-                      return _coffeeVotingFinishedState(context);
+                      return _coffeeVotingFinishedState(context, state: state);
                     } else if (state is JoinLandingSessionError) {
                       return _errorState(context, state: state);
                     } else if (state is JoinLandingLeftSession) {
@@ -270,12 +270,56 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
     );
   }
 
-  Widget _coffeeVotingState(BuildContext context) {
-    return const PlanningCoffeeVotingState();
+  Widget _coffeeVotingState(BuildContext context,
+      {required JoinLandingSessionCoffeeVoting state}) {
+    return PlanningCoffeeVotingState(
+      sessionName: state.sessionName,
+      coffeeVoteCount: state.coffeeVoteCount,
+      spectatorCount: state.spectatorCount,
+      commands: [
+        PlanningCommandButton(
+          icon: Icons.edit,
+          tooltip: 'Edit name',
+          onPressed: _didTapEditName,
+        ),
+        PlanningCommandButton(
+          icon: Icons.share,
+          tooltip: 'Share session',
+          onPressed: _didTapShare,
+        ),
+        PlanningCommandButton(
+          icon: Icons.close,
+          tooltip: 'Leave session',
+          onPressed: _didTapLeaveSession,
+        ),
+      ],
+    );
   }
 
-  Widget _coffeeVotingFinishedState(BuildContext context) {
-    return const PlanningCoffeeVotingFinishedState();
+  Widget _coffeeVotingFinishedState(BuildContext context,
+      {required JoinLandingSessionCoffeeVotingFinished state}) {
+    return PlanningCoffeeVotingFinishedState(
+      sessionName: state.sessionName,
+      coffeeVoteCount: state.coffeeVoteCount,
+      spectatorCount: state.spectatorCount,
+      commands: [
+        PlanningCommandButton(
+          icon: Icons.edit,
+          tooltip: 'Edit name',
+          onPressed: _didTapEditName,
+        ),
+        PlanningCommandButton(
+          icon: Icons.share,
+          tooltip: 'Share session',
+          onPressed: _didTapShare,
+        ),
+        PlanningCommandButton(
+          icon: Icons.close,
+          tooltip: 'Leave session',
+          onPressed: _didTapLeaveSession,
+        ),
+      ],
+    );
   }
 
   Widget _endLeftSessionState(BuildContext context,

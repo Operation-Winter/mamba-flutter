@@ -8,4 +8,6 @@ enum PlanningSpectatorReceiveCommandType {
   INVALID_SESSION,
   END_SESSION,
   SESSION_IDLE_TIMEOUT,
+  COFFEE_VOTING,
+  COFFEE_VOTING_FINISHED,
 }

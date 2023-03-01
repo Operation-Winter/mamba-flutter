@@ -140,6 +140,14 @@ class JoinLandingSessionBloc
               'The session has been idle for too long and has been terminated.',
         ));
         break;
+      case PlanningJoinReceiveCommandType.COFFEE_VOTING:
+        add(JoinReceiveCoffeeVotingState(
+            message: command.message as PlanningSessionStateMessage));
+        break;
+      case PlanningJoinReceiveCommandType.COFFEE_VOTING_FINISHED:
+        add(JoinReceiveCoffeeVotingFinishedState(
+            message: command.message as PlanningSessionStateMessage));
+        break;
     }
   }
 

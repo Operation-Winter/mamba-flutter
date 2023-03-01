@@ -37,6 +37,8 @@ class PlanningJoinReceiveCommand extends PlanningCommand {
       case PlanningJoinReceiveCommandType.NONE_STATE:
       case PlanningJoinReceiveCommandType.VOTING_STATE:
       case PlanningJoinReceiveCommandType.FINISHED_STATE:
+      case PlanningJoinReceiveCommandType.COFFEE_VOTING:
+      case PlanningJoinReceiveCommandType.COFFEE_VOTING_FINISHED:
         if (data == null) return null;
         return PlanningSessionStateMessage.fromJson(data);
       case PlanningJoinReceiveCommandType.INVALID_COMMAND:
