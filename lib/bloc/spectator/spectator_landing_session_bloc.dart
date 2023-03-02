@@ -52,38 +52,30 @@ class SpectatorLandingSessionBloc
     required this.sessionCode,
     this.password,
   }) : super(SpectatorLandingSessionLoading()) {
-    on<SpectatorLandingSessionEvent>((event, emit) async {
-      if (event is SpectatorSendJoinSession) {
-        _sendJoinCommand();
-      } else if (event is SpectatorSendLeaveSession) {
-        _sendLeaveSessionCommand();
-        emit(SpectatorLandingLeftSession(sessionName: _sessionName));
-      } else if (event is SpectatorSendReconnect) {
-        _sendReconnectCommand();
-      }
+    // #region Receive command handlers
+    on<SpectatorReceiveNoneState>(_handleNoneStateEvent);
+    on<SpectatorReceiveVotingState>(_handleVotingStateEvent);
+    on<SpectatorReceiveVotingFinishedState>(_handleVotingFinishedStateEvent);
+    on<SpectatorReceiveInvalidCommand>(_handleInvalidCommand);
+    on<SpectatorReceiveInvalidSession>(_handleInvalidSessionCommand);
+    on<SpectatorReceiveEndSession>(_handleEndSessionCommand);
+    on<SpectatorReceiveCoffeeVotingState>(_handleCoffeeVotingStateEvent);
+    on<SpectatorReceiveCoffeeVotingFinishedState>(
+        _handleCoffeeVotingFinishedStateEvent);
+    // #endregion
 
-      // Receive commands
-      else if (event is SpectatorReceiveNoneState) {
-        _handleNoneStateEvent(emit, message: event.message);
-      } else if (event is SpectatorReceiveVotingState) {
-        _handleVotingStateEvent(emit, message: event.message);
-      } else if (event is SpectatorReceiveVotingFinishedState) {
-        _handleVotingFinishedStateEvent(emit, message: event.message);
-      } else if (event is SpectatorReceiveInvalidCommand) {
-        _handleInvalidCommand(emit, message: event.message);
-      } else if (event is SpectatorReceiveInvalidSession) {
-        _handleInvalidSessionCommand(emit);
-      } else if (event is SpectatorReceiveEndSession) {
-        _handleEndSessionCommand(emit);
-      } else if (event is SpectatorLandingError) {
-        emit(SpectatorLandingSessionError(
-          sessionName: _sessionName,
-          errorCode: event.code,
-          errorDescription: event.description,
-        ));
-      }
-    });
+    // #region UI Handlers
+    on<SpectatorLandingError>(_handleErrorCommandEvent);
+    // #endregion
+
+    // #region Send command handlers
+    on<SpectatorSendJoinSession>(_handleSendJoinCommand);
+    on<SpectatorSendLeaveSession>(_handleSendLeaveSessionCommand);
+    on<SpectatorSendReconnect>(_handleSendReconnectCommand);
+    // #endregion
   }
+
+  // #region Base handling functions
 
   connect() async {
     await _spectatorSessionRepository.connect().catchError((error) {
@@ -161,74 +153,89 @@ class SpectatorLandingSessionBloc
     _timeLeft = message.timeLeft;
   }
 
-  _handleNoneStateEvent(Emitter<SpectatorLandingSessionState> emit,
-      {required PlanningSessionStateMessage message}) async {
-    _handleStateEvent(message: message);
+  // #endregion
+
+  // #region Receive commands handlers
+
+  _handleNoneStateEvent(
+    SpectatorReceiveNoneState event,
+    Emitter<SpectatorLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
     var participantDtos =
-        makeParticipantGroupDtos(participants: message.participants);
+        makeParticipantGroupDtos(participants: event.message.participants);
 
     emit(SpectatorLandingSessionNone(
       sessionName: _sessionName,
       participants: participantDtos,
-      coffeeVoteCount: message.coffeeRequestCount,
-      spectatorCount: message.spectatorCount,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
     ));
   }
 
-  _handleVotingStateEvent(Emitter<SpectatorLandingSessionState> emit,
-      {required PlanningSessionStateMessage message}) {
-    _handleStateEvent(message: message);
-    var ticket = message.ticket;
+  _handleVotingStateEvent(
+    SpectatorReceiveVotingState event,
+    Emitter<SpectatorLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
+    var ticket = event.message.ticket;
     if (ticket == null) return;
 
     var participantDtos = makeParticipantGroupDtos(
-      participants: message.participants,
-      votes: message.ticket?.ticketVotes,
+      participants: event.message.participants,
+      votes: event.message.ticket?.ticketVotes,
     );
 
     emit(SpectatorLandingSessionVoting(
       sessionName: _sessionName,
       participants: participantDtos,
-      coffeeVoteCount: message.coffeeRequestCount,
-      spectatorCount: message.spectatorCount,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
       ticket: ticket,
-      availableCards: message.availableCards,
+      availableCards: event.message.availableCards,
     ));
   }
 
-  _handleVotingFinishedStateEvent(Emitter<SpectatorLandingSessionState> emit,
-      {required PlanningSessionStateMessage message}) async {
-    _handleStateEvent(message: message);
-    var ticket = message.ticket;
+  _handleVotingFinishedStateEvent(
+    SpectatorReceiveVotingFinishedState event,
+    Emitter<SpectatorLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
+    var ticket = event.message.ticket;
     if (ticket == null) return;
 
     var participantDtos = makeParticipantGroupDtos(
-      participants: message.participants,
-      votes: message.ticket?.ticketVotes,
+      participants: event.message.participants,
+      votes: event.message.ticket?.ticketVotes,
     );
 
-    var voteGroups = makeGroupedCards(votes: message.ticket?.ticketVotes);
+    var voteGroups = makeGroupedCards(votes: event.message.ticket?.ticketVotes);
 
     emit(SpectatorLandingSessionVotingFinished(
       sessionName: _sessionName,
       participants: participantDtos,
-      coffeeVoteCount: message.coffeeRequestCount,
-      spectatorCount: message.spectatorCount,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
       ticket: ticket,
       voteGroups: voteGroups,
     ));
   }
 
-  _handleInvalidCommand(Emitter<SpectatorLandingSessionState> emit,
-      {required PlanningInvalidCommandMessage message}) {
+  _handleInvalidCommand(
+    SpectatorReceiveInvalidCommand event,
+    Emitter<SpectatorLandingSessionState> emit,
+  ) async {
     emit(SpectatorLandingSessionError(
       sessionName: _sessionName,
-      errorCode: message.code,
-      errorDescription: message.description,
+      errorCode: event.message.code,
+      errorDescription: event.message.description,
     ));
   }
 
-  _handleInvalidSessionCommand(Emitter<SpectatorLandingSessionState> emit) {
+  _handleInvalidSessionCommand(
+    SpectatorReceiveInvalidSession event,
+    Emitter<SpectatorLandingSessionState> emit,
+  ) async {
     emit(SpectatorLandingSessionError(
       sessionName: _sessionName,
       errorCode: '0001',
@@ -237,8 +244,59 @@ class SpectatorLandingSessionBloc
     ));
   }
 
-  _handleEndSessionCommand(Emitter<SpectatorLandingSessionState> emit) =>
+  _handleEndSessionCommand(
+    SpectatorReceiveEndSession event,
+    Emitter<SpectatorLandingSessionState> emit,
+  ) async =>
       emit(SpectatorLandingSessionEnded(sessionName: _sessionName));
+
+  _handleCoffeeVotingStateEvent(
+    SpectatorReceiveCoffeeVotingState event,
+    Emitter<SpectatorLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
+
+    emit(SpectatorLandingSessionCoffeeVoting(
+      sessionName: _sessionName,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
+      coffeeVotes: event.message.coffeeVotes ?? [],
+    ));
+  }
+
+  _handleCoffeeVotingFinishedStateEvent(
+    SpectatorReceiveCoffeeVotingFinishedState event,
+    Emitter<SpectatorLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
+
+    emit(SpectatorLandingSessionCoffeeVotingFinished(
+      sessionName: _sessionName,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
+      coffeeVotes: event.message.coffeeVotes ?? [],
+    ));
+  }
+
+  _handleErrorCommandEvent(
+    SpectatorLandingError event,
+    Emitter<SpectatorLandingSessionState> emit,
+  ) async =>
+      emit(SpectatorLandingSessionError(
+        sessionName: _sessionName,
+        errorCode: event.code,
+        errorDescription: event.description,
+      ));
+
+  // #endregion
+
+  // #region Send commands handlers
+
+  _handleSendJoinCommand(
+    SpectatorSendJoinSession event,
+    Emitter<SpectatorLandingSessionState> emit,
+  ) async =>
+      _sendJoinCommand();
 
   _sendJoinCommand() async {
     await _localStorageRepository.removeUuid();
@@ -249,12 +307,19 @@ class SpectatorLandingSessionBloc
     );
   }
 
-  _sendLeaveSessionCommand() async {
+  _handleSendLeaveSessionCommand(
+    SpectatorSendLeaveSession event,
+    Emitter<SpectatorLandingSessionState> emit,
+  ) async {
     _sessionEnded = true;
     _spectatorSessionRepository.sendLeaveSessionCommand(uuid: await _uuid);
+    emit(SpectatorLandingLeftSession(sessionName: _sessionName));
   }
 
-  _sendReconnectCommand() async {
+  _handleSendReconnectCommand(
+    SpectatorSendReconnect event,
+    Emitter<SpectatorLandingSessionState> emit,
+  ) async {
     await connect();
     if (!_sessionJoined) {
       _sendJoinCommand();
@@ -262,4 +327,6 @@ class SpectatorLandingSessionBloc
       _spectatorSessionRepository.sendReconnectCommand(uuid: await _uuid);
     }
   }
+
+  // #endregion
 }

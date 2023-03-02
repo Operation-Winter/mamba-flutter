@@ -64,12 +64,14 @@ class JoinLandingSessionCoffeeVoting extends JoinLandingSessionState {
   final int coffeeVoteCount;
   final int spectatorCount;
   final bool? vote;
+  final List<PlanningCoffeeVote> coffeeVotes;
 
   JoinLandingSessionCoffeeVoting({
     required this.sessionName,
     required this.coffeeVoteCount,
     required this.spectatorCount,
     this.vote,
+    required this.coffeeVotes,
   });
 }
 

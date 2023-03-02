@@ -298,6 +298,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
       ],
       vote: state.vote,
       onVoteTap: _didTapVoteCoffeeBreak,
+      coffeeVotes: state.coffeeVotes,
     );
   }
 

@@ -58,12 +58,14 @@ class HostLandingSessionCoffeeVoting extends HostLandingSessionState {
   final int coffeeVoteCount;
   final int spectatorCount;
   final bool? vote;
+  final List<PlanningCoffeeVote> coffeeVotes;
 
   HostLandingSessionCoffeeVoting({
     required this.sessionName,
     required this.coffeeVoteCount,
     required this.spectatorCount,
     this.vote,
+    required this.coffeeVotes,
   });
 }
 

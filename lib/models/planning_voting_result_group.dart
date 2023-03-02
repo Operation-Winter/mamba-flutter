@@ -1,11 +1,11 @@
-import 'package:mamba/models/planning_voting_result.dart';
+import 'package:mamba/widgets/graphs/horizontal_stacked_bar_graph.dart';
 
 class PlanningVotingResultGroup {
   String? tag;
-  List<PlanningVotingResult> results;
+  List<HorizontalStackedBarGraphData> graphData;
 
   PlanningVotingResultGroup({
     this.tag,
-    required this.results,
+    required this.graphData,
   });
 }

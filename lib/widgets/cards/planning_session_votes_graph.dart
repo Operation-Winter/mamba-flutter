@@ -1,9 +1,9 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mamba/mixins/voting_results_mixin.dart';
 import 'package:mamba/models/planning_card_group.dart';
-import "package:collection/collection.dart";
 import 'package:mamba/models/planning_voting_result_group.dart';
-import 'package:mamba/ui_constants.dart';
+import 'package:mamba/widgets/graphs/horizontal_stacked_bar_graph.dart';
 import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
 
@@ -47,35 +47,8 @@ class PlanningSessionVotesGraph extends StatelessWidget
                               const SizedBox(height: 10),
                             if (votingResult.tag == null && index > 0)
                               const SizedBox(height: 20),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Container(
-                                color: Colors.white,
-                                child: Row(
-                                  children: votingResult.results
-                                      .map(
-                                        (votingResult) => Flexible(
-                                          flex: votingResult.ratio,
-                                          child: Container(
-                                            color: darkPurple.withOpacity(
-                                                votingResult.transparency),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(10),
-                                              child: Center(
-                                                child: Text(
-                                                  votingResult.title,
-                                                  style: TextStyle(
-                                                      color:
-                                                          votingResult.color),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
-                              ),
+                            HorizontalStackedBarGraph(
+                              barGraphData: votingResult.graphData,
                             ),
                           ],
                         ),

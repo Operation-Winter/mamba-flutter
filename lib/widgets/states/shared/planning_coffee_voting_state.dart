@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mamba/models/planning_coffee_vote.dart';
 import 'package:mamba/widgets/cards/planning_session_coffee_break_voting_card.dart';
+import 'package:mamba/widgets/cards/planning_session_coffee_break_voting_results_card.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 
 class PlanningCoffeeVotingState extends StatelessWidget {
@@ -7,6 +9,7 @@ class PlanningCoffeeVotingState extends StatelessWidget {
   final int coffeeVoteCount;
   final int spectatorCount;
   final List<PlanningCommandButton> commands;
+  final List<PlanningCoffeeVote> coffeeVotes;
   final bool? vote;
   final Function(bool)? onVoteTap;
 
@@ -18,6 +21,7 @@ class PlanningCoffeeVotingState extends StatelessWidget {
     required this.spectatorCount,
     this.vote,
     this.onVoteTap,
+    required this.coffeeVotes,
   }) : super(key: key);
 
   @override
@@ -31,6 +35,9 @@ class PlanningCoffeeVotingState extends StatelessWidget {
               commands: commands,
               coffeeVoteCount: coffeeVoteCount,
               spectatorCount: spectatorCount,
+            ),
+            PlanningSessionCoffeeBreakVotingResultsCard(
+              coffeeVotes: coffeeVotes,
             ),
             PlanningSessionCoffeeBreakVotingCard(
               vote: vote,

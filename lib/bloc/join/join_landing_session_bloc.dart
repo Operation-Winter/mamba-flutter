@@ -309,6 +309,7 @@ class JoinLandingSessionBloc
       coffeeVoteCount: event.message.coffeeRequestCount,
       spectatorCount: event.message.spectatorCount,
       vote: vote,
+      coffeeVotes: event.message.coffeeVotes ?? [],
     ));
   }
 

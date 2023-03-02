@@ -419,6 +419,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
       ],
       vote: state.vote,
       onVoteTap: _didTapVoteCoffeeBreak,
+      coffeeVotes: state.coffeeVotes,
     );
   }
 

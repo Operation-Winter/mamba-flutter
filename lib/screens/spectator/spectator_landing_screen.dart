@@ -7,7 +7,6 @@ import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/dialog/confirmation_dialog.dart';
 import 'package:mamba/widgets/dialog/modal_dialog.dart';
 import 'package:mamba/widgets/states/shared/planning_coffee_voting_finished_state.dart';
-import 'package:mamba/widgets/states/shared/planning_coffee_voting_state.dart';
 import 'package:mamba/widgets/states/shared/planning_end_session_state.dart';
 import 'package:mamba/widgets/states/shared/planning_error_state.dart';
 import 'package:mamba/widgets/states/shared/planning_loading_state.dart';
@@ -207,7 +206,7 @@ class _SpectatorLandingScreenState extends State<SpectatorLandingScreen> {
 
   Widget _coffeeVotingState(BuildContext context,
       {required SpectatorLandingSessionCoffeeVoting state}) {
-    return PlanningCoffeeVotingState(
+    return PlanningCoffeeVotingFinishedState(
       sessionName: state.sessionName,
       coffeeVoteCount: state.coffeeVoteCount,
       spectatorCount: state.spectatorCount,
@@ -223,6 +222,7 @@ class _SpectatorLandingScreenState extends State<SpectatorLandingScreen> {
           onPressed: _didTapLeaveSession,
         ),
       ],
+      coffeeVotes: state.coffeeVotes,
     );
   }
 
