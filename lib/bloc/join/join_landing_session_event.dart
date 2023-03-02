@@ -29,6 +29,12 @@ class JoinSendChangeName extends JoinLandingSessionEvent {
 
 class JoinSendRequestCoffeeBreak extends JoinLandingSessionEvent {}
 
+class JoinSendCoffeeBreakVote extends JoinLandingSessionEvent {
+  final bool vote;
+
+  JoinSendCoffeeBreakVote({required this.vote});
+}
+
 // Receive commands
 class JoinReceiveNoneState extends JoinLandingSessionEvent {
   final PlanningSessionStateMessage message;

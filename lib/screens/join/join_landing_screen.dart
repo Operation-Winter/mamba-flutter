@@ -98,6 +98,9 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
 
   _didSelectTag(String? tag) => widget.session.add(JoinDidSelectTag(tag: tag));
 
+  _didTapVoteCoffeeBreak(bool vote) =>
+      widget.session.add(JoinSendCoffeeBreakVote(vote: vote));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -293,6 +296,8 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
           onPressed: _didTapLeaveSession,
         ),
       ],
+      vote: state.vote,
+      onVoteTap: _didTapVoteCoffeeBreak,
     );
   }
 
@@ -319,6 +324,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
           onPressed: _didTapLeaveSession,
         ),
       ],
+      coffeeVotes: state.coffeeVotes,
     );
   }
 

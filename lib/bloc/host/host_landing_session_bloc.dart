@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/mixins/participants_list_mixin.dart';
 import 'package:mamba/models/commands/host/planning_host_receive_command.dart';
@@ -6,6 +7,7 @@ import 'package:mamba/models/messages/planning_invalid_command_message.dart';
 import 'package:mamba/models/messages/planning_session_state_message.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/models/planning_card_group.dart';
+import 'package:mamba/models/planning_coffee_vote.dart';
 import 'package:mamba/models/planning_participant_group_dto.dart';
 import 'package:mamba/models/planning_ticket.dart';
 import 'package:mamba/repositories/local_storage_repository.dart';
@@ -231,11 +233,16 @@ class HostLandingSessionBloc
     Emitter<HostLandingSessionState> emit,
   ) async {
     _handleStateEvent(message: event.message);
-
+    var participantUuid = await _uuid;
+    var vote = event.message.coffeeVotes
+        ?.firstWhereOrNull(
+            (element) => element.participantId == participantUuid)
+        ?.vote;
     emit(HostLandingSessionCoffeeVoting(
       sessionName: sessionName,
       coffeeVoteCount: event.message.coffeeRequestCount,
       spectatorCount: event.message.spectatorCount,
+      vote: vote,
     ));
   }
 
@@ -249,6 +256,7 @@ class HostLandingSessionBloc
       sessionName: sessionName,
       coffeeVoteCount: event.message.coffeeRequestCount,
       spectatorCount: event.message.spectatorCount,
+      coffeeVotes: event.message.coffeeVotes ?? [],
     ));
   }
 

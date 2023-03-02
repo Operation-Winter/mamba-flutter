@@ -244,6 +244,7 @@ class _SpectatorLandingScreenState extends State<SpectatorLandingScreen> {
           onPressed: _didTapLeaveSession,
         ),
       ],
+      coffeeVotes: state.coffeeVotes,
     );
   }
 

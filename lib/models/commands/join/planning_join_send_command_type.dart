@@ -7,4 +7,5 @@ enum PlanningJoinSendCommandType {
   RECONNECT,
   CHANGE_NAME,
   REQUEST_COFFEE_BREAK,
+  COFFEE_BREAK_VOTE,
 }

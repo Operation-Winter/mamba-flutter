@@ -31,4 +31,5 @@ const _$PlanningJoinSendCommandTypeEnumMap = {
   PlanningJoinSendCommandType.RECONNECT: 'RECONNECT',
   PlanningJoinSendCommandType.CHANGE_NAME: 'CHANGE_NAME',
   PlanningJoinSendCommandType.REQUEST_COFFEE_BREAK: 'REQUEST_COFFEE_BREAK',
+  PlanningJoinSendCommandType.COFFEE_BREAK_VOTE: 'COFFEE_BREAK_VOTE',
 };

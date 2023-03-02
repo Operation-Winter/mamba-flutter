@@ -161,6 +161,9 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
 
   _didTapReconnect() => widget.session.add(HostSendReconnect());
 
+  _didTapVoteCoffeeBreak(bool vote) =>
+      widget.session.add(HostSendCoffeeVote(vote: vote));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -414,6 +417,8 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
           onPressed: _didTapEndSession,
         ),
       ],
+      vote: state.vote,
+      onVoteTap: _didTapVoteCoffeeBreak,
     );
   }
 
@@ -435,6 +440,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
           onPressed: _didTapEndSession,
         ),
       ],
+      coffeeVotes: state.coffeeVotes,
     );
   }
 

@@ -12,7 +12,6 @@ import 'package:mamba/models/messages/planning_skip_vote_message.dart';
 import 'package:mamba/models/messages/planning_start_session_message.dart';
 import 'package:mamba/models/messages/planning_ticket_message.dart';
 import 'package:mamba/models/planning_card.dart';
-import 'package:mamba/models/planning_coffee_vote.dart';
 import 'package:mamba/networking/url_center.dart';
 import 'package:mamba/networking/web_socket_networking.dart';
 import 'package:uuid/uuid.dart';

@@ -6,6 +6,7 @@ import 'package:mamba/models/messages/planning_invalid_command_message.dart';
 import 'package:mamba/models/messages/planning_session_state_message.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/models/planning_card_group.dart';
+import 'package:mamba/models/planning_coffee_vote.dart';
 import 'package:mamba/models/planning_participant_group_dto.dart';
 import 'package:mamba/models/planning_ticket.dart';
 import 'package:mamba/repositories/local_storage_repository.dart';
@@ -62,6 +63,7 @@ class JoinLandingSessionBloc
     on<JoinSendRequestCoffeeBreak>(_handleSendRequestCoffeeBreakCommand);
     on<JoinSendChangeName>(_handleSendChangeNameCommand);
     on<JoinSendVote>(_handleSendVoteCommand);
+    on<JoinSendCoffeeBreakVote>(_handleSendCoffeeBreakVoteCommand);
     // #endregion
 
     // #region Receive commands
@@ -72,6 +74,9 @@ class JoinLandingSessionBloc
     on<JoinReceiveInvalidSession>(_handleInvalidSessionCommand);
     on<JoinReceiveRemoveParticipant>(_handleRemoveParticipantCommand);
     on<JoinReceiveEndSession>(_handleEndSessionCommand);
+    on<JoinReceiveCoffeeVotingState>(_handleCoffeeVotingStateEvent);
+    on<JoinReceiveCoffeeVotingFinishedState>(
+        _handleCoffeeVotingFinishedStateEvent);
     // #endregion
 
     // #region UI Events
@@ -289,6 +294,38 @@ class JoinLandingSessionBloc
   ) async =>
       _selectedTag = event.tag;
 
+  _handleCoffeeVotingStateEvent(
+    JoinReceiveCoffeeVotingState event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
+    var participantUuid = await _uuid;
+    var vote = event.message.coffeeVotes
+        ?.firstWhereOrNull(
+            (element) => element.participantId == participantUuid)
+        ?.vote;
+    emit(JoinLandingSessionCoffeeVoting(
+      sessionName: _sessionName,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
+      vote: vote,
+    ));
+  }
+
+  _handleCoffeeVotingFinishedStateEvent(
+    JoinReceiveCoffeeVotingFinishedState event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async {
+    _handleStateEvent(message: event.message);
+
+    emit(JoinLandingSessionCoffeeVotingFinished(
+      sessionName: _sessionName,
+      coffeeVoteCount: event.message.coffeeRequestCount,
+      spectatorCount: event.message.spectatorCount,
+      coffeeVotes: event.message.coffeeVotes ?? [],
+    ));
+  }
+
   // #endregion
 
   // #region Send commands
@@ -356,6 +393,15 @@ class JoinLandingSessionBloc
     Emitter<JoinLandingSessionState> emit,
   ) async =>
       _joinSessionRepository.sendRequestCoffeeBreak(uuid: await _uuid);
+
+  _handleSendCoffeeBreakVoteCommand(
+    JoinSendCoffeeBreakVote event,
+    Emitter<JoinLandingSessionState> emit,
+  ) async =>
+      _joinSessionRepository.sendCoffeeBreakVote(
+        uuid: await _uuid,
+        vote: event.vote,
+      );
 
   // #endregion
 }

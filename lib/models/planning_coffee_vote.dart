@@ -5,11 +5,11 @@ part 'planning_coffee_vote.g.dart';
 @JsonSerializable()
 class PlanningCoffeeVote {
   @JsonKey(fromJson: _idFromString, toJson: _stringFromId)
-  final UuidValue uuid;
+  final UuidValue participantId;
   final bool vote;
 
   PlanningCoffeeVote({
-    required this.uuid,
+    required this.participantId,
     required this.vote,
   });
 

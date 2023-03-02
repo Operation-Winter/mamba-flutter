@@ -59,11 +59,13 @@ class SpectatorLandingSessionCoffeeVoting extends SpectatorLandingSessionState {
   final String sessionName;
   final int coffeeVoteCount;
   final int spectatorCount;
+  final List<PlanningCoffeeVote> coffeeVotes;
 
   SpectatorLandingSessionCoffeeVoting({
     required this.sessionName,
     required this.coffeeVoteCount,
     required this.spectatorCount,
+    required this.coffeeVotes,
   });
 }
 
@@ -72,11 +74,13 @@ class SpectatorLandingSessionCoffeeVotingFinished
   final String sessionName;
   final int coffeeVoteCount;
   final int spectatorCount;
+  final List<PlanningCoffeeVote> coffeeVotes;
 
   SpectatorLandingSessionCoffeeVotingFinished({
     required this.sessionName,
     required this.coffeeVoteCount,
     required this.spectatorCount,
+    required this.coffeeVotes,
   });
 }
 

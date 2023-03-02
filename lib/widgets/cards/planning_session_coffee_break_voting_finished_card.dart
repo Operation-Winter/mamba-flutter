@@ -1,21 +1,33 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:mamba/models/planning_coffee_vote.dart';
+import 'package:mamba/widgets/text/title_text.dart';
 
-class PlanningSessionCoffeeBreakVotingFinishedCard extends StatefulWidget {
-  const PlanningSessionCoffeeBreakVotingFinishedCard({super.key});
+class PlanningSessionCoffeeBreakVotingFinishedCard extends StatelessWidget {
+  final List<PlanningCoffeeVote> coffeeVotes;
 
-  @override
-  State<PlanningSessionCoffeeBreakVotingFinishedCard> createState() =>
-      _PlanningSessionCoffeeBreakVotingFinishedCardState();
-}
+  const PlanningSessionCoffeeBreakVotingFinishedCard({
+    super.key,
+    required this.coffeeVotes,
+  });
 
-class _PlanningSessionCoffeeBreakVotingFinishedCardState
-    extends State<PlanningSessionCoffeeBreakVotingFinishedCard> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder(
-      child: Text("Coffee break voting finished card"),
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      margin: const EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            TitleText(text: "Coffee break voting results"),
+            SizedBox(height: 10),
+            Placeholder(child: Text("Coffee voting finished")),
+          ],
+        ),
+      ),
     );
   }
 }

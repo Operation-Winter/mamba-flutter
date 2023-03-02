@@ -6,6 +6,7 @@ import 'package:mamba/models/commands/join/planning_join_receive_command.dart';
 import 'package:mamba/models/commands/join/planning_join_send_command.dart';
 import 'package:mamba/models/commands/join/planning_join_send_command_type.dart';
 import 'package:mamba/models/messages/planning_change_name_message.dart';
+import 'package:mamba/models/messages/planning_coffee_vote_message.dart';
 import 'package:mamba/models/messages/planning_join_session_message.dart';
 import 'package:mamba/models/messages/planning_vote_message.dart';
 import 'package:mamba/models/planning_card.dart';
@@ -111,6 +112,19 @@ class PlanningJoinSessionRepository {
     var planningCommand = PlanningJoinSendCommand(
       uuid: uuid,
       type: PlanningJoinSendCommandType.REQUEST_COFFEE_BREAK,
+    );
+    _webSocket.send(planningCommand: planningCommand);
+  }
+
+  void sendCoffeeBreakVote({
+    required UuidValue uuid,
+    required bool vote,
+  }) {
+    var message = PlanningCoffeeVoteMessage(vote: vote);
+    var planningCommand = PlanningJoinSendCommand(
+      uuid: uuid,
+      type: PlanningJoinSendCommandType.COFFEE_BREAK_VOTE,
+      message: message,
     );
     _webSocket.send(planningCommand: planningCommand);
   }

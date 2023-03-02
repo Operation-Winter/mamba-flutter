@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mamba/models/planning_coffee_vote.dart';
 import 'package:mamba/widgets/cards/planning_session_coffee_break_voting_finished_card.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 
@@ -7,6 +8,7 @@ class PlanningCoffeeVotingFinishedState extends StatelessWidget {
   final int coffeeVoteCount;
   final int spectatorCount;
   final List<PlanningCommandButton> commands;
+  final List<PlanningCoffeeVote> coffeeVotes;
 
   const PlanningCoffeeVotingFinishedState({
     Key? key,
@@ -14,6 +16,7 @@ class PlanningCoffeeVotingFinishedState extends StatelessWidget {
     required this.commands,
     required this.coffeeVoteCount,
     required this.spectatorCount,
+    required this.coffeeVotes,
   }) : super(key: key);
 
   @override
@@ -28,7 +31,9 @@ class PlanningCoffeeVotingFinishedState extends StatelessWidget {
               coffeeVoteCount: coffeeVoteCount,
               spectatorCount: spectatorCount,
             ),
-            PlanningSessionCoffeeBreakVotingFinishedCard(),
+            PlanningSessionCoffeeBreakVotingFinishedCard(
+              coffeeVotes: coffeeVotes,
+            ),
           ],
         ),
       ),

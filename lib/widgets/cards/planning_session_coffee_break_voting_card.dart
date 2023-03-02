@@ -1,9 +1,16 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:mamba/widgets/buttons/large_icon_button.dart';
+import 'package:mamba/widgets/text/title_text.dart';
 
 class PlanningSessionCoffeeBreakVotingCard extends StatefulWidget {
-  const PlanningSessionCoffeeBreakVotingCard({super.key});
+  final bool? vote;
+  final Function(bool)? onVoteTap;
+
+  const PlanningSessionCoffeeBreakVotingCard({
+    super.key,
+    this.vote,
+    this.onVoteTap,
+  });
 
   @override
   State<PlanningSessionCoffeeBreakVotingCard> createState() =>
@@ -12,10 +19,47 @@ class PlanningSessionCoffeeBreakVotingCard extends StatefulWidget {
 
 class _PlanningSessionCoffeeBreakVotingCardState
     extends State<PlanningSessionCoffeeBreakVotingCard> {
+  _didTapUpVote() => widget.onVoteTap?.call(true);
+
+  _didTapDownVote() => widget.onVoteTap?.call(false);
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder(
-      child: Text("Coffee break voting card"),
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      margin: const EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const TitleText(text: "Coffee break vote"),
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              direction: Axis.horizontal,
+              alignment: WrapAlignment.center,
+              children: [
+                LargeIconButton(
+                  highlighted: widget.vote == false,
+                  icon: Icons.thumb_down,
+                  onTap: _didTapDownVote,
+                  toolTip: "Vote no for coffee break",
+                ),
+                LargeIconButton(
+                  highlighted: widget.vote == true,
+                  icon: Icons.thumb_up,
+                  onTap: _didTapUpVote,
+                  toolTip: "Vote yes for coffee break",
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 }
