@@ -21,6 +21,9 @@ class LargeIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var backgroundColor =
+        isDarkMode(context) ? primaryColor : Colors.grey.withOpacity(0.6);
+
     return Tooltip(
       verticalOffset: 70,
       message: toolTip,
@@ -30,7 +33,7 @@ class LargeIconButton extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 300),
           padding: padding,
           decoration: BoxDecoration(
-            color: highlighted ? primaryColor : Colors.grey.withOpacity(0.1),
+            color: highlighted ? backgroundColor : Colors.grey.withOpacity(0.1),
             borderRadius: BorderRadius.circular(11),
             boxShadow: [
               BoxShadow(
@@ -40,7 +43,7 @@ class LargeIconButton extends StatelessWidget {
           ),
           child: Icon(
             icon,
-            color: lightGrayColor,
+            color: isDarkMode(context) ? lightGrayColor : primaryColor,
             size: 70,
           ),
         ),

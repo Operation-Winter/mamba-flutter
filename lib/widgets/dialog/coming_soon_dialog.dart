@@ -33,7 +33,7 @@ class ComingSoonDialog {
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: primaryColor,
-            foregroundColor: lightGrayColor,
+            foregroundColor: Colors.white,
           ),
           child: const Text('Ok'),
         ),

@@ -16,25 +16,25 @@ class StyledChip extends StatelessWidget {
   Widget? get _avatar {
     if (selected != null) {
       return selected == true
-          ? const CircleAvatar(
-              backgroundColor: Colors.white70,
-              radius: 12,
-              child: Padding(
+          ? CircleAvatar(
+              backgroundColor: Colors.grey.shade200,
+              radius: 8,
+              child: const Padding(
                 padding: EdgeInsets.all(2),
                 child: Icon(
                   Icons.check,
                   color: primaryColor,
-                  size: 20,
+                  size: 12,
                 ),
               ),
             )
-          : const CircleAvatar(
-              radius: 12,
-              backgroundColor: Colors.white70,
+          : CircleAvatar(
+              radius: 8,
+              backgroundColor: Colors.grey.shade200,
             );
     } else {
       return CircleAvatar(
-        radius: 12,
+        radius: 8,
         backgroundColor: Colors.grey.shade200,
         child: Text(
           text[0].toUpperCase(),

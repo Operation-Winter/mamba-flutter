@@ -21,7 +21,7 @@ class PlanningCardIcon extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Container(
-            color: darkPurple,
+            color: isDarkMode(context) ? darkPurple : primaryColor,
             child: Center(
               child: Text(
                 planningCard.title,

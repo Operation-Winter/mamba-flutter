@@ -59,7 +59,7 @@ class ConfirmationAlertDialog {
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: primaryColor,
-            foregroundColor: lightGrayColor,
+            foregroundColor: Colors.white,
           ),
           child: const Text('Cancel'),
         ),
@@ -70,7 +70,7 @@ class ConfirmationAlertDialog {
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: primaryColor,
-            foregroundColor: lightGrayColor,
+            foregroundColor: Colors.white,
           ),
           child: const Text('Confirm'),
         ),

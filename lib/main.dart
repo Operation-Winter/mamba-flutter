@@ -164,8 +164,18 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     return MaterialApp(
       navigatorKey: _navigatorKey,
       title: 'Mamba',
-      theme: ThemeData.light().copyWith(useMaterial3: true),
-      darkTheme: ThemeData.dark().copyWith(useMaterial3: true),
+      theme: ThemeData.light().copyWith(
+        useMaterial3: true,
+        cardTheme: ThemeData.light(useMaterial3: true)
+            .cardTheme
+            .copyWith(surfaceTintColor: accentColor),
+        dialogTheme: ThemeData.light(useMaterial3: true)
+            .dialogTheme
+            .copyWith(surfaceTintColor: accentColor),
+      ),
+      darkTheme: ThemeData.dark().copyWith(
+        useMaterial3: true,
+      ),
       themeMode: ThemeMode.system,
       initialRoute: _initialRoute,
       routes: _routes,
@@ -178,6 +188,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         WidgetsBinding.instance.window.platformBrightness;
     return Theme(
       data: ThemeData(
+        useMaterial3: true,
         brightness: platformBrightness,
         primaryColor: primaryColor,
       ),
@@ -185,7 +196,9 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         navigatorKey: _navigatorKey,
         title: 'Mamba',
         theme: CupertinoThemeData(
-            brightness: platformBrightness, primaryColor: primaryColor),
+          brightness: platformBrightness,
+          primaryColor: primaryColor,
+        ),
         initialRoute: _initialRoute,
         routes: _routes,
         onGenerateRoute: onGenerateRoute,

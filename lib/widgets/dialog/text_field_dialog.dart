@@ -87,7 +87,7 @@ class TextFieldAlertDialog {
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: primaryColor,
-            foregroundColor: lightGrayColor,
+            foregroundColor: Colors.white,
           ),
           child: const Text('Cancel'),
         ),
@@ -99,7 +99,7 @@ class TextFieldAlertDialog {
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: primaryColor,
-            foregroundColor: lightGrayColor,
+            foregroundColor: Colors.white,
           ),
           child: Text(primaryActionTitle),
         ),

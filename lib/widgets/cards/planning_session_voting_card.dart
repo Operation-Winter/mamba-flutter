@@ -130,8 +130,10 @@ class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
                         decoration: widget.selectedCard == planningCard
                             ? BoxDecoration(
                                 border: Border.all(
-                                  width: 2,
-                                  color: primaryColor,
+                                  width: 3,
+                                  color: isDarkMode(context)
+                                      ? primaryColor
+                                      : darkPurple,
                                 ),
                                 borderRadius: BorderRadius.circular(11),
                               )

@@ -35,7 +35,9 @@ class HorizontalStackedBarGraph extends StatelessWidget {
                 (data) => Flexible(
                   flex: data.ratio,
                   child: Container(
-                    color: darkPurple.withOpacity(data.transparency),
+                    color: isDarkMode(context)
+                        ? darkPurple.withOpacity(data.transparency)
+                        : primaryColor.withOpacity(data.transparency),
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: Center(
