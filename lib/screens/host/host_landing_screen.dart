@@ -246,7 +246,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
           onPressed: _didTapRequestCoffee,
         ),
         PlanningCommandButton(
-          icon: Icons.coffee,
+          icon: Icons.thumbs_up_down,
           tooltip: 'Start coffee break vote',
           onPressed: _didTapStartCoffeeVote,
         ),
@@ -289,7 +289,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
           onPressed: _didTapRequestCoffee,
         ),
         PlanningCommandButton(
-          icon: Icons.coffee,
+          icon: Icons.thumbs_up_down,
           tooltip: 'Start coffee break vote',
           onPressed: _didTapStartCoffeeVote,
         ),
@@ -360,7 +360,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
           onPressed: _didTapRequestCoffee,
         ),
         PlanningCommandButton(
-          icon: Icons.coffee,
+          icon: Icons.thumbs_up_down,
           tooltip: 'Start coffee break vote',
           onPressed: _didTapStartCoffeeVote,
         ),
@@ -412,7 +412,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
       spectatorCount: state.spectatorCount,
       commands: [
         PlanningCommandButton(
-          icon: Icons.coffee,
+          icon: Icons.how_to_vote,
           tooltip: 'Finish coffee break vote',
           onPressed: _didTapFinishCoffeeVote,
         ),
