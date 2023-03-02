@@ -4,6 +4,7 @@ import 'package:mamba/bloc/host/host_landing_session_bloc.dart';
 import 'package:mamba/screens/host/host_ticket_details_screen.dart';
 import 'package:mamba/screens/shared/planning_session_sharing_screen.dart';
 import 'package:mamba/ui_constants.dart';
+import 'package:mamba/widgets/cards/planning_session_coffee_break_voting_results_card.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
 import 'package:mamba/widgets/dialog/coming_soon_dialog.dart';
@@ -116,6 +117,15 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
         description: 'Are you sure you want to finish the coffee break vote?',
         onConfirmation: () {
           widget.session.add(HostSendFinishCoffeeVote());
+        },
+      );
+
+  _didTapEndCoffeBreakVoting() => ConfirmationAlertDialog.show(
+        context,
+        title: 'End coffee break vote',
+        description: 'Are you sure you want to end the coffee break vote?',
+        onConfirmation: () {
+          widget.session.add(HostSendEndCoffeeVote());
         },
       );
 
@@ -417,6 +427,13 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
           onPressed: _didTapEndSession,
         ),
       ],
+      votingResultsCommands: [
+        PlanningTitleCommandButton(
+          title: "Go back to story size voting",
+          enabled: true,
+          onPressed: _didTapEndCoffeBreakVoting,
+        ),
+      ],
       vote: state.vote,
       onVoteTap: _didTapVoteCoffeeBreak,
       coffeeVotes: state.coffeeVotes,
@@ -439,6 +456,13 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
           icon: Icons.close,
           tooltip: 'End session',
           onPressed: _didTapEndSession,
+        ),
+      ],
+      votingResultsCommands: [
+        PlanningTitleCommandButton(
+          title: "Go back to story size voting",
+          enabled: true,
+          onPressed: _didTapEndCoffeBreakVoting,
         ),
       ],
       coffeeVotes: state.coffeeVotes,

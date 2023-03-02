@@ -9,6 +9,7 @@ class PlanningCoffeeVotingState extends StatelessWidget {
   final int coffeeVoteCount;
   final int spectatorCount;
   final List<PlanningCommandButton> commands;
+  final List<PlanningTitleCommandButton> votingResultsCommands;
   final List<PlanningCoffeeVote> coffeeVotes;
   final bool? vote;
   final Function(bool)? onVoteTap;
@@ -17,6 +18,7 @@ class PlanningCoffeeVotingState extends StatelessWidget {
     Key? key,
     required this.sessionName,
     required this.commands,
+    required this.votingResultsCommands,
     required this.coffeeVoteCount,
     required this.spectatorCount,
     this.vote,
@@ -38,6 +40,7 @@ class PlanningCoffeeVotingState extends StatelessWidget {
             ),
             PlanningSessionCoffeeBreakVotingResultsCard(
               coffeeVotes: coffeeVotes,
+              commands: votingResultsCommands,
             ),
             PlanningSessionCoffeeBreakVotingCard(
               vote: vote,

@@ -8,6 +8,7 @@ class PlanningCoffeeVotingFinishedState extends StatelessWidget {
   final int coffeeVoteCount;
   final int spectatorCount;
   final List<PlanningCommandButton> commands;
+  final List<PlanningTitleCommandButton> votingResultsCommands;
   final List<PlanningCoffeeVote> coffeeVotes;
 
   const PlanningCoffeeVotingFinishedState({
@@ -17,6 +18,7 @@ class PlanningCoffeeVotingFinishedState extends StatelessWidget {
     required this.coffeeVoteCount,
     required this.spectatorCount,
     required this.coffeeVotes,
+    required this.votingResultsCommands,
   }) : super(key: key);
 
   @override
@@ -33,6 +35,7 @@ class PlanningCoffeeVotingFinishedState extends StatelessWidget {
             ),
             PlanningSessionCoffeeBreakVotingResultsCard(
               coffeeVotes: coffeeVotes,
+              commands: votingResultsCommands,
             ),
           ],
         ),

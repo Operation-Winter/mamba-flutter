@@ -296,6 +296,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
           onPressed: _didTapLeaveSession,
         ),
       ],
+      votingResultsCommands: const [],
       vote: state.vote,
       onVoteTap: _didTapVoteCoffeeBreak,
       coffeeVotes: state.coffeeVotes,
@@ -325,6 +326,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
           onPressed: _didTapLeaveSession,
         ),
       ],
+      votingResultsCommands: const [],
       coffeeVotes: state.coffeeVotes,
     );
   }

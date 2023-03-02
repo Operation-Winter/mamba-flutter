@@ -26,30 +26,23 @@ class LargeIconButton extends StatelessWidget {
       message: toolTip,
       child: GestureDetector(
         onTap: onTap,
-        child: Stack(
-          alignment: AlignmentDirectional.bottomEnd,
-          clipBehavior: Clip.antiAlias,
-          children: [
-            Container(
-              constraints: const BoxConstraints(maxWidth: 300),
-              padding: padding,
-              decoration: BoxDecoration(
-                color:
-                    highlighted ? primaryColor : Colors.grey.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(11),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                  ),
-                ],
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 300),
+          padding: padding,
+          decoration: BoxDecoration(
+            color: highlighted ? primaryColor : Colors.grey.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(11),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
               ),
-              child: Icon(
-                icon,
-                color: lightGrayColor,
-                size: 70,
-              ),
-            ),
-          ],
+            ],
+          ),
+          child: Icon(
+            icon,
+            color: lightGrayColor,
+            size: 70,
+          ),
         ),
       ),
     );

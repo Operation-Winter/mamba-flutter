@@ -222,6 +222,7 @@ class _SpectatorLandingScreenState extends State<SpectatorLandingScreen> {
           onPressed: _didTapLeaveSession,
         ),
       ],
+      votingResultsCommands: const [],
       coffeeVotes: state.coffeeVotes,
     );
   }
@@ -244,6 +245,7 @@ class _SpectatorLandingScreenState extends State<SpectatorLandingScreen> {
           onPressed: _didTapLeaveSession,
         ),
       ],
+      votingResultsCommands: const [],
       coffeeVotes: state.coffeeVotes,
     );
   }
