@@ -74,6 +74,23 @@ class _LandingScreenState extends State<LandingScreen> {
                           imageName: 'images/planning_spectate.png',
                           onPressed: didTapSpectatorSession,
                         ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              Icons.info_outline_rounded,
+                              color: Colors.red,
+                            ),
+                            Text(
+                              ' Now includes new functionality that allows users to request and kick off a coffee break voting.',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
