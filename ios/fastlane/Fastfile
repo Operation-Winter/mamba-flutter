@@ -30,7 +30,7 @@ def ensure_temp_keychain(name, password)
 end
 
 platform :ios do
-  desc "Push a new build to AppStoreConntect"
+  desc "Push a new build to AppStoreConnect"
   lane :deploy_to_appstore do
     keychain_name = TEMP_KEYCHAIN_USER
     keychain_password = TEMP_KEYCHAIN_PASSWORD
