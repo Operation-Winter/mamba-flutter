@@ -81,12 +81,18 @@ class _LandingScreenState extends State<LandingScreen> {
                             Icon(
                               Icons.info_outline_rounded,
                               color: Colors.red,
+                              size: 28,
                             ),
-                            Text(
-                              ' Now includes new functionality that allows users to request and kick off a coffee break voting.',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 16,
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Flexible(
+                              child: Text(
+                                'Now includes new functionality that allows users to request and kick off a coffee break voting.',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
                           ],
