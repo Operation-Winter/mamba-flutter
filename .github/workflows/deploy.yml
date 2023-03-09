@@ -92,7 +92,7 @@ jobs:
             ${{ secrets.ANDROID_STORE_PASSWORD }}
             ${{ secrets.ANDROID_KEY_PASSWORD }}
             ${{ secrets.ANDROID_KEY_ALIAS }}
-            ${{ steps.android_keystore.outputs.filePath }}
+            ${{ steps.upload-keystore.outputs.filePath }}
 
       - name: Deploy Android to Google Play via Fastlane
         uses: maierj/fastlane-action@v3.0.0
