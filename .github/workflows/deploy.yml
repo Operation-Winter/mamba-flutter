@@ -79,6 +79,28 @@ jobs:
           fileName: "upload-keystore.jks"
           encodedString: ${{ secrets.ANDROID_STORE_FILE }}
 
+      - name: Decode key.properties
+        uses: timheuer/base64-to-file@v1
+        id: key-properties
+        with:
+          fileName: "key.properties"
+          encodedString: ${{ secrets.ANDROID_KEY_PROPERTIES }}
+
+      - name: Write key.properties file
+        uses: christian-draeger/write-properties@1.1.0
+        with:
+          path: 'android/key.properties'
+          property: |
+            'storePassword'
+            'keyPassword'
+            'keyAlias'
+            'storeFile'
+          value: |
+            ${{ secrets.ANDROID_STORE_PASSWORD }}
+            ${{ secrets.ANDROID_KEY_PASSWORD }}
+            ${{ secrets.ANDROID_KEY_ALIAS }}
+            ${{ steps.android_keystore.outputs.filePath }}
+
       - name: Deploy Android to Google Play via Fastlane
         uses: maierj/fastlane-action@v3.0.0
         with:
@@ -86,10 +108,6 @@ jobs:
           subdirectory: android
         env:
           MAMBA_JSON_KEY_DATA: ${{ secrets.MAMBA_JSON_KEY_DATA }}
-          ANDROID_STORE_FILE: ${{ steps.android_keystore.outputs.filePath }}
-          ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
   web:
     runs-on: ubuntu-latest

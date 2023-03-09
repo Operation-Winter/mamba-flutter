@@ -1,10 +1,6 @@
 default_platform(:android)
 
 MAMBA_JSON_KEY_DATA = ENV["MAMBA_JSON_KEY_DATA"]
-ANDROID_STORE_FILE = ENV["ANDROID_STORE_FILE"]
-ANDROID_STORE_PASSWORD = ENV["ANDROID_STORE_PASSWORD"]
-ANDROID_KEY_ALIAS = ENV["ANDROID_KEY_ALIAS"]
-ANDROID_KEY_PASSWORD = ENV["ANDROID_KEY_PASSWORD"]
 
 platform :android do
   desc "Deploy a new version to the Google Play"
@@ -16,18 +12,7 @@ platform :android do
   desc "Build App .aab Bundle"
   def buildReleaseApp()
     prepareFlutter() 
-
-    gradle(
-      task: "assemble",
-      build_type: "Release",
-      print_command: false,
-      properties: {
-        "android.injected.signing.store.file" => ANDROID_STORE_FILE,
-        "android.injected.signing.store.password" => ANDROID_STORE_PASSWORD,
-        "android.injected.signing.key.alias" => ANDROID_KEY_ALIAS,
-        "android.injected.signing.key.password" => ANDROID_KEY_PASSWORD,
-      }
-    )
+    sh("flutter build appbundle")
   end
 
   desc "Upload App .aab to PlayStore"
