@@ -72,6 +72,13 @@ jobs:
           bundler-cache: true
           working-directory: 'android'
 
+      - name: Decode Signing File
+        uses: timheuer/base64-to-file@v1
+        id: upload-keystore
+        with:
+          fileName: "upload-keystore.jks"
+          encodedString: ${{ secrets.ANDROID_STORE_FILE }}
+
       - name: Deploy Android to Google Play via Fastlane
         uses: maierj/fastlane-action@v3.0.0
         with:
@@ -79,6 +86,10 @@ jobs:
           subdirectory: android
         env:
           MAMBA_JSON_KEY_DATA: ${{ secrets.MAMBA_JSON_KEY_DATA }}
+          ANDROID_STORE_FILE: "upload-keystore.jks"
+          ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
   web:
     runs-on: ubuntu-latest

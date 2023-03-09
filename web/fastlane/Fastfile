@@ -23,7 +23,7 @@ desc "Upload app to web server"
 def uploadAppToWeb() 
   rsync(
     source: "build/web/",
-    destination: "root@host:/var/www/html/",
+    destination: "/#{DEPLOY_SERVER_USERNAME}@/#{DEPLOY_SERVER_ADDRESS}:/var/www/html/",
     extra: "-avzr --delete"
   )
 end
