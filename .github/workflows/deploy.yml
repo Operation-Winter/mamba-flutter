@@ -124,19 +124,24 @@ jobs:
           cache-path: ${{ runner.tool_cache }}/flutter # optional, change this to specify the cache path
           architecture: x64 # optional, x64 or arm64
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '2.7.2'
-          bundler-cache: true
-          working-directory: 'web'
+      - name: Flutter version
+        run: flutter --version
 
-      - name: Deploy to website
-        uses: maierj/fastlane-action@v3.0.0
+      - name: Install Flutter packages
+        run: flutter pub get
+
+      - name: Build web artifacts
+        run: flutter build web --release --web-renderer html
+      
+      - name: Copy over additional files
+        run: cp apple-app-site-association build/web
+      
+      - name: Deploy files to web server
+        uses: burnett01/rsync-deployments@4.1
         with:
-          lane: deploy_web_to_server
-          subdirectory: web
-        env:
-          DEPLOY_SERVER_ADDRESS: ${{ secrets.DEPLOY_SERVER_ADDRESS }}
-          DEPLOY_SERVER_USERNAME: ${{ secrets.DEPLOY_SERVER_USERNAME }}
-          RSYNC_PASSWORD: ${{ secrets.DEPLOY_SERVER_KEY }}
+          switches: -avzr --delete
+          path: build/web/
+          remote_path: /var/www/html/
+          remote_host: ${{ secrets.DEPLOY_SERVER_ADDRESS }}
+          remote_user: ${{ secrets.DEPLOY_SERVER_USERNAME }}
+          remote_key: ${{ secrets.DEPLOY_SERVER_KEY }}
