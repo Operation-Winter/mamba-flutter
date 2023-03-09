@@ -79,15 +79,15 @@ jobs:
           fileName: "upload-keystore.jks"
           encodedString: ${{ secrets.ANDROID_STORE_FILE }}
 
-      - name: Write key.properties file
-        uses: christian-draeger/write-properties@1.1.0
+      - name: Write multiple values to key.properties file
+        uses: GuillaumeFalourd/write-java-properties-file@v1
         with:
-          path: './android/key.properties'
+          file_path: ./android/key.properties
           property: |
-            'storePassword'
-            'keyPassword'
-            'keyAlias'
-            'storeFile'
+            storePassword
+            keyPassword
+            keyAlias
+            storeFile
           value: |
             ${{ secrets.ANDROID_STORE_PASSWORD }}
             ${{ secrets.ANDROID_KEY_PASSWORD }}
