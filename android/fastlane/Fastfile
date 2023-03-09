@@ -1,25 +1,40 @@
 default_platform(:android)
 
+MAMBA_JSON_KEY_DATA = ENV["MAMBA_JSON_KEY_DATA"]
+
 platform :android do
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
-  end
-
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
-  end
-
   desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store(
-      json_key_data: ENV['MAMBA_JSON_KEY_DATA']
+  lane :deploy_to_google_play do
+    buildReleaseApp()
+    uploadAppToGooglePlay(MAMBA_JSON_KEY_DATA)
+  end
+
+  desc "Build App .aab Bundle"
+  def buildReleaseApp()
+    prepareFlutter() 
+
+    gradle(
+      task: "bundle",
+      build_type: "Release"
     )
+  end
+
+  desc "Upload App .aab to PlayStore"
+  def uploadAppToGooglePlay(json_key_data) 
+    supply(
+      track: "internal"
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      json_key_data: json_key_data,
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Prepare Flutter environment"
+  def prepareFlutter() 
+    sh("flutter --version")
+    sh("flutter pub get")
   end
 end

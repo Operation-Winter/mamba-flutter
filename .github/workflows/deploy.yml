@@ -18,12 +18,6 @@ jobs:
           cache-path: ${{ runner.tool_cache }}/flutter # optional, change this to specify the cache path
           architecture: x64 # optional, x64 or arm64
 
-      - name: Flutter version
-        run: flutter --version
-
-      - name: Flutter install packages
-        run: flutter pub get
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -53,19 +47,40 @@ jobs:
   android:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout project
       - uses: actions/checkout@v3
+      
+      - name: Set up Java
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
           java-version: 11.0
-      - uses: subosito/flutter-action@v2
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           cache: true
           cache-key: flutter # optional, change this to force refresh cache
           cache-path: ${{ runner.tool_cache }}/flutter # optional, change this to specify the cache path
           architecture: x64 # optional, x64 or arm64
-      - run: flutter --version
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7.2'
+          bundler-cache: true
+          working-directory: 'android'
+
+      - name: Deploy Android to Google Play via Fastlane
+        uses: maierj/fastlane-action@v3.0.0
+        with:
+          lane: deploy_to_google_play
+          subdirectory: android
+        env:
+          MAMBA_JSON_KEY_DATA: ${{ secrets.MAMBA_JSON_KEY_DATA }}
+
+
       - run: flutter pub get
       - run: flutter test
       - run: flutter build apk
