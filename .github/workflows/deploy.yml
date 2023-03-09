@@ -48,10 +48,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
       
       - name: Set up Java
-      - uses: actions/setup-java@v2
+        uses: actions/setup-java@v2
         with:
           distribution: temurin
           java-version: 11.0
@@ -79,12 +79,6 @@ jobs:
           subdirectory: android
         env:
           MAMBA_JSON_KEY_DATA: ${{ secrets.MAMBA_JSON_KEY_DATA }}
-
-
-      - run: flutter pub get
-      - run: flutter test
-      - run: flutter build apk
-      - run: flutter build appbundle
 
   web:
     runs-on: ubuntu-latest
