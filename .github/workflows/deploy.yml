@@ -79,13 +79,6 @@ jobs:
           fileName: "upload-keystore.jks"
           encodedString: ${{ secrets.ANDROID_STORE_FILE }}
 
-      - name: Decode key.properties
-        uses: timheuer/base64-to-file@v1
-        id: key-properties
-        with:
-          fileName: "key.properties"
-          encodedString: ${{ secrets.ANDROID_KEY_PROPERTIES }}
-
       - name: Write key.properties file
         uses: christian-draeger/write-properties@1.1.0
         with:
