@@ -82,7 +82,7 @@ jobs:
       - name: Write key.properties file
         uses: christian-draeger/write-properties@1.1.0
         with:
-          path: 'android/key.properties'
+          path: './android/key.properties'
           property: |
             'storePassword'
             'keyPassword'
