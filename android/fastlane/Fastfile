@@ -22,7 +22,7 @@ platform :android do
   desc "Upload App .aab to PlayStore"
   def uploadAppToGooglePlay(json_key_data) 
     supply(
-      track: "internal"
+      track: "internal",
       aab: "../build/app/outputs/bundle/release/app-release.aab",
       json_key_data: json_key_data,
       skip_upload_apk: true,
