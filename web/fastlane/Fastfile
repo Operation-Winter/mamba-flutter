@@ -1,7 +1,6 @@
 
 DEPLOY_SERVER_ADDRESS = ENV["DEPLOY_SERVER_ADDRESS"]
 DEPLOY_SERVER_USERNAME = ENV["DEPLOY_SERVER_USERNAME"]
-DEPLOY_SERVER_KEY = ENV["DEPLOY_SERVER_KEY"]
 
 desc "Deploy a new version to the web"
 lane :deploy_web_to_server do

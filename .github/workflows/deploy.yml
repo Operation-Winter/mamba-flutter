@@ -121,4 +121,4 @@ jobs:
         env:
           DEPLOY_SERVER_ADDRESS: ${{ secrets.DEPLOY_SERVER_ADDRESS }}
           DEPLOY_SERVER_USERNAME: ${{ secrets.DEPLOY_SERVER_USERNAME }}
-          DEPLOY_SERVER_KEY: ${{ secrets.DEPLOY_SERVER_KEY }}
+          RSYNC_PASSWORD: ${{ secrets.DEPLOY_SERVER_KEY }}
