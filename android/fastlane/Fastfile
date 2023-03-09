@@ -12,14 +12,14 @@ platform :android do
   desc "Build App .aab Bundle"
   def buildReleaseApp()
     prepareFlutter() 
-    sh("flutter build appbundle -v")
+    sh("flutter build appbundle")
   end
 
   desc "Upload App .aab to PlayStore"
   def uploadAppToGooglePlay(json_key_data) 
     supply(
       track: "internal",
-      aab: "../build/app/outputs/bundle/release/app.aab",
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
       json_key_data: json_key_data,
       skip_upload_apk: true,
       skip_upload_metadata: true,

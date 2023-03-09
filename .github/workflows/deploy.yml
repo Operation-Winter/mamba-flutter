@@ -83,25 +83,31 @@ jobs:
   web:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
+      - name: Checkout project
+        uses: actions/checkout@v3
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           cache: true
           cache-key: flutter # optional, change this to force refresh cache
           cache-path: ${{ runner.tool_cache }}/flutter # optional, change this to specify the cache path
           architecture: x64 # optional, x64 or arm64
-      - run: flutter --version
-      - run: flutter pub get
-      - run: flutter test
-      - run: flutter build web --release --web-renderer html
-      - run: cp apple-app-site-association build/web
-      - name: rsync deployments
-        uses: burnett01/rsync-deployments@4.1
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          switches: -avzr --delete
-          path: build/web/
-          remote_path: /var/www/html/
-          remote_host: ${{ secrets.DEPLOY_SERVER_ADDRESS }}
-          remote_user: ${{ secrets.DEPLOY_SERVER_USERNAME }}
-          remote_key: ${{ secrets.DEPLOY_SERVER_KEY }}
+          ruby-version: '2.7.2'
+          bundler-cache: true
+          working-directory: 'web'
+
+      - name: Deploy to website
+        uses: maierj/fastlane-action@v3.0.0
+        with:
+          lane: deploy_web_to_server
+          subdirectory: web
+        env:
+          DEPLOY_SERVER_ADDRESS: ${{ secrets.DEPLOY_SERVER_ADDRESS }}
+          DEPLOY_SERVER_USERNAME: ${{ secrets.DEPLOY_SERVER_USERNAME }}
+          DEPLOY_SERVER_KEY: ${{ secrets.DEPLOY_SERVER_KEY }}

@@ -1,0 +1,35 @@
+
+DEPLOY_SERVER_ADDRESS = ENV["DEPLOY_SERVER_ADDRESS"]
+DEPLOY_SERVER_USERNAME = ENV["DEPLOY_SERVER_USERNAME"]
+DEPLOY_SERVER_KEY = ENV["DEPLOY_SERVER_KEY"]
+
+desc "Deploy a new version to the web"
+lane :deploy_web_to_server do
+  buildHTMLRendererApp()
+  uploadAppToWeb()
+end
+
+desc "Build Web HTML rendered app"
+def buildHTMLRendererApp()
+  prepareFlutter() 
+  sh("flutter build web --release --web-renderer html")
+  copy_artifacts(
+    target_path: "build/web", 
+    artifacts: ["apple-app-site-association"]
+  )
+end
+
+desc "Upload app to web server"
+def uploadAppToWeb() 
+  rsync(
+    source: "build/web/",
+    destination: "root@host:/var/www/html/",
+    extra: "-avzr --delete"
+  )
+end
+
+desc "Prepare Flutter environment"
+def prepareFlutter() 
+  sh("flutter --version")
+  sh("flutter pub get")
+end
