@@ -40,7 +40,7 @@ platform :android do
     internal = google_play_track_version_codes(
       track: "internal",
       json_key_data: json_key_data,
-    )
+    ).max
     return internal + 1
   end
 end
