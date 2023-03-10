@@ -43,6 +43,7 @@ class _StyledSwitchState extends State<StyledSwitch> {
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
             child: Text(
@@ -51,8 +52,9 @@ class _StyledSwitchState extends State<StyledSwitch> {
               textAlign: TextAlign.center,
             ),
           ),
-          const Spacer(),
-          _platformSwitch(),
+          Flexible(
+            child: _platformSwitch(),
+          ),
         ],
       ),
     );
@@ -63,13 +65,11 @@ class _StyledSwitchState extends State<StyledSwitch> {
       return CupertinoSwitch(
         value: value,
         onChanged: onChange,
-        activeColor: primaryColor,
       );
     } else {
       return Switch(
         value: value,
         onChanged: onChange,
-        activeColor: primaryColor,
       );
     }
   }

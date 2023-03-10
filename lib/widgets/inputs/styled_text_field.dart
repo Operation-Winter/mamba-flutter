@@ -55,19 +55,18 @@ class _StyledTextFieldState extends State<StyledTextField> {
         decoration: InputDecoration(
           labelText: widget.placeholder,
           contentPadding: const EdgeInsets.all(10),
-          fillColor: inputBackgroundColor,
           filled: true,
           labelStyle: descriptionColoredTextStyle,
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: primaryColor),
           ),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: inputBackgroundColor),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: primaryColor),
           ),
         ),
         onChanged: onChanged,
         cursorColor: primaryColor,
-        autofocus: widget.autofocus ?? false,
+        autofocus: widget.autofocus == true,
         enabled: widget.enabled,
         onFieldSubmitted: (_) => widget.onFieldSubmitted?.call(),
       ),
