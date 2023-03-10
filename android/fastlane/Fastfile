@@ -5,14 +5,15 @@ MAMBA_JSON_KEY_DATA = ENV["MAMBA_JSON_KEY_DATA"]
 platform :android do
   desc "Deploy a new version to the Google Play"
   lane :deploy_to_google_play do
-    buildReleaseApp()
+    buildReleaseApp(MAMBA_JSON_KEY_DATA)
     uploadAppToGooglePlay(MAMBA_JSON_KEY_DATA)
   end
 
   desc "Build App .aab Bundle"
-  def buildReleaseApp()
-    prepareFlutter() 
-    sh("flutter build appbundle")
+  def buildReleaseApp(json_key_data)
+    prepareFlutter()
+    versionCode = latestVersionCode(json_key_data)
+    sh("flutter build appbundle --build-number=#{versionCode}")
   end
 
   desc "Upload App .aab to PlayStore"
@@ -32,5 +33,23 @@ platform :android do
   def prepareFlutter() 
     sh("flutter --version")
     sh("flutter pub get")
+  end
+
+  desc "Fetch latest internal version code"
+  def latestVersionCode(json_key_data)
+    internal = google_play_track_version_codes(
+      track: "internal",
+      json_key_data: json_key_data,
+    )
+    alpha = google_play_track_version_codes(
+      track: "alpha",
+      json_key_data: json_key_data,
+    )
+    beta = google_play_track_version_codes(
+      track: "beta",
+      json_key_data: json_key_data,
+    )
+    max_value = [internal[0].to_i, alpha[0].to_i, beta[0].to_i].max
+    return max_value + 1
   end
 end
