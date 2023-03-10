@@ -30,7 +30,7 @@ class IconInfo extends StatelessWidget {
           ),
           Text(
             info,
-            style: const TextStyle(
+            style: TextStyle(
               color: primaryColor,
               fontWeight: FontWeight.w500,
               fontSize: 16,

@@ -12,7 +12,7 @@ class PlanningLoadingState extends StatelessWidget {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               SpinKitSpinningLines(
                 color: primaryColor,
                 size: 100,

@@ -126,7 +126,7 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                           onChanged: automaticallyCompleteVotingChanged,
                         ),
                         const SizedBox(height: 10),
-                        const Text(
+                        Text(
                           'Available cards',
                           style: descriptionColoredTextStyle,
                         ),
@@ -154,8 +154,7 @@ class _HostSetupScreenState extends State<HostSetupScreen> {
                         RoundedButton(
                           title: 'Start session',
                           enabled: validationPassed,
-                          onPressed:
-                              validationPassed ? didTapStartSession : null,
+                          onPressed: didTapStartSession,
                         )
                       ],
                     ),

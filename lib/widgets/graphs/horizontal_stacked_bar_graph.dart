@@ -26,18 +26,16 @@ class HorizontalStackedBarGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(15),
       child: Container(
-        color: Colors.white,
+        color: Colors.transparent,
         child: Row(
           children: barGraphData
               .map(
                 (data) => Flexible(
                   flex: data.ratio,
                   child: Container(
-                    color: isDarkMode(context)
-                        ? darkPurple.withOpacity(data.transparency)
-                        : primaryColor.withOpacity(data.transparency),
+                    color: darkPurple.withOpacity(data.transparency),
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: Center(

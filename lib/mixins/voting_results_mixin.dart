@@ -7,15 +7,16 @@ import 'package:mamba/models/planning_voting_result_group.dart';
 import 'package:mamba/widgets/graphs/horizontal_stacked_bar_graph.dart';
 
 mixin VotingResultsMixin {
-  _sortResults({
-    required List<HorizontalStackedBarGraphData> graphData,
-    required bool parseAsIntWhenEqual,
-  }) {
+  _sortResults({required List<HorizontalStackedBarGraphData> graphData}) {
     graphData.sort((a, b) {
       int ratioComp = b.ratio.compareTo(a.ratio);
-      if (parseAsIntWhenEqual && ratioComp == 0) {
-        return int.parse(b.title).compareTo(int.parse(a.title));
+
+      if (ratioComp == 0) {
+        var parsedB = int.tryParse(b.title) ?? 0;
+        var parsedA = int.tryParse(a.title) ?? 0;
+        return parsedB.compareTo(parsedA);
       }
+
       return ratioComp;
     });
   }
@@ -48,10 +49,7 @@ mixin VotingResultsMixin {
         );
       }).toList();
 
-      _sortResults(
-        graphData: graphData,
-        parseAsIntWhenEqual: true,
-      );
+      _sortResults(graphData: graphData);
 
       _updateTransparencyAndColor(
         graphData: graphData,
@@ -97,10 +95,7 @@ mixin VotingResultsMixin {
       );
     }
 
-    _sortResults(
-      graphData: graphData,
-      parseAsIntWhenEqual: false,
-    );
+    _sortResults(graphData: graphData);
     _updateTransparencyAndColor(
       graphData: graphData,
       totalItemCount: coffeeVotes.length,

@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
   flutter_bloc: ^8.1.2
   cupertino_icons: ^1.0.5
   json_annotation: ^4.8.0
@@ -24,6 +26,8 @@ dependencies:
   qr_flutter: ^4.0.0
   collection: ^1.17.0
   meta: ^1.8.0
+  flutter_html: ^2.2.1
+  url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_test:

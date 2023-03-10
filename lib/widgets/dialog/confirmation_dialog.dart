@@ -18,7 +18,7 @@ class ConfirmationAlertDialog {
       ),
       actions: [
         CupertinoButton(
-          child: const Text(
+          child: Text(
             'Cancel',
             style: TextStyle(color: primaryColor),
           ),
@@ -27,7 +27,7 @@ class ConfirmationAlertDialog {
           },
         ),
         CupertinoButton(
-          child: const Text(
+          child: Text(
             'Confirm',
             style: TextStyle(
               color: primaryColor,

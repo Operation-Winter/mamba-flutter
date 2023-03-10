@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:mamba/models/screen_arguments/host_landing_screen_arguments.dart';
 import 'package:mamba/models/screen_arguments/join_landing_screen_arguments.dart';
 import 'package:mamba/models/screen_arguments/spectator_landing_screen_arguments.dart';
+import 'package:mamba/screens/other/privacy_policy_screen.dart';
 import 'package:mamba/screens/shared/planning_share_screen.dart';
 import 'package:universal_io/io.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +17,7 @@ import 'package:mamba/screens/spectator/spectator_landing_screen.dart';
 import 'package:mamba/screens/spectator/spectator_setup_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:app_links/app_links.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 import 'screens/landing_screen.dart';
 
@@ -41,12 +43,14 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     return {
       LandingScreen.route: (context) => const LandingScreen(),
       HostSetupScreen.route: (context) => const HostSetupScreen(),
+      PrivacyPolicyScreen.route: (context) => const PrivacyPolicyScreen(),
     };
   }
 
   @override
   void initState() {
     super.initState();
+    usePathUrlStrategy();
     _initDeepLinks();
   }
 
@@ -160,47 +164,77 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     return null;
   }
 
-  MaterialApp _defaultApp() {
+  @override
+  Widget build(BuildContext context) {
+    return Platform.isIOS
+        ? IosApp(
+            navigatorKey: _navigatorKey,
+            initialRoute: _initialRoute,
+            routes: _routes,
+            onGenerateRoute: onGenerateRoute,
+          )
+        : DefaultApp(
+            navigatorKey: _navigatorKey,
+            initialRoute: _initialRoute,
+            routes: _routes,
+            onGenerateRoute: onGenerateRoute,
+          );
+  }
+}
+
+class DefaultApp extends StatelessWidget {
+  final GlobalKey<NavigatorState> navigatorKey;
+  final String initialRoute;
+  final Map<String, Widget Function(BuildContext)> routes;
+  final Route<dynamic>? Function(RouteSettings)? onGenerateRoute;
+
+  const DefaultApp({
+    super.key,
+    required this.navigatorKey,
+    required this.initialRoute,
+    required this.routes,
+    required this.onGenerateRoute,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: _navigatorKey,
+      navigatorKey: navigatorKey,
       title: 'Mamba',
-      theme: ThemeData.light().copyWith(
-        useMaterial3: true,
-        cardTheme: ThemeData.light(useMaterial3: true)
-            .cardTheme
-            .copyWith(surfaceTintColor: accentColor),
-        dialogTheme: ThemeData.light(useMaterial3: true)
-            .dialogTheme
-            .copyWith(surfaceTintColor: accentColor),
-      ),
-      darkTheme: ThemeData.dark().copyWith(
-        useMaterial3: true,
-      ),
+      theme: lightMaterialTheme,
+      darkTheme: darkMaterialTheme,
       themeMode: ThemeMode.system,
-      initialRoute: _initialRoute,
-      routes: _routes,
+      initialRoute: initialRoute,
+      routes: routes,
       onGenerateRoute: onGenerateRoute,
     );
   }
+}
 
-  Widget _iosApp(BuildContext context) {
-    final Brightness platformBrightness =
-        WidgetsBinding.instance.window.platformBrightness;
+class IosApp extends StatelessWidget {
+  final GlobalKey<NavigatorState> navigatorKey;
+  final String initialRoute;
+  final Map<String, Widget Function(BuildContext)> routes;
+  final Route<dynamic>? Function(RouteSettings)? onGenerateRoute;
+
+  const IosApp({
+    super.key,
+    required this.navigatorKey,
+    required this.initialRoute,
+    required this.routes,
+    required this.onGenerateRoute,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Theme(
-      data: ThemeData(
-        useMaterial3: true,
-        brightness: platformBrightness,
-        primaryColor: primaryColor,
-      ),
+      data: cupertinoMaterialTheme,
       child: CupertinoApp(
-        navigatorKey: _navigatorKey,
+        navigatorKey: navigatorKey,
         title: 'Mamba',
-        theme: CupertinoThemeData(
-          brightness: platformBrightness,
-          primaryColor: primaryColor,
-        ),
-        initialRoute: _initialRoute,
-        routes: _routes,
+        theme: cupertinoTheme,
+        initialRoute: initialRoute,
+        routes: routes,
         onGenerateRoute: onGenerateRoute,
         localizationsDelegates: const [
           DefaultMaterialLocalizations.delegate,
@@ -209,10 +243,5 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         ],
       ),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Platform.isIOS ? _iosApp(context) : _defaultApp();
   }
 }

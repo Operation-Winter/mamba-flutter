@@ -15,13 +15,13 @@ class PlanningCardIcon extends StatelessWidget {
     return Tooltip(
       preferBelow: true,
       verticalOffset: 60,
-      message: 'Card ${planningCard.title}',
+      message: '${planningCard.title} Card',
       child: AspectRatio(
         aspectRatio: 570 / 890,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Container(
-            color: isDarkMode(context) ? darkPurple : primaryColor,
+            color: darkPurple,
             child: Center(
               child: Text(
                 planningCard.title,

@@ -15,7 +15,7 @@ class SubTitleText extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 4),
       child: Text(
         text,
-        style: subTitleTextStyle,
+        style: titleTextStyle,
         textAlign: textAlign,
       ),
     );

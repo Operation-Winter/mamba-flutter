@@ -51,6 +51,7 @@ class _StyledSwitchState extends State<StyledSwitch> {
               textAlign: TextAlign.center,
             ),
           ),
+          const Spacer(),
           _platformSwitch(),
         ],
       ),

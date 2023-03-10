@@ -10,7 +10,7 @@ class ComingSoonDialog {
           const Text('This functionality is not yet implemented. Coming soon!'),
       actions: [
         CupertinoButton(
-          child: const Text(
+          child: Text(
             'Ok',
             style: TextStyle(color: primaryColor),
           ),

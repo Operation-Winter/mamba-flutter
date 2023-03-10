@@ -121,21 +121,28 @@ class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
               runSpacing: 8,
               direction: Axis.horizontal,
               alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: widget.planningCards
                   .map(
                     (planningCard) => GestureDetector(
                       onTap: () => _didTapCard(planningCard),
                       child: Container(
-                        constraints: const BoxConstraints(maxWidth: 75),
+                        constraints: BoxConstraints(
+                            maxWidth:
+                                widget.selectedCard == planningCard ? 85 : 75),
                         decoration: widget.selectedCard == planningCard
                             ? BoxDecoration(
                                 border: Border.all(
-                                  width: 3,
-                                  color: isDarkMode(context)
-                                      ? primaryColor
-                                      : darkPurple,
+                                  width: 4,
+                                  color: primaryColorSelection,
+                                  strokeAlign: BorderSide.strokeAlignOutside,
                                 ),
-                                borderRadius: BorderRadius.circular(11),
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                  ),
+                                ],
                               )
                             : null,
                         child: PlanningCardIcon(planningCard: planningCard),

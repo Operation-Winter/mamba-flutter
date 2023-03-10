@@ -34,7 +34,7 @@ class TextFieldAlertDialog {
       ),
       actions: [
         CupertinoButton(
-          child: const Text(
+          child: Text(
             'Cancel',
             style: TextStyle(color: primaryColor),
           ),
@@ -46,7 +46,7 @@ class TextFieldAlertDialog {
         CupertinoButton(
           child: Text(
             primaryActionTitle,
-            style: const TextStyle(color: primaryColor),
+            style: TextStyle(color: primaryColor),
           ),
           onPressed: () {
             textFieldInput(controller.text);

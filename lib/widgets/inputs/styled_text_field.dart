@@ -58,7 +58,7 @@ class _StyledTextFieldState extends State<StyledTextField> {
           fillColor: inputBackgroundColor,
           filled: true,
           labelStyle: descriptionColoredTextStyle,
-          focusedBorder: const OutlineInputBorder(
+          focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: primaryColor),
           ),
           enabledBorder: const OutlineInputBorder(

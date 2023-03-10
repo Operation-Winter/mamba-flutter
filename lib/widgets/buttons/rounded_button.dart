@@ -10,15 +10,16 @@ class RoundedButton extends StatelessWidget {
     Key? key,
     this.onPressed,
     required this.title,
-    required this.enabled,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: onPressed,
+      onPressed: enabled ? onPressed : null,
       style: TextButton.styleFrom(
-        backgroundColor: enabled ? primaryColor : disabledColor,
+        backgroundColor: primaryColor,
+        disabledBackgroundColor: disabledColor,
         minimumSize: const Size.fromHeight(40),
       ),
       child: Text(

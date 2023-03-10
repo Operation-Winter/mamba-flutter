@@ -75,7 +75,7 @@ class PlanningSessionParticipantsCard extends StatelessWidget {
                                     const SizedBox(height: 10),
                                   if (participant.tag == null && index > 0)
                                     const SizedBox(height: 20),
-                                  GridView(
+                                  GridView.builder(
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount:
@@ -90,22 +90,24 @@ class PlanningSessionParticipantsCard extends StatelessWidget {
                                     physics:
                                         const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
-                                    children: participant.participants
-                                        .map(
-                                          (participant) => ParticipantRow(
-                                            participantId:
-                                                participant.participantId,
-                                            name: participant.name,
-                                            connected: participant.connected,
-                                            participantCommands:
-                                                participantCommands,
-                                            voteState: voteState,
-                                            votes: participant.votes,
-                                            highlighted:
-                                                participant.highlighted,
-                                          ),
-                                        )
-                                        .toList(),
+                                    itemCount: participant.participants.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      var participantItem =
+                                          participant.participants[index];
+                                      return ParticipantRow(
+                                        participantId:
+                                            participantItem.participantId,
+                                        name: participantItem.name,
+                                        connected: participantItem.connected,
+                                        participantCommands:
+                                            participantCommands,
+                                        voteState: voteState,
+                                        votes: participantItem.votes,
+                                        highlighted:
+                                            participantItem.highlighted,
+                                      );
+                                    },
                                   ),
                                 ],
                               ),

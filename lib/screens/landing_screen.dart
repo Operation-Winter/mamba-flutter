@@ -1,8 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mamba/screens/host/host_setup_screen.dart';
 import 'package:mamba/screens/join/join_setup_screen.dart';
+import 'package:mamba/screens/other/privacy_policy_screen.dart';
 import 'package:mamba/screens/spectator/spectator_setup_screen.dart';
 import 'package:mamba/ui_constants.dart';
+import 'package:mamba/widgets/buttons/link_button.dart';
 import 'package:mamba/widgets/landing/landing_image_button.dart';
 import 'package:mamba/widgets/text/description_text.dart';
 import 'package:mamba/widgets/text/title_text.dart';
@@ -16,17 +19,14 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
-  void didTapHostSession() {
-    Navigator.pushNamed(context, HostSetupScreen.route);
-  }
-
-  void didTapParticipantSession() {
-    Navigator.pushNamed(context, JoinSetupScreen.route);
-  }
-
-  void didTapSpectatorSession() {
-    Navigator.pushNamed(context, SpectatorSetupScreen.route);
-  }
+  void didTapHostSession() =>
+      Navigator.pushNamed(context, HostSetupScreen.route);
+  void didTapParticipantSession() =>
+      Navigator.pushNamed(context, JoinSetupScreen.route);
+  void didTapSpectatorSession() =>
+      Navigator.pushNamed(context, SpectatorSetupScreen.route);
+  void didTapPrivacyPolicy() =>
+      Navigator.pushNamed(context, PrivacyPolicyScreen.route);
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +101,37 @@ class _LandingScreenState extends State<LandingScreen> {
                     ),
                   ),
                 ),
+                if (kIsWeb) ...[
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: const EdgeInsets.all(16),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          const TitleText(
+                            text: 'Other links',
+                          ),
+                          const SizedBox(height: 16),
+                          Wrap(
+                            alignment: WrapAlignment.start,
+                            direction: Axis.horizontal,
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              LinkButton(
+                                title: "Privacy Policy",
+                                onPressed: didTapPrivacyPolicy,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

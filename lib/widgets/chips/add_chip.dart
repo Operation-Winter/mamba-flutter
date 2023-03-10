@@ -7,13 +7,14 @@ class AddChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Chip(
-        label: const Icon(Icons.add),
-        labelPadding: const EdgeInsets.all(3),
-        backgroundColor: Colors.grey.withOpacity(0.2),
+    return ActionChip(
+      onPressed: onTap,
+      label: const Icon(
+        Icons.add,
+        size: 18,
       ),
+      labelPadding: const EdgeInsets.all(3),
+      backgroundColor: Colors.grey.withOpacity(0.2),
     );
   }
 }

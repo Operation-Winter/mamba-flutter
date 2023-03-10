@@ -62,23 +62,33 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
     });
   }
 
+  _didSelectChip({
+    required bool selected,
+    required String tag,
+  }) =>
+      setState(() {
+        selected ? _selectedTags.add(tag) : _selectedTags.remove(tag);
+      });
+
+  _didTapRemoveChip({
+    required String tag,
+  }) =>
+      setState(() {
+        tags.remove(tag);
+        _selectedTags.remove(tag);
+      });
+
   List<Widget> chipList() {
     List<Widget> styledChipList = tags
         .map(
-          (tag) => GestureDetector(
-            onTap: () => setState(() {
-              _selectedTags.contains(tag)
-                  ? _selectedTags.remove(tag)
-                  : _selectedTags.add(tag);
-            }),
-            child: StyledChip(
-              text: tag,
-              selected: _selectedTags.contains(tag),
-              onDeleted: () => setState(() {
-                tags.remove(tag);
-                _selectedTags.remove(tag);
-              }),
+          (tag) => StyledChip(
+            text: tag,
+            selected: _selectedTags.contains(tag),
+            onSelected: (selected) => _didSelectChip(
+              selected: selected,
+              tag: tag,
             ),
+            onDeleted: () => _didTapRemoveChip(tag: tag),
           ),
         )
         .cast<Widget>()
@@ -97,6 +107,15 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
       ),
     );
     return styledChipList;
+  }
+
+  _didTapAddTicket() {
+    widget.onAddTicket(
+      _titleController.text,
+      _descriptionController.text,
+      tags,
+      _selectedTags,
+    );
   }
 
   @override
@@ -164,19 +183,9 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
                     ),
                     const SizedBox(height: 20),
                     RoundedButton(
-                      title: editMode ? 'Edit ticket' : 'Add ticket',
-                      enabled: shouldEnableAddButton,
-                      onPressed: !shouldEnableAddButton
-                          ? null
-                          : () {
-                              widget.onAddTicket(
-                                _titleController.text,
-                                _descriptionController.text,
-                                tags,
-                                _selectedTags,
-                              );
-                            },
-                    ),
+                        title: editMode ? 'Edit ticket' : 'Add ticket',
+                        enabled: shouldEnableAddButton,
+                        onPressed: _didTapAddTicket),
                   ],
                 ),
               ),
