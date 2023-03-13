@@ -95,7 +95,11 @@ class HostLandingSessionError extends HostLandingSessionState {
   });
 }
 
-class HostLandingSessionPreviousTickets extends HostLandingSessionState {}
+class HostLandingSessionPreviousTickets extends HostLandingSessionState {
+  final XFile file;
+
+  HostLandingSessionPreviousTickets({required this.file});
+}
 
 class HostLandingSessionEnded extends HostLandingSessionState {
   final String sessionName;

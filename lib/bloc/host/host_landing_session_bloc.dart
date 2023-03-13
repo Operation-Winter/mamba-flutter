@@ -1,9 +1,16 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:collection/collection.dart';
+import 'package:csv/csv.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/mixins/participants_list_mixin.dart';
+import 'package:mamba/mixins/voting_results_mixin.dart';
 import 'package:mamba/models/commands/host/planning_host_receive_command.dart';
 import 'package:mamba/models/commands/host/planning_host_receive_command_type.dart';
 import 'package:mamba/models/messages/planning_invalid_command_message.dart';
+import 'package:mamba/models/messages/planning_previous_tickets_message.dart';
 import 'package:mamba/models/messages/planning_session_state_message.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/models/planning_card_group.dart';
@@ -13,6 +20,7 @@ import 'package:mamba/models/planning_ticket.dart';
 import 'package:mamba/repositories/local_storage_repository.dart';
 import 'package:mamba/repositories/planning_host_session_repository.dart';
 import 'package:meta/meta.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:uuid/uuid.dart';
 
 part 'host_landing_session_event.dart';
@@ -20,7 +28,7 @@ part 'host_landing_session_state.dart';
 
 class HostLandingSessionBloc
     extends Bloc<HostLandingSessionEvent, HostLandingSessionState>
-    with ParticipantsListMixin {
+    with ParticipantsListMixin, VotingResultsMixin {
   final PlanningHostSessionRepository _hostSessionRepository =
       PlanningHostSessionRepository();
   final LocalStorageRepository _localStorageRepository =
@@ -133,7 +141,8 @@ class HostLandingSessionBloc
             message: command.message as PlanningInvalidCommandMessage));
         break;
       case PlanningHostReceiveCommandType.PREVIOUS_TICKETS:
-        add(HostReceivePreviousTickets());
+        add(HostReceivePreviousTickets(
+            message: command.message as PlanningPreviousTicketsMessage));
         break;
       case PlanningHostReceiveCommandType.SESSION_IDLE_TIMEOUT:
         add(HostLandingError(
@@ -274,8 +283,54 @@ class HostLandingSessionBloc
   _handleReceivePreviousTicketsEvent(
     HostReceivePreviousTickets event,
     Emitter<HostLandingSessionState> emit,
-  ) async =>
-      emit(HostLandingSessionPreviousTickets());
+  ) async {
+    var csvContent = _makePreviousTicketsCsvContents(
+        previousTickets: event.message.previousTickets);
+    final fileName = 'Mamba - ${sessionName.replaceAll(RegExp(r'\W '), '')}';
+
+    Uint8List bytes = Uint8List.fromList(utf8.encode(csvContent));
+    var csvFile = XFile.fromData(
+      bytes,
+      length: bytes.length,
+      lastModified: DateTime.now(),
+      mimeType: 'text/csv',
+      name: '$fileName.csv',
+    );
+
+    emit(HostLandingSessionPreviousTickets(file: csvFile));
+  }
+
+  String _makePreviousTicketsCsvContents(
+      {required List<PlanningTicket> previousTickets}) {
+    List<List<String>> csvContents = [
+      ['ID', 'Title', 'Description', 'Tag', 'Final sizing', 'Vote count'],
+    ];
+
+    previousTickets.forEachIndexed((ticketIndex, ticket) {
+      var tagGroups = makeGroupedCards(votes: ticket.ticketVotes);
+      var voteGroups = makeVotingResults(voteGroups: tagGroups);
+
+      var results = tagGroups.mapIndexed((index, tagGroup) {
+        var tag =
+            voteGroups.firstWhereOrNull((group) => group.tag == tagGroup.tag);
+        var cardTitle = tag?.graphData.firstOrNull?.title ?? '-';
+        var voteCount = tag?.graphData.map((e) => e.ratio).sum ?? 0;
+
+        return [
+          '${ticketIndex + 1}',
+          index == 0 ? ticket.title : '',
+          index == 0 ? ticket.description ?? '' : '',
+          tagGroup.tag ?? '-',
+          cardTitle,
+          '$voteCount',
+        ];
+      });
+
+      csvContents.addAll(results);
+    });
+
+    return const ListToCsvConverter().convert(csvContents);
+  }
 
   _handleReceiveLandingError(
     HostLandingError event,

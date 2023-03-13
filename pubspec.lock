@@ -129,6 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
+  charcode:
+    dependency: transitive
+    description:
+      name: charcode
+      sha256: fb98c0f6d12c920a02ee2d998da788bca066ca5f148492b7085ee23372b12306
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.1"
   checked_yaml:
     dependency: transitive
     description:
@@ -193,6 +201,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.6.3"
+  cross_file:
+    dependency: transitive
+    description:
+      name: cross_file
+      sha256: "0b0036e8cccbfbe0555fd83c1d31a6f30b77a96b598b35a5d36dd41f718695e9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.3+4"
   crypto:
     dependency: transitive
     description:
@@ -209,6 +225,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.17.2"
+  csv:
+    dependency: "direct main"
+    description:
+      name: csv
+      sha256: "18aef53ab72181a0b5384562d18c8cbd57e941e24cb8e54eb41409d3d8abdc6d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.1"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -520,6 +544,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1"
+  path_provider:
+    dependency: "direct main"
+    description:
+      name: path_provider
+      sha256: "04890b994ee89bfa80bf3080bfec40d5a92c5c7a785ebb02c13084a099d2b6f9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.13"
+  path_provider_android:
+    dependency: transitive
+    description:
+      name: path_provider_android
+      sha256: "019f18c9c10ae370b08dce1f3e3b73bc9f58e7f087bb5e921f06529438ac0ae7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.24"
+  path_provider_foundation:
+    dependency: transitive
+    description:
+      name: path_provider_foundation
+      sha256: "026b97a6c29da75181a37aae2eba9227f5fe13cb2838c6b975ce209328b8ab4e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.3"
   path_provider_linux:
     dependency: transitive
     description:
@@ -632,6 +680,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
+  share_plus:
+    dependency: "direct main"
+    description:
+      name: share_plus
+      sha256: "8c6892037b1824e2d7e8f59d54b3105932899008642e6372e5079c6939b4b625"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.3.1"
+  share_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: share_plus_platform_interface
+      sha256: "82ddd4ab9260c295e6e39612d4ff00390b9a7a21f1bb1da771e2f232d80ab8a1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.0"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -853,6 +917,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  universal_html:
+    dependency: "direct main"
+    description:
+      name: universal_html
+      sha256: ed4f24120c9b1b4721d44e439f7a47d09d9f1b7b868bc84c9d6d373a4a8732af
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.1"
   universal_io:
     dependency: "direct main"
     description:

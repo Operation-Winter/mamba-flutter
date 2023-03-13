@@ -88,7 +88,7 @@ class _LandingScreenState extends State<LandingScreen> {
                             ),
                             Flexible(
                               child: Text(
-                                'Now includes new functionality that allows users to request and kick off a coffee break voting.',
+                                'Now includes new functionality that allows users to request and kick off a vote to take a coffee break.\n\nYou can now export a session\'s voting results to a CSV file.',
                                 style: TextStyle(
                                   color: Colors.red,
                                   fontSize: 16,

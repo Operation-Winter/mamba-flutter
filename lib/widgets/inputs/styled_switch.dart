@@ -65,6 +65,7 @@ class _StyledSwitchState extends State<StyledSwitch> {
       return CupertinoSwitch(
         value: value,
         onChanged: onChange,
+        activeColor: primaryColor,
       );
     } else {
       return Switch(

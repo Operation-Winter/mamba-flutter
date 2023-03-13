@@ -90,7 +90,11 @@ class HostReceiveInvalidCommand extends HostLandingSessionEvent {
   HostReceiveInvalidCommand({required this.message});
 }
 
-class HostReceivePreviousTickets extends HostLandingSessionEvent {}
+class HostReceivePreviousTickets extends HostLandingSessionEvent {
+  final PlanningPreviousTicketsMessage message;
+
+  HostReceivePreviousTickets({required this.message});
+}
 
 class HostLandingError extends HostLandingSessionEvent {
   final String code;

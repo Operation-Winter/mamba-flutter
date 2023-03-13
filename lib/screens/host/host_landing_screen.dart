@@ -9,6 +9,7 @@ import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
 import 'package:mamba/widgets/dialog/coming_soon_dialog.dart';
 import 'package:mamba/widgets/dialog/confirmation_dialog.dart';
+import 'package:mamba/widgets/dialog/file_share_dialog.dart';
 import 'package:mamba/widgets/dialog/modal_dialog.dart';
 import 'package:mamba/widgets/states/shared/planning_none_state.dart';
 import 'package:mamba/widgets/states/shared/planning_voting_finished_state.dart';
@@ -167,12 +168,20 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
 
   _didTapRevote() => widget.session.add(HostSendRevote());
 
-  _didTapExport() => ComingSoonDialog.show(context);
+  _didTapExport() => widget.session.add(HostSendPreviousTickets());
 
   _didTapReconnect() => widget.session.add(HostSendReconnect());
 
   _didTapVoteCoffeeBreak(bool vote) =>
       widget.session.add(HostSendCoffeeVote(vote: vote));
+
+  _handlePreviousTicketsState(
+          {required HostLandingSessionPreviousTickets state}) async =>
+      await FileShareDialog.showFileShare(
+        context: context,
+        subject: state.file.name,
+        files: [state.file],
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +196,13 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
                 onWillPop: () async => false,
                 child: BlocConsumer<HostLandingSessionBloc,
                     HostLandingSessionState>(
-                  listener: (context, state) {},
+                  buildWhen: (previous, current) =>
+                      current is! HostLandingSessionPreviousTickets,
+                  listener: (context, state) {
+                    if (state is HostLandingSessionPreviousTickets) {
+                      _handlePreviousTicketsState(state: state);
+                    }
+                  },
                   builder: (context, state) {
                     if (state is HostLandingSessionLoading) {
                       return _loadingState(context);
