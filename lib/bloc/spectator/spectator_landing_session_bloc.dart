@@ -25,7 +25,7 @@ class SpectatorLandingSessionBloc
   final LocalStorageRepository _localStorageRepository =
       LocalStorageRepository();
 
-  final String sessionCode;
+  String? sessionCode;
   String? password;
 
   String _sessionName = '';
@@ -37,7 +37,7 @@ class SpectatorLandingSessionBloc
   bool _sessionEnded = false;
 
   Future<UuidValue> get _uuid async {
-    var localUuid = await _localStorageRepository.getUuid();
+    var localUuid = await _localStorageRepository.getUuid;
 
     if (localUuid != null) {
       return localUuid;
@@ -49,9 +49,12 @@ class SpectatorLandingSessionBloc
   }
 
   SpectatorLandingSessionBloc({
-    required this.sessionCode,
+    this.sessionCode,
     this.password,
+    required bool reconnect,
   }) : super(SpectatorLandingSessionLoading()) {
+    _sessionJoined = reconnect;
+
     // #region Receive command handlers
     on<SpectatorReceiveNoneState>(_handleNoneStateEvent);
     on<SpectatorReceiveVotingState>(_handleVotingStateEvent);
@@ -148,6 +151,7 @@ class SpectatorLandingSessionBloc
     availableCards = message.availableCards;
     ticket = message.ticket;
     password = message.password;
+    sessionCode = message.sessionCode;
 
     _sessionJoined = true;
     _timeLeft = message.timeLeft;
@@ -299,10 +303,19 @@ class SpectatorLandingSessionBloc
       _sendJoinCommand();
 
   _sendJoinCommand() async {
+    if (sessionCode == null) {
+      add(SpectatorLandingError(
+        code: '0001',
+        description:
+            'The session is no longer valid. Please try again from the landing.',
+      ));
+      return;
+    }
+
     await _localStorageRepository.removeUuid();
     _spectatorSessionRepository.sendJoinSessionCommand(
       uuid: await _uuid,
-      sessionCode: sessionCode,
+      sessionCode: sessionCode!,
       password: password,
     );
   }

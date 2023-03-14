@@ -21,12 +21,12 @@ part 'join_landing_session_state.dart';
 class JoinLandingSessionBloc
     extends Bloc<JoinLandingSessionEvent, JoinLandingSessionState>
     with ParticipantsListMixin {
-  final PlanningJoinSessionRepository _joinSessionRepository =
+  late final PlanningJoinSessionRepository _joinSessionRepository =
       PlanningJoinSessionRepository();
-  final LocalStorageRepository _localStorageRepository =
+  late final LocalStorageRepository _localStorageRepository =
       LocalStorageRepository();
 
-  final String sessionCode;
+  String? sessionCode;
   String? password;
   String username;
 
@@ -40,7 +40,7 @@ class JoinLandingSessionBloc
   String? _selectedTag;
 
   Future<UuidValue> get _uuid async {
-    var localUuid = await _localStorageRepository.getUuid();
+    var localUuid = await _localStorageRepository.getUuid;
 
     if (localUuid != null) {
       return localUuid;
@@ -52,10 +52,13 @@ class JoinLandingSessionBloc
   }
 
   JoinLandingSessionBloc({
-    required this.sessionCode,
+    this.sessionCode,
     this.password,
     required this.username,
+    required bool reconnect,
   }) : super(JoinLandingSessionLoading()) {
+    _sessionJoined = reconnect;
+
     // #region Send commands
     on<JoinSendJoinSession>(_handleSendJoinCommand);
     on<JoinSendLeaveSession>(_handleSendLeaveSessionCommand);
@@ -156,14 +159,23 @@ class JoinLandingSessionBloc
     }
   }
 
-  _handleStateEvent({required PlanningSessionStateMessage message}) {
+  _handleStateEvent({required PlanningSessionStateMessage message}) async {
+    sessionCode = message.sessionCode;
     _sessionName = message.sessionName;
     availableCards = message.availableCards;
     ticket = message.ticket;
     password = message.password;
 
-    _sessionJoined = true;
     _timeLeft = message.timeLeft;
+
+    var participantUuid = await _uuid;
+    if (username == 'Unknown') {
+      username = message.participants
+              .firstWhereOrNull(
+                  (participant) => participant.participantId == participantUuid)
+              ?.name ??
+          'Unknown';
+    }
   }
 
   // #endregion
@@ -338,12 +350,21 @@ class JoinLandingSessionBloc
       _sendJoinCommand();
 
   _sendJoinCommand() async {
+    if (sessionCode == null) {
+      add(JoinLandingError(
+        code: '0001',
+        description:
+            'The session is no longer valid. Please try again from the landing.',
+      ));
+      return;
+    }
+
     await _localStorageRepository.removeUuid();
     await _localStorageRepository.username(username);
     _joinSessionRepository.sendJoinSessionCommand(
       uuid: await _uuid,
       participantName: username,
-      sessionCode: sessionCode,
+      sessionCode: sessionCode!,
       password: password,
     );
   }
@@ -382,6 +403,7 @@ class JoinLandingSessionBloc
     Emitter<JoinLandingSessionState> emit,
   ) async {
     await connect();
+
     if (!_sessionJoined) {
       _sendJoinCommand();
     } else {

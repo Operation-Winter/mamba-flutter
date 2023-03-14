@@ -25,19 +25,22 @@ import 'package:uuid/uuid.dart';
 class HostLandingScreen extends StatefulWidget {
   static String route = '/host/landing';
   late final HostLandingSessionBloc session;
+  final bool reconnect;
 
   HostLandingScreen({
     Key? key,
     required String sessionName,
     String? password,
-    List<PlanningCard> availableCards = const [],
-    bool automaticallyCompleteVoting = false,
+    required List<PlanningCard> availableCards,
+    required bool automaticallyCompleteVoting,
+    required this.reconnect,
   }) : super(key: key) {
     session = HostLandingSessionBloc(
       sessionName: sessionName,
       password: password,
       availableCards: availableCards,
       automaticallyCompleteVoting: automaticallyCompleteVoting,
+      reconnect: reconnect,
     );
   }
 
@@ -53,8 +56,12 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
   }
 
   Future<void> _connect() async {
-    await widget.session.connect();
-    widget.session.add(HostSendStartSession());
+    if (!widget.reconnect) {
+      await widget.session.connect();
+      widget.session.add(HostSendStartSession());
+    } else {
+      widget.session.add(HostSendReconnect());
+    }
   }
 
   _didTapAddTicket() {

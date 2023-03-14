@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:mamba/models/screen_arguments/host_landing_screen_arguments.dart';
 import 'package:mamba/models/screen_arguments/join_landing_screen_arguments.dart';
 import 'package:mamba/models/screen_arguments/spectator_landing_screen_arguments.dart';
+import 'package:mamba/repositories/local_storage_repository.dart';
 import 'package:mamba/screens/other/privacy_policy_screen.dart';
 import 'package:mamba/screens/shared/planning_share_screen.dart';
 import 'package:universal_io/io.dart';
@@ -18,6 +19,7 @@ import 'package:mamba/screens/spectator/spectator_setup_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:app_links/app_links.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:uuid/uuid.dart';
 
 import 'screens/landing_screen.dart';
 
@@ -32,8 +34,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   final _navigatorKey = GlobalKey<NavigatorState>();
+  late final LocalStorageRepository _localStorageRepository =
+      LocalStorageRepository();
+
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
+
+  Future<UuidValue?> get _uuid async {
+    return await _localStorageRepository.getUuid;
+  }
 
   get _initialRoute {
     return LandingScreen.route;
@@ -77,11 +86,47 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     });
   }
 
-  void openAppLink(Uri uri) {
+  void openAppLink(Uri uri) async {
     if (uri.pathSegments.contains('planning') == true &&
         uri.pathSegments.contains('share') == true) {
       _handleShareURL(uri);
+    } else if (uri.path == JoinLandingScreen.route && await _uuid != null) {
+      _handleReloadJoinLanding();
+    } else if (uri.path == HostLandingScreen.route && await _uuid != null) {
+      _handleReloadHostLanding();
+    } else if (uri.path == SpectatorLandingScreen.route &&
+        await _uuid != null) {
+      _handleReloadSpectatorLanding();
+    } else {
+      await _localStorageRepository.removeUuid();
     }
+  }
+
+  _handleReloadJoinLanding() {
+    _navigatorKey.currentState?.pushNamed(
+      JoinLandingScreen.route,
+      arguments: JoinLandingScreenArguments(
+        reconnect: true,
+      ),
+    );
+  }
+
+  _handleReloadHostLanding() {
+    _navigatorKey.currentState?.pushNamed(
+      HostLandingScreen.route,
+      arguments: HostLandingScreenArguments(
+        reconnect: true,
+      ),
+    );
+  }
+
+  _handleReloadSpectatorLanding() {
+    _navigatorKey.currentState?.pushNamed(
+      SpectatorLandingScreen.route,
+      arguments: SpectatorLandingScreenArguments(
+        reconnect: true,
+      ),
+    );
   }
 
   _handleShareURL(Uri? uri) {
@@ -109,6 +154,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           automaticallyCompleteVoting: arguments.automaticallyCompleteVoting,
           availableCards: arguments.availableCards,
           password: arguments.password,
+          reconnect: arguments.reconnect,
         ),
       );
     } else if (settings.name == JoinLandingScreen.route) {
@@ -120,6 +166,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           sessionCode: arguments.sessionCode,
           username: arguments.username,
           password: arguments.password,
+          reconnect: arguments.reconnect,
         ),
       );
     } else if (settings.name == SpectatorLandingScreen.route) {
@@ -130,6 +177,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         builder: (_) => SpectatorLandingScreen(
           sessionCode: arguments.sessionCode,
           password: arguments.password,
+          reconnect: arguments.reconnect,
         ),
       );
     } else if (settings.name == PlanningShareScreen.route) {

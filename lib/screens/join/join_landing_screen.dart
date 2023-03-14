@@ -20,17 +20,20 @@ import 'package:mamba/widgets/states/shared/planning_loading_state.dart';
 class JoinLandingScreen extends StatefulWidget {
   static String route = '/join/landing';
   late final JoinLandingSessionBloc session;
+  final bool reconnect;
 
   JoinLandingScreen({
     Key? key,
-    required String sessionCode,
+    String? sessionCode,
     String? password,
     required String username,
+    required this.reconnect,
   }) : super(key: key) {
     session = JoinLandingSessionBloc(
       sessionCode: sessionCode,
       password: password,
       username: username,
+      reconnect: reconnect,
     );
   }
 
@@ -46,8 +49,12 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
   }
 
   Future<void> _connect() async {
-    await widget.session.connect();
-    widget.session.add(JoinSendJoinSession());
+    if (widget.reconnect) {
+      widget.session.add(JoinSendReconnect());
+    } else {
+      await widget.session.connect();
+      widget.session.add(JoinSendJoinSession());
+    }
   }
 
   _didTapRequestCoffee() => widget.session.add(JoinSendRequestCoffeeBreak());
@@ -56,7 +63,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
     ModalDialog.showModalBottomSheet(
       context: context,
       builder: (context) => PlanningSessionSharingScreen(
-        sessionCode: widget.session.sessionCode,
+        sessionCode: widget.session.sessionCode ?? 'Invalid session code',
         password: widget.session.password,
       ),
     );

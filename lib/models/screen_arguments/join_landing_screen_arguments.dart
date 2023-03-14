@@ -1,21 +1,13 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'join_landing_screen_arguments.g.dart';
-
-@JsonSerializable()
 class JoinLandingScreenArguments {
-  final String sessionCode;
+  final String? sessionCode;
   final String? password;
   final String username;
+  final bool reconnect;
 
   JoinLandingScreenArguments({
-    required this.sessionCode,
+    this.sessionCode,
     this.password,
-    required this.username,
+    this.username = 'Unknown',
+    this.reconnect = false,
   });
-
-  factory JoinLandingScreenArguments.fromJson(Map<String, dynamic> data) =>
-      _$JoinLandingScreenArgumentsFromJson(data);
-
-  Map<String, dynamic> toJson() => _$JoinLandingScreenArgumentsToJson(this);
 }

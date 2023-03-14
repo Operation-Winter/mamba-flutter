@@ -29,9 +29,9 @@ part 'host_landing_session_state.dart';
 class HostLandingSessionBloc
     extends Bloc<HostLandingSessionEvent, HostLandingSessionState>
     with ParticipantsListMixin, VotingResultsMixin {
-  final PlanningHostSessionRepository _hostSessionRepository =
+  late final PlanningHostSessionRepository _hostSessionRepository =
       PlanningHostSessionRepository();
-  final LocalStorageRepository _localStorageRepository =
+  late final LocalStorageRepository _localStorageRepository =
       LocalStorageRepository();
   bool _sessionHasStarted = false;
   bool _sessionEnded = false;
@@ -42,12 +42,12 @@ class HostLandingSessionBloc
   String? sessionCode;
   String? password;
   bool automaticallyCompleteVoting;
-  List<PlanningCard> availableCards = [];
+  List<PlanningCard> availableCards;
   Set<String> tags = {};
   PlanningTicket? ticket;
 
   Future<UuidValue> get _uuid async {
-    var localUuid = await _localStorageRepository.getUuid();
+    var localUuid = await _localStorageRepository.getUuid;
 
     if (localUuid != null) {
       return localUuid;
@@ -65,7 +65,10 @@ class HostLandingSessionBloc
     this.password,
     required this.availableCards,
     required this.automaticallyCompleteVoting,
+    required bool reconnect,
   }) : super(HostLandingSessionLoading()) {
+    _sessionHasStarted = reconnect;
+
     // #region Receive commands
 
     on<HostReceiveNoneState>(_handleNoneStateEvent);
@@ -259,10 +262,9 @@ class HostLandingSessionBloc
     Emitter<HostLandingSessionState> emit,
   ) async {
     _handleStateEvent(emit, message: event.message);
-    var participantUuid = await _uuid;
+    var hostUuid = await _uuid;
     var vote = event.message.coffeeVotes
-        ?.firstWhereOrNull(
-            (element) => element.participantId == participantUuid)
+        ?.firstWhereOrNull((element) => element.participantId == hostUuid)
         ?.vote;
     emit(HostLandingSessionCoffeeVoting(
       sessionName: sessionName,

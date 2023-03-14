@@ -17,15 +17,18 @@ import 'package:mamba/widgets/states/shared/planning_voting_state.dart';
 class SpectatorLandingScreen extends StatefulWidget {
   static String route = '/spectator/landing';
   late final SpectatorLandingSessionBloc session;
+  final bool reconnect;
 
   SpectatorLandingScreen({
     Key? key,
-    required String sessionCode,
+    String? sessionCode,
     String? password,
+    required this.reconnect,
   }) : super(key: key) {
     session = SpectatorLandingSessionBloc(
       sessionCode: sessionCode,
       password: password,
+      reconnect: reconnect,
     );
   }
 
@@ -41,15 +44,19 @@ class _SpectatorLandingScreenState extends State<SpectatorLandingScreen> {
   }
 
   Future<void> _connect() async {
-    await widget.session.connect();
-    widget.session.add(SpectatorSendJoinSession());
+    if (!widget.reconnect) {
+      await widget.session.connect();
+      widget.session.add(SpectatorSendJoinSession());
+    } else {
+      widget.session.add(SpectatorSendReconnect());
+    }
   }
 
   _didTapShare() {
     ModalDialog.showModalBottomSheet(
       context: context,
       builder: (context) => PlanningSessionSharingScreen(
-        sessionCode: widget.session.sessionCode,
+        sessionCode: widget.session.sessionCode ?? 'Invalid session code',
         password: widget.session.password,
       ),
     );
