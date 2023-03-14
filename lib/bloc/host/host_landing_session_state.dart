@@ -101,6 +101,14 @@ class HostLandingSessionPreviousTickets extends HostLandingSessionState {
   HostLandingSessionPreviousTickets({required this.file});
 }
 
+class HostLandingSessionBanner extends HostLandingSessionState {
+  final String title;
+
+  HostLandingSessionBanner({
+    required this.title,
+  });
+}
+
 class HostLandingSessionEnded extends HostLandingSessionState {
   final String sessionName;
 

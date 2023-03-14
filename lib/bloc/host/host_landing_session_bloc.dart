@@ -35,7 +35,9 @@ class HostLandingSessionBloc
       LocalStorageRepository();
   bool _sessionHasStarted = false;
   bool _sessionEnded = false;
+  int _coffeeRequestCount = 0;
 
+  bool coffeeBannerDismissed = false;
   String sessionName;
   String? sessionCode;
   String? password;
@@ -164,7 +166,8 @@ class HostLandingSessionBloc
 
   // #region Handle incoming events
 
-  _handleStateEvent({required PlanningSessionStateMessage message}) {
+  _handleStateEvent(Emitter<HostLandingSessionState> emit,
+      {required PlanningSessionStateMessage message}) {
     sessionName = message.sessionName;
     availableCards = message.availableCards;
     ticket = message.ticket;
@@ -172,13 +175,27 @@ class HostLandingSessionBloc
 
     _sessionHasStarted = true;
     _timeLeft = message.timeLeft;
+
+    if (_coffeeRequestCount != message.coffeeRequestCount) {
+      coffeeBannerDismissed = false;
+    }
+    _coffeeRequestCount = message.coffeeRequestCount;
+
+    if (!coffeeBannerDismissed &&
+        message.participants.isNotEmpty &&
+        _coffeeRequestCount >= (message.participants.length / 2)) {
+      emit(HostLandingSessionBanner(
+        title:
+            'At least half of the participants have requested for a coffee break!',
+      ));
+    }
   }
 
   _handleNoneStateEvent(
     HostReceiveNoneState event,
     Emitter<HostLandingSessionState> emit,
   ) async {
-    _handleStateEvent(message: event.message);
+    _handleStateEvent(emit, message: event.message);
     var participantDtos =
         makeParticipantGroupDtos(participants: event.message.participants);
 
@@ -194,7 +211,7 @@ class HostLandingSessionBloc
     HostReceiveVotingState event,
     Emitter<HostLandingSessionState> emit,
   ) async {
-    _handleStateEvent(message: event.message);
+    _handleStateEvent(emit, message: event.message);
     var ticket = event.message.ticket;
     if (ticket == null) return;
 
@@ -216,7 +233,7 @@ class HostLandingSessionBloc
     HostReceiveVotingFinishedState event,
     Emitter<HostLandingSessionState> emit,
   ) async {
-    _handleStateEvent(message: event.message);
+    _handleStateEvent(emit, message: event.message);
     var ticket = event.message.ticket;
     if (ticket == null) return;
 
@@ -241,7 +258,7 @@ class HostLandingSessionBloc
     HostReceiveCoffeeVotingState event,
     Emitter<HostLandingSessionState> emit,
   ) async {
-    _handleStateEvent(message: event.message);
+    _handleStateEvent(emit, message: event.message);
     var participantUuid = await _uuid;
     var vote = event.message.coffeeVotes
         ?.firstWhereOrNull(
@@ -260,7 +277,7 @@ class HostLandingSessionBloc
     HostReceiveCoffeeVotingFinishedState event,
     Emitter<HostLandingSessionState> emit,
   ) async {
-    _handleStateEvent(message: event.message);
+    _handleStateEvent(emit, message: event.message);
 
     emit(HostLandingSessionCoffeeVotingFinished(
       sessionName: sessionName,

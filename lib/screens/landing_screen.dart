@@ -76,12 +76,17 @@ class _LandingScreenState extends State<LandingScreen> {
                         ),
                         const SizedBox(height: 16),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: const [
-                            Icon(
-                              Icons.info_outline_rounded,
-                              color: Colors.red,
-                              size: 28,
+                            Flexible(
+                              fit: FlexFit.tight,
+                              flex: 0,
+                              child: Icon(
+                                Icons.info_outline_rounded,
+                                color: Colors.red,
+                                size: 28,
+                              ),
                             ),
                             SizedBox(
                               width: 10,
@@ -122,7 +127,7 @@ class _LandingScreenState extends State<LandingScreen> {
                             runSpacing: 8,
                             children: [
                               LinkButton(
-                                title: "Privacy Policy",
+                                title: "Privacy policy",
                                 onPressed: didTapPrivacyPolicy,
                               ),
                             ],

@@ -175,12 +175,44 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
   _didTapVoteCoffeeBreak(bool vote) =>
       widget.session.add(HostSendCoffeeVote(vote: vote));
 
-  _handlePreviousTicketsState(
-          {required HostLandingSessionPreviousTickets state}) async =>
+  _handlePreviousTicketsState({
+    required HostLandingSessionPreviousTickets state,
+  }) async =>
       await FileShareDialog.showFileShare(
         context: context,
         subject: state.file.name,
         files: [state.file],
+      );
+
+  _handleBannerState({
+    required HostLandingSessionBanner state,
+  }) async =>
+      ScaffoldMessenger.of(context).showMaterialBanner(
+        MaterialBanner(
+          padding: const EdgeInsets.all(10),
+          content: Text(
+            state.title,
+            style: roundedButtonTextStyle,
+          ),
+          leading: const Icon(
+            Icons.coffee,
+            color: Colors.white,
+          ),
+          backgroundColor: primaryColor,
+          leadingPadding: const EdgeInsets.all(16),
+          actions: [
+            TextButton(
+              onPressed: () {
+                widget.session.coffeeBannerDismissed = true;
+                ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+              },
+              child: const Text(
+                'DISMISS',
+                style: roundedButtonTextStyle,
+              ),
+            ),
+          ],
+        ),
       );
 
   @override
@@ -197,10 +229,13 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
                 child: BlocConsumer<HostLandingSessionBloc,
                     HostLandingSessionState>(
                   buildWhen: (previous, current) =>
-                      current is! HostLandingSessionPreviousTickets,
+                      current is! HostLandingSessionPreviousTickets &&
+                      current is! HostLandingSessionBanner,
                   listener: (context, state) {
                     if (state is HostLandingSessionPreviousTickets) {
                       _handlePreviousTicketsState(state: state);
+                    } else if (state is HostLandingSessionBanner) {
+                      _handleBannerState(state: state);
                     }
                   },
                   builder: (context, state) {
