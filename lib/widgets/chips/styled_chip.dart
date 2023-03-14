@@ -17,23 +17,26 @@ class StyledChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var color = isDarkMode(context)
+        ? Colors.white
+        : selected == true
+            ? Colors.white
+            : Colors.black;
     return InputChip(
       selected: selected == true,
       labelPadding: const EdgeInsets.all(3),
       label: Text(
         text,
-        style: TextStyle(
-          color: isDarkMode(context) ? Colors.white : Colors.black,
-        ),
+        style: TextStyle(color: color),
       ),
-      selectedColor: primaryColor.withOpacity(0.5),
+      checkmarkColor: color,
+      selectedColor: primaryColor,
       elevation: 6,
       shadowColor: Colors.grey.shade600,
       padding: const EdgeInsets.all(8),
       onSelected: onSelected,
       onDeleted: onDeleted,
-      deleteIconColor:
-          isDarkMode(context) ? Colors.grey.shade200 : Colors.black,
+      deleteIconColor: color,
     );
   }
 }

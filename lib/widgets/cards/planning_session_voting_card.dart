@@ -1,6 +1,9 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mamba/models/planning_card.dart';
 import 'package:mamba/ui_constants.dart';
+import 'package:mamba/widgets/chips/chip_wrap.dart';
+import 'package:mamba/widgets/chips/styled_chip.dart';
 import 'package:mamba/widgets/planning_card_icon.dart';
 import 'dart:core';
 
@@ -27,62 +30,56 @@ class PlanningSessionVotingCard extends StatefulWidget {
       _PlanningSessionVotingCardState();
 }
 
-class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
-    with TickerProviderStateMixin {
-  late TabController _tabController;
-  late List<String> tags;
-  int _initialIndex = 0;
+class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard> {
+  late List<String> _tags;
+  late String? _selectedTag;
 
   @override
   void initState() {
     super.initState();
     _configureTags();
-    _configureTabController();
   }
 
   @override
   void didUpdateWidget(covariant PlanningSessionVotingCard oldWidget) {
     _configureTags();
-    _configureTabController();
     super.didUpdateWidget(oldWidget);
   }
 
   _configureTags() {
-    tags = widget.tags.toList();
-    tags.sort();
+    _tags = widget.tags.toList();
+    _tags.sort();
+    _selectedTag = widget.selectedTag ?? _tags.firstOrNull;
   }
 
-  _configureTabController() {
-    var selectedTag = widget.selectedTag;
-    if (selectedTag != null) {
-      var index = tags.indexOf(selectedTag);
-      _initialIndex = index == -1 ? 0 : index;
-    } else {
-      _initialIndex = 0;
-    }
+  _didTapCardOrTag({
+    PlanningCard? planningCard,
+    String? tag,
+  }) {
+    _didTapTag(tag: tag);
+    _didTapCard(planningCard: planningCard);
+  }
 
-    _tabController = TabController(
-      initialIndex: _initialIndex,
-      length: tags.length,
-      vsync: this,
-    );
-    _tabController.addListener(() {
-      if (!_tabController.indexIsChanging) {
-        _didTapCard(null);
-        widget.onSelectTag(tags.elementAt(_tabController.index));
-      }
+  _didTapTag({
+    String? tag,
+  }) {
+    setState(() {
+      _selectedTag = tag;
     });
+
+    if (tag == null) return;
+    widget.onSelectTag(tag);
   }
 
-  _didTapCard(PlanningCard? planningCard) {
+  _didTapCard({
+    PlanningCard? planningCard,
+  }) {
     var selectedCard = planningCard ?? widget.selectedCard;
+
     if (selectedCard == null) return;
-    _initialIndex = _tabController.index;
-    var selectedTag =
-        tags.isEmpty ? null : tags.elementAt(_tabController.index);
     widget.onSelectCard(
       selectedCard,
-      selectedTag,
+      _selectedTag,
     );
   }
 
@@ -97,22 +94,18 @@ class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            if (tags.isNotEmpty) ...[
-              TabBar(
-                controller: _tabController,
-                tabs: tags
-                    .map((tag) => Tab(
-                          child: Text(
-                            tag,
-                            style: TextStyle(
-                                color: isDarkMode(context)
-                                    ? Colors.white
-                                    : Colors.black),
+            if (_tags.isNotEmpty) ...[
+              ChipWrap(
+                children: _tags
+                    .map((tag) => StyledChip(
+                          text: tag,
+                          selected: tag == _selectedTag,
+                          onSelected: (_) => _didTapCardOrTag(
+                            planningCard: null,
+                            tag: tag,
                           ),
                         ))
                     .toList(),
-                indicatorColor: primaryColor,
-                isScrollable: true,
               ),
               const SizedBox(height: 10),
             ],
@@ -125,7 +118,10 @@ class _PlanningSessionVotingCardState extends State<PlanningSessionVotingCard>
               children: widget.planningCards
                   .map(
                     (planningCard) => GestureDetector(
-                      onTap: () => _didTapCard(planningCard),
+                      onTap: () => _didTapCardOrTag(
+                        planningCard: planningCard,
+                        tag: _selectedTag,
+                      ),
                       child: Container(
                         constraints: BoxConstraints(
                             maxWidth:

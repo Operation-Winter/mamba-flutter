@@ -43,16 +43,17 @@ class _StyledSwitchState extends State<StyledSwitch> {
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Flexible(
+          Expanded(
             child: Text(
               widget.text,
               style: descriptionTextStyle,
-              textAlign: TextAlign.center,
             ),
           ),
           Flexible(
+            fit: FlexFit.tight,
+            flex: 0,
             child: _platformSwitch(),
           ),
         ],
