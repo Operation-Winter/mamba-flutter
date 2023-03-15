@@ -27,7 +27,7 @@ class URLCenter {
     var urlPath =
         '${currentEnvironment.baseURL}/planning/share?sessionCode=$sessionCode';
     if (password != null) {
-      '$urlPath&password=$password';
+      urlPath = '$urlPath&password=$password';
     }
     return Uri.parse(urlPath);
   }

@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:mamba/models/screen_arguments/join_landing_screen_arguments.dart';
 import 'package:mamba/repositories/local_storage_repository.dart';
 import 'package:mamba/screens/join/join_landing_screen.dart';
@@ -68,7 +72,7 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
     });
 
     if (widget.sessionCode != null && username != null) {
-      didTapJoinSession();
+      _didTapJoinSession();
     }
   }
 
@@ -86,7 +90,14 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
     });
   }
 
-  void didTapJoinSession() {
+  void passwordChanged(String? newValue) {
+    password = newValue;
+    setState(() {
+      validationPassed = formIsValid;
+    });
+  }
+
+  void _didTapJoinSession() {
     if (!validationPassed) return;
 
     Navigator.pushNamed(
@@ -98,6 +109,21 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
         password: password,
       ),
     );
+  }
+
+  _didTapScanQrCode() async {
+    String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
+      Colors.white.toString(),
+      'Cancel',
+      false,
+      ScanMode.QR,
+    );
+    var uri = Uri.parse(barcodeScanResult);
+    log(barcodeScanResult);
+    var sessionCode = uri.queryParameters['sessionCode'];
+    var password = uri.queryParameters['password'];
+    sessionCodeChanged(sessionCode);
+    passwordChanged(password);
   }
 
   @override
@@ -151,9 +177,7 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
                         StyledTextField(
                           placeholder: 'Password (Optional)',
                           input: password,
-                          onChanged: (password) {
-                            this.password = password;
-                          },
+                          onChanged: passwordChanged,
                           enabled: widget.password == null,
                         ),
                         StyledTextField(
@@ -163,12 +187,17 @@ class _JoinSetupScreenState extends State<JoinSetupScreen> {
                           autofocus: widget.sessionCode != null,
                         ),
                         const SizedBox(height: 10),
+                        if (!kIsWeb)
+                          RoundedButton(
+                            title: 'Scan QR code',
+                            enabled: true,
+                            onPressed: _didTapScanQrCode,
+                          ),
                         RoundedButton(
                           title: 'Join session',
                           enabled: validationPassed,
-                          onPressed:
-                              validationPassed ? didTapJoinSession : null,
-                        )
+                          onPressed: _didTapJoinSession,
+                        ),
                       ],
                     ),
                   ),

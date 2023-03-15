@@ -175,6 +175,7 @@ class HostLandingSessionBloc
     availableCards = message.availableCards;
     ticket = message.ticket;
     sessionCode = message.sessionCode;
+    password = message.password;
 
     _sessionHasStarted = true;
     _timeLeft = message.timeLeft;
