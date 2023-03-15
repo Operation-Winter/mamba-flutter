@@ -32,7 +32,9 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
+class _MyAppState extends State<MyApp>
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+  late Brightness _brightness;
   final _navigatorKey = GlobalKey<NavigatorState>();
   late final LocalStorageRepository _localStorageRepository =
       LocalStorageRepository();
@@ -61,11 +63,25 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     super.initState();
     usePathUrlStrategy();
     _initDeepLinks();
+    WidgetsBinding.instance.addObserver(this);
+    _brightness = WidgetsBinding.instance.window.platformBrightness;
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    if (mounted) {
+      setState(() {
+        _brightness = WidgetsBinding.instance.window.platformBrightness;
+      });
+    }
+
+    super.didChangePlatformBrightness();
   }
 
   @override
   void dispose() {
     _linkSubscription?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -220,6 +236,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
             initialRoute: _initialRoute,
             routes: _routes,
             onGenerateRoute: onGenerateRoute,
+            brightness: _brightness,
           )
         : DefaultApp(
             navigatorKey: _navigatorKey,
@@ -264,6 +281,7 @@ class IosApp extends StatelessWidget {
   final String initialRoute;
   final Map<String, Widget Function(BuildContext)> routes;
   final Route<dynamic>? Function(RouteSettings)? onGenerateRoute;
+  final Brightness brightness;
 
   const IosApp({
     super.key,
@@ -271,6 +289,7 @@ class IosApp extends StatelessWidget {
     required this.initialRoute,
     required this.routes,
     required this.onGenerateRoute,
+    required this.brightness,
   });
 
   @override
@@ -280,7 +299,7 @@ class IosApp extends StatelessWidget {
       child: CupertinoApp(
         navigatorKey: navigatorKey,
         title: 'Mamba',
-        theme: cupertinoTheme,
+        theme: cupertinoTheme(brightness),
         initialRoute: initialRoute,
         routes: routes,
         onGenerateRoute: onGenerateRoute,

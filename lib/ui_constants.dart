@@ -130,11 +130,9 @@ ThemeData get cupertinoMaterialTheme {
   }
 }
 
-CupertinoThemeData get cupertinoTheme {
-  Brightness platformBrightness =
-      WidgetsBinding.instance.window.platformBrightness;
+CupertinoThemeData cupertinoTheme(Brightness brightness) {
   return CupertinoThemeData(
-    brightness: platformBrightness,
+    brightness: brightness,
     primaryColor: primaryColor,
   );
 }
