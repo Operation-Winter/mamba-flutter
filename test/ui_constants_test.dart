@@ -5,7 +5,8 @@ import 'package:test/test.dart';
 void main() {
   group('Colours', () {
     test('primaryColor', () {
-      expect(primaryColor, const Color(0xFFA288E3));
+      WidgetsFlutterBinding.ensureInitialized();
+      expect(primaryColor, const Color(0xff6953a6));
     });
 
     test('darkPurple', () {
