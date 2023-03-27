@@ -240,6 +240,7 @@ class _JoinLandingScreenState extends State<JoinLandingScreen> {
       selectedCard: state.selectedCard,
       onSelectCard: _didSelectCard,
       onSelectTag: _didSelectTag,
+      timeLeft: state.timeLeft,
     );
   }
 

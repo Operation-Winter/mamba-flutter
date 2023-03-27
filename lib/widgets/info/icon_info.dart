@@ -15,28 +15,39 @@ class IconInfo extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
         color: isDarkMode(context) ? Colors.white : lightGrayColor,
       ),
-      constraints: const BoxConstraints(
-        maxWidth: 58,
-      ),
+      // constraints: const BoxConstraints(
+      //   maxWidth: 58,
+      // ),
       child: Padding(
         padding: const EdgeInsets.all(6),
-        child: Row(children: [
-          Icon(
-            icon,
-            color: primaryColor,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Text(
-            info,
-            style: TextStyle(
-              color: primaryColor,
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 0,
+              child: Icon(
+                icon,
+                color: primaryColor,
+              ),
             ),
-          ),
-        ]),
+            const SizedBox(
+              width: 10,
+            ),
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 0,
+              child: Text(
+                info,
+                style: TextStyle(
+                  color: primaryColor,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -21,6 +21,7 @@ class PlanningJoinVotingState extends StatelessWidget {
   final String? selectedTag;
   final Function(PlanningCard, String?) onSelectCard;
   final Function(String) onSelectTag;
+  final int? timeLeft;
 
   const PlanningJoinVotingState({
     Key? key,
@@ -37,6 +38,7 @@ class PlanningJoinVotingState extends StatelessWidget {
     this.selectedCard,
     required this.onSelectCard,
     required this.onSelectTag,
+    this.timeLeft,
   }) : super(key: key);
 
   @override
@@ -55,6 +57,7 @@ class PlanningJoinVotingState extends StatelessWidget {
               ticketTitle: ticketTitle,
               ticketDescription: ticketDescription,
               commands: const [],
+              timeLeft: timeLeft,
             ),
             PlanningSessionVotingCard(
               planningCards: availableCards,

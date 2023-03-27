@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:mamba/widgets/buttons/styled_icon_button.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/text/description_text.dart';
+import 'package:mamba/widgets/text/planning_timer_countdown.dart';
 import 'package:mamba/widgets/text/title_text.dart';
 
 class PlanningSessionTicketCard extends StatelessWidget {
   final String ticketTitle;
   final String? ticketDescription;
   final List<PlanningCommandButton> commands;
+  final int? timeLeft;
 
   const PlanningSessionTicketCard({
     Key? key,
     required this.ticketTitle,
     this.ticketDescription,
     required this.commands,
+    this.timeLeft,
   }) : super(key: key);
 
   @override
@@ -28,7 +31,10 @@ class PlanningSessionTicketCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TitleText(text: ticketTitle, textAlign: TextAlign.center),
+            TitleText(
+              text: ticketTitle,
+              textAlign: TextAlign.center,
+            ),
             ...[
               if (ticketDescription != null &&
                   ticketDescription?.isNotEmpty == true)
@@ -37,10 +43,14 @@ class PlanningSessionTicketCard extends StatelessWidget {
                   ticketDescription?.isNotEmpty == true)
                 DescriptionText(text: ticketDescription ?? ''),
               if (commands.isNotEmpty) const SizedBox(height: 10),
-              if (commands.isNotEmpty)
+              if (commands.isNotEmpty || timeLeft != null)
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: timeLeft != null
+                      ? MainAxisAlignment.spaceBetween
+                      : MainAxisAlignment.end,
                   children: [
+                    if (timeLeft != null)
+                      PlanningTimerCountdown(timeLeft: timeLeft!),
                     if (commands.isNotEmpty)
                       Wrap(
                         alignment: WrapAlignment.end,

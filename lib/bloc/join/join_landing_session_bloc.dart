@@ -225,6 +225,7 @@ class JoinLandingSessionBloc
       availableCards: event.message.availableCards,
       selectedCard: selectedCard,
       selectedTag: _selectedTag,
+      timeLeft: _timeLeft,
     ));
   }
 

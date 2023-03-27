@@ -183,9 +183,10 @@ class _HostTicketDetailsScreenState extends State<HostTicketDetailsScreen> {
                     ),
                     const SizedBox(height: 20),
                     RoundedButton(
-                        title: editMode ? 'Edit ticket' : 'Add ticket',
-                        enabled: shouldEnableAddButton,
-                        onPressed: _didTapAddTicket),
+                      title: editMode ? 'Edit ticket' : 'Add ticket',
+                      enabled: shouldEnableAddButton,
+                      onPressed: _didTapAddTicket,
+                    ),
                   ],
                 ),
               ),

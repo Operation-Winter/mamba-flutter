@@ -181,6 +181,7 @@ class _SpectatorLandingScreenState extends State<SpectatorLandingScreen> {
       ticketDescription: state.ticket.description,
       ticketCommands: const [],
       participantCommands: const [],
+      timeLeft: state.timeLeft,
     );
   }
 

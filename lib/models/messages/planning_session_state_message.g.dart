@@ -27,6 +27,7 @@ PlanningSessionStateMessage _$PlanningSessionStateMessageFromJson(
       coffeeVotes: (json['coffeeVotes'] as List<dynamic>?)
           ?.map((e) => PlanningCoffeeVote.fromJson(e as Map<String, dynamic>))
           .toList(),
+      updated: DateTime.parse(json['updated'] as String),
     );
 
 Map<String, dynamic> _$PlanningSessionStateMessageToJson(
@@ -44,6 +45,7 @@ Map<String, dynamic> _$PlanningSessionStateMessageToJson(
       'spectatorCount': instance.spectatorCount,
       'coffeeRequestCount': instance.coffeeRequestCount,
       'coffeeVotes': instance.coffeeVotes?.map((e) => e.toJson()).toList(),
+      'updated': instance.updated.toIso8601String(),
     };
 
 const _$PlanningCardEnumMap = {

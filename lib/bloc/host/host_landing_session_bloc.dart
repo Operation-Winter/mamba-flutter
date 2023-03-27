@@ -230,6 +230,7 @@ class HostLandingSessionBloc
       coffeeVoteCount: event.message.coffeeRequestCount,
       spectatorCount: event.message.spectatorCount,
       ticket: ticket,
+      timeLeft: _timeLeft,
     ));
   }
 

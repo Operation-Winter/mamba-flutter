@@ -197,6 +197,7 @@ class SpectatorLandingSessionBloc
       spectatorCount: event.message.spectatorCount,
       ticket: ticket,
       availableCards: event.message.availableCards,
+      timeLeft: _timeLeft,
     ));
   }
 

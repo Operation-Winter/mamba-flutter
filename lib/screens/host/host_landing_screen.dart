@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/bloc/host/host_landing_session_bloc.dart';
+import 'package:mamba/screens/host/host_landing_timer_screen.dart';
 import 'package:mamba/screens/host/host_ticket_details_screen.dart';
 import 'package:mamba/screens/shared/planning_session_sharing_screen.dart';
 import 'package:mamba/ui_constants.dart';
 import 'package:mamba/widgets/cards/planning_session_coffee_break_voting_results_card.dart';
 import 'package:mamba/widgets/cards/planning_session_name_card.dart';
 import 'package:mamba/widgets/cards/planning_session_participants_card.dart';
-import 'package:mamba/widgets/dialog/coming_soon_dialog.dart';
 import 'package:mamba/widgets/dialog/confirmation_dialog.dart';
 import 'package:mamba/widgets/dialog/file_share_dialog.dart';
 import 'package:mamba/widgets/dialog/modal_dialog.dart';
@@ -132,9 +132,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
         context,
         title: 'End coffee break vote',
         description: 'Are you sure you want to end the coffee break vote?',
-        onConfirmation: () {
-          widget.session.add(HostSendEndCoffeeVote());
-        },
+        onConfirmation: () => widget.session.add(HostSendEndCoffeeVote()),
       );
 
   _didTapShare() {
@@ -150,9 +148,22 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
     );
   }
 
-  _didTapAddTimer() => ComingSoonDialog.show(context);
+  _didTapAddTimer() => ModalDialog.showModalBottomSheet(
+        context: context,
+        builder: (context) => HostLandingTimerScreen(
+          onStartTimer: (timeInterval) {
+            widget.session.add(HostSendAddTimer(timeInterval: timeInterval));
+            Navigator.pop(context);
+          },
+        ),
+      );
 
-  _didTapCancelTimer() => ComingSoonDialog.show(context);
+  _didTapCancelTimer() => ConfirmationAlertDialog.show(
+        context,
+        title: 'Cancel timer',
+        description: 'Are you sure you want to the vote completion timer?',
+        onConfirmation: () => widget.session.add(HostSendCancelTimer()),
+      );
 
   _didTapFinishVoting() => widget.session.add(HostSendFinishVoting());
 
@@ -339,6 +350,7 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
       participants: state.participants,
       coffeeVoteCount: state.coffeeVoteCount,
       spectatorCount: state.spectatorCount,
+      timeLeft: state.timeLeft,
       commands: [
         PlanningCommandButton(
           icon: Icons.coffee,
@@ -379,16 +391,17 @@ class _HostLandingScreenState extends State<HostLandingScreen> {
       ticketTitle: state.ticket.title,
       ticketDescription: state.ticket.description,
       ticketCommands: [
-        PlanningCommandButton(
-          icon: Icons.timer,
-          tooltip: 'Add timer',
-          onPressed: _didTapAddTimer,
-        ),
-        PlanningCommandButton(
-          icon: Icons.timer_off,
-          tooltip: 'Cancel timer',
-          onPressed: _didTapCancelTimer,
-        ),
+        state.timeLeft == null
+            ? PlanningCommandButton(
+                icon: Icons.timer,
+                tooltip: 'Add timer',
+                onPressed: _didTapAddTimer,
+              )
+            : PlanningCommandButton(
+                icon: Icons.timer_off,
+                tooltip: 'Cancel timer',
+                onPressed: _didTapCancelTimer,
+              ),
         PlanningCommandButton(
           icon: Icons.how_to_vote,
           tooltip: 'Finish voting',

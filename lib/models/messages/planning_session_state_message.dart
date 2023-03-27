@@ -18,6 +18,7 @@ class PlanningSessionStateMessage implements PlanningMessage {
   final int spectatorCount;
   final int coffeeRequestCount;
   final List<PlanningCoffeeVote>? coffeeVotes;
+  final DateTime updated;
 
   PlanningSessionStateMessage({
     required this.sessionCode,
@@ -30,6 +31,7 @@ class PlanningSessionStateMessage implements PlanningMessage {
     required this.spectatorCount,
     required this.coffeeRequestCount,
     required this.coffeeVotes,
+    required this.updated,
   });
 
   factory PlanningSessionStateMessage.fromJson(Map<String, dynamic> data) =>

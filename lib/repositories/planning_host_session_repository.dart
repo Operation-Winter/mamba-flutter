@@ -172,7 +172,7 @@ class PlanningHostSessionRepository {
     required UuidValue uuid,
     required int timeInterval,
   }) {
-    var message = PlanningAddTimerMessage(timeInterval: timeInterval);
+    var message = PlanningAddTimerMessage(time: timeInterval);
     var planningCommand = PlanningHostSendCommand(
       uuid: uuid,
       type: PlanningHostSendCommandType.ADD_TIMER,

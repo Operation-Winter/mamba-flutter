@@ -26,14 +26,17 @@ class SpectatorLandingSessionVoting extends SpectatorLandingSessionState {
   final int spectatorCount;
   final PlanningTicket ticket;
   final List<PlanningCard> availableCards;
+  final int? timeLeft;
 
-  SpectatorLandingSessionVoting(
-      {required this.sessionName,
-      required this.participants,
-      required this.coffeeVoteCount,
-      required this.spectatorCount,
-      required this.ticket,
-      required this.availableCards});
+  SpectatorLandingSessionVoting({
+    required this.sessionName,
+    required this.participants,
+    required this.coffeeVoteCount,
+    required this.spectatorCount,
+    required this.ticket,
+    required this.availableCards,
+    this.timeLeft,
+  });
 }
 
 class SpectatorLandingSessionVotingFinished

@@ -4,9 +4,9 @@ part 'planning_add_timer_message.g.dart';
 
 @JsonSerializable()
 class PlanningAddTimerMessage implements PlanningMessage {
-  final int timeInterval;
+  final int time;
 
-  PlanningAddTimerMessage({required this.timeInterval});
+  PlanningAddTimerMessage({required this.time});
 
   factory PlanningAddTimerMessage.fromJson(Map<String, dynamic> data) =>
       _$PlanningAddTimerMessageFromJson(data);

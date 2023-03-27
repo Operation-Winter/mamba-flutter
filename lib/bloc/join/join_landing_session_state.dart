@@ -28,6 +28,7 @@ class JoinLandingSessionVoting extends JoinLandingSessionState {
   final List<PlanningCard> availableCards;
   final PlanningCard? selectedCard;
   final String? selectedTag;
+  final int? timeLeft;
 
   JoinLandingSessionVoting({
     required this.sessionName,
@@ -38,6 +39,7 @@ class JoinLandingSessionVoting extends JoinLandingSessionState {
     required this.availableCards,
     this.selectedCard,
     this.selectedTag,
+    this.timeLeft,
   });
 }
 

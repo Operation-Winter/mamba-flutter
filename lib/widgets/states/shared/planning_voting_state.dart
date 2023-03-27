@@ -15,6 +15,7 @@ class PlanningVotingState extends StatelessWidget {
   final List<PlanningParticipantGroupDto> participants;
   final String ticketTitle;
   final String? ticketDescription;
+  final int? timeLeft;
 
   const PlanningVotingState({
     Key? key,
@@ -27,6 +28,7 @@ class PlanningVotingState extends StatelessWidget {
     required this.ticketTitle,
     this.ticketDescription,
     required this.ticketCommands,
+    this.timeLeft,
   }) : super(key: key);
 
   @override
@@ -45,6 +47,7 @@ class PlanningVotingState extends StatelessWidget {
               ticketTitle: ticketTitle,
               ticketDescription: ticketDescription,
               commands: ticketCommands,
+              timeLeft: timeLeft,
             ),
             PlanningSessionParticipantsCard(
               participants: participants,

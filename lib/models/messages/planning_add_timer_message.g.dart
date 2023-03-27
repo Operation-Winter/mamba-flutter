@@ -9,11 +9,11 @@ part of 'planning_add_timer_message.dart';
 PlanningAddTimerMessage _$PlanningAddTimerMessageFromJson(
         Map<String, dynamic> json) =>
     PlanningAddTimerMessage(
-      timeInterval: json['timeInterval'] as int,
+      time: json['time'] as int,
     );
 
 Map<String, dynamic> _$PlanningAddTimerMessageToJson(
         PlanningAddTimerMessage instance) =>
     <String, dynamic>{
-      'timeInterval': instance.timeInterval,
+      'time': instance.time,
     };

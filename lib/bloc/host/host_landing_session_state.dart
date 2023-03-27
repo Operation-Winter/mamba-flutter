@@ -25,6 +25,7 @@ class HostLandingSessionVoting extends HostLandingSessionState {
   final int coffeeVoteCount;
   final int spectatorCount;
   final PlanningTicket ticket;
+  final int? timeLeft;
 
   HostLandingSessionVoting({
     required this.sessionName,
@@ -32,6 +33,7 @@ class HostLandingSessionVoting extends HostLandingSessionState {
     required this.coffeeVoteCount,
     required this.spectatorCount,
     required this.ticket,
+    this.timeLeft,
   });
 }
 
