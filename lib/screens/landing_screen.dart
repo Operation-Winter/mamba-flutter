@@ -75,6 +75,10 @@ class _LandingScreenState extends State<LandingScreen> {
                           onPressed: didTapSpectatorSession,
                         ),
                         const SizedBox(height: 16),
+                        const TitleText(
+                          text: 'New functionality',
+                          textAlign: TextAlign.center,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,12 +92,10 @@ class _LandingScreenState extends State<LandingScreen> {
                                 size: 28,
                               ),
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
+                            SizedBox(width: 10),
                             Flexible(
                               child: Text(
-                                'Now includes new functionality that allows users to request and kick off a vote to take a coffee break.\n\nYou can now export a session\'s voting results to a CSV file.',
+                                '• Allows users to request and kick off a vote to take a coffee break.\n• You can now export a session\'s voting results to a CSV file.\n• You can now start/stop a timer during voting to cap the total amount of time allowed to vote per ticket.',
                                 style: TextStyle(
                                   color: Colors.red,
                                   fontSize: 16,
