@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/mixins/participants_list_mixin.dart';
+import 'package:mamba/mixins/time_left_mixin.dart';
 import 'package:mamba/models/commands/join/planning_join_receive_command.dart';
 import 'package:mamba/models/commands/join/planning_join_receive_command_type.dart';
 import 'package:mamba/models/messages/planning_invalid_command_message.dart';
@@ -20,7 +21,7 @@ part 'join_landing_session_state.dart';
 
 class JoinLandingSessionBloc
     extends Bloc<JoinLandingSessionEvent, JoinLandingSessionState>
-    with ParticipantsListMixin {
+    with ParticipantsListMixin, TimeLeftMixin {
   late final PlanningJoinSessionRepository _joinSessionRepository =
       PlanningJoinSessionRepository();
   late final LocalStorageRepository _localStorageRepository =
@@ -166,7 +167,10 @@ class JoinLandingSessionBloc
     ticket = message.ticket;
     password = message.password;
 
-    _timeLeft = message.timeLeft;
+    _timeLeft = timeLeft(
+      timeReceived: message.updated,
+      timeLeft: message.timeLeft,
+    );
 
     var participantUuid = await _uuid;
     if (username == 'Unknown') {

@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/mixins/participants_list_mixin.dart';
+import 'package:mamba/mixins/time_left_mixin.dart';
 import 'package:mamba/mixins/voting_results_mixin.dart';
 import 'package:mamba/models/commands/host/planning_host_receive_command.dart';
 import 'package:mamba/models/commands/host/planning_host_receive_command_type.dart';
@@ -28,7 +29,7 @@ part 'host_landing_session_state.dart';
 
 class HostLandingSessionBloc
     extends Bloc<HostLandingSessionEvent, HostLandingSessionState>
-    with ParticipantsListMixin, VotingResultsMixin {
+    with ParticipantsListMixin, VotingResultsMixin, TimeLeftMixin {
   late final PlanningHostSessionRepository _hostSessionRepository =
       PlanningHostSessionRepository();
   late final LocalStorageRepository _localStorageRepository =
@@ -178,7 +179,10 @@ class HostLandingSessionBloc
     password = message.password;
 
     _sessionHasStarted = true;
-    _timeLeft = message.timeLeft;
+    _timeLeft = timeLeft(
+      timeReceived: message.updated,
+      timeLeft: message.timeLeft,
+    );
 
     if (_coffeeRequestCount != message.coffeeRequestCount) {
       coffeeBannerDismissed = false;

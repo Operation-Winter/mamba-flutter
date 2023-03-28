@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mamba/mixins/participants_list_mixin.dart';
+import 'package:mamba/mixins/time_left_mixin.dart';
 import 'package:mamba/models/commands/spectator/planning_spectator_receive_command.dart';
 import 'package:mamba/models/commands/spectator/planning_spectator_receive_command_type.dart';
 import 'package:mamba/models/messages/planning_invalid_command_message.dart';
@@ -19,7 +20,7 @@ part 'spectator_landing_session_state.dart';
 
 class SpectatorLandingSessionBloc
     extends Bloc<SpectatorLandingSessionEvent, SpectatorLandingSessionState>
-    with ParticipantsListMixin {
+    with ParticipantsListMixin, TimeLeftMixin {
   final PlanningSpectatorSessionRepository _spectatorSessionRepository =
       PlanningSpectatorSessionRepository();
   final LocalStorageRepository _localStorageRepository =
@@ -154,7 +155,10 @@ class SpectatorLandingSessionBloc
     sessionCode = message.sessionCode;
 
     _sessionJoined = true;
-    _timeLeft = message.timeLeft;
+    _timeLeft = timeLeft(
+      timeReceived: message.updated,
+      timeLeft: message.timeLeft,
+    );
   }
 
   // #endregion
